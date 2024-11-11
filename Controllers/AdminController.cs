@@ -25,12 +25,6 @@ namespace StorageApi.Controllers
             return Ok(DbContext.UsersWithroles.ToArray());
         }
 
-        [HttpGet("GetPackages")]
-        public IActionResult GetPackages()
-        {
-            return Ok(DbContext.PackagesWithstatuses.ToArray());
-        }
-
         [HttpGet("GetOperations")]//для админа: c складами
         public IActionResult GetOperations()
         {
