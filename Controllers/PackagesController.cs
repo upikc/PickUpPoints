@@ -16,7 +16,7 @@ namespace StorageApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet("GetPackages")] //Операции содержат статусы
+        [HttpGet("GetPackages")]
         public IActionResult GetPackages()
         {
             return Ok(DbContext.PackagesWithstatuses.ToArray());
