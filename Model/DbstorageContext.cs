@@ -24,8 +24,6 @@ public partial class DbstorageContext : DbContext
 
     public virtual DbSet<PkgOperation> PkgOperations { get; set; }
 
-    public virtual DbSet<PkgOperationsWithtype> PkgOperationsWithtypes { get; set; }
-
     public virtual DbSet<PkqOperationsWithstorage> PkqOperationsWithstorages { get; set; }
 
     public virtual DbSet<Storage> Storages { get; set; }
@@ -154,25 +152,6 @@ public partial class DbstorageContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk8");
-        });
-
-        modelBuilder.Entity<PkgOperationsWithtype>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("pkg_operations_withtype");
-
-            entity.Property(e => e.ActionstorageId).HasColumnName("actionstorage_id");
-            entity.Property(e => e.OperationDate)
-                .HasColumnType("datetime")
-                .HasColumnName("operation_date");
-            entity.Property(e => e.OperationId).HasColumnName("operation_id");
-            entity.Property(e => e.PackageId).HasColumnName("package_id");
-            entity.Property(e => e.Type)
-                .HasMaxLength(20)
-                .HasColumnName("type");
-            entity.Property(e => e.TypeId).HasColumnName("type_id");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
         });
 
         modelBuilder.Entity<PkqOperationsWithstorage>(entity =>
