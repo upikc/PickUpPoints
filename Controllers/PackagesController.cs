@@ -25,28 +25,29 @@ namespace StorageApi.Controllers
         }
 
         /// <summary>
-        /// Получает операции определенного заказа 
+        /// Получает все заказы определенного склада
         /// </summary>
-        [HttpGet("GetPkgOperations")] //Операции содержат статусы
-        public IActionResult GetPkgOperations(int pkg_id)
+        [HttpGet("GetPackagesByStorageID")]
+        public IActionResult GetPackagesByStorageID(int storageId)
         {
-            if (!DbContext.Packages.Any(x => x.PackageId == pkg_id))
-                return StatusCode(406);
-
-            try
-            {
-                var data = DbContext.PkqOperationsWithstorages.Where(x => x.PackageId == pkg_id).ToArray();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.InnerException.Message);
-            }
-            return Ok(DbContext.PkqOperationsWithstorages.Where(x => x.PackageId == pkg_id).ToArray());
+            return Ok(DbContext.PackagesWithstatuses.Where(x => x.ActionstorageId == storageId ).ToArray());
         }
 
         /// <summary>
         /// Создает новый заказ 
         /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// POST /Todo
+        /// {
+        ///     "packageId": 0,
+        ///     "weight": 0,
+        ///     "clientFullname": "string",
+        ///     "clientMail": "string",
+        ///     "clientNumber": "string"
+        /// }
+        /// </remarks>
         [HttpPost("CreatePackage")]
         public IActionResult CreatePackage([FromBody] Package Pack)
         {

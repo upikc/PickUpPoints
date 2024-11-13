@@ -23,7 +23,7 @@ namespace StorageApi.Controllers
         }
 
         /// <summary>
-        /// Создает пользователя по его ID.
+        /// Получает пользователя по его ID.
         /// </summary>
         [HttpGet("GetUserById")]
         public IActionResult GetUserById(int id)
