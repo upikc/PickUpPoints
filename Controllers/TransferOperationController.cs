@@ -58,32 +58,52 @@ namespace StorageApi.Controllers
         /// }
         /// </remarks>
         [HttpPost("CreateTransferOperation")]
-        public IActionResult CreateTransferOperation([FromBody] int pkgId, int userId, int storageID)
+        public IActionResult CreateTransferOperation([FromBody] int pkgId, int userId, int TypeOfOperation)
         {
             var package = DbContext.PackagesWithstatuses.FirstOrDefault(x => x.PackageId == pkgId);
-            if (package == default || package.Status != "declare" || !DbContext.Storages.Any(x => x.StorageId == storageID)
+            var UserRole = DbContext.UsersWithroles.FirstOrDefault(x => x.UserId == userId).RoleId;
+
+
+            //0-declare   1-manager
+            //1-transfer  
+
+            //2-received  2-storekeeper
+            //3-issue
+
+
+            var user = DbContext.Users.FirstOrDefault(x => x.UserId == userId);
+            if (package == default || !DbContext.Storages.Any(x => x.StorageId == user.StorageId)
                 || !DbContext.UsersWithroles.Any(x => x.UserId == userId && x.RoleId == 1))
                 return StatusCode(406);
 
+
+
+
+
+            if ((package.Status == "declare" && UserRole == 1 && TypeOfOperation == 1) ||
+                (package.Status == "transfer" && UserRole == 2 && TypeOfOperation == 2) ||
+                (package.Status == "received" && UserRole == 2 && TypeOfOperation == 3) )
             try
             {
                 PkgOperation pkgOP = new PkgOperation();
                 //pkg.OperationId = AI
                 pkgOP.PackageId = pkgId;
                 pkgOP.UserId = userId;
-                pkgOP.TypeId = 1; //оператор пвз совершает остальные операии
+                pkgOP.TypeId = TypeOfOperation; //оператор пвз совершает остальные операии
                 pkgOP.OperationDate = DateTime.Now;
-                pkgOP.ActionstorageId = storageID;
+                pkgOP.ActionstorageId = user.StorageId;
                 DbContext.PkgOperations.Add(pkgOP);
 
                 DbContext.SaveChanges();
-
-            }
+                return Ok("Сохранено успешно");
+                }
             catch (Exception ex)
             {
                 return BadRequest(ex.InnerException.Message);
             }
-            return Ok("Сохранено успешно");
+
+            return BadRequest("Не верный порядок операций");
+
         }
 
     }
