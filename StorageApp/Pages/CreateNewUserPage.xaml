@@ -1,0 +1,52 @@
+﻿<Page x:Class="StorageApp.Pages.CreateNewUserPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:StorageApp.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreateNewUserPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Введите логин" FontSize="30" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="LoginTbox" FontSize="30" Grid.Row="0"  Grid.Column="2"/>
+
+        <Label Content="Введите пароль" FontSize="30" Grid.Row="1" Grid.Column="0"/>
+        <TextBox x:Name="PassTbox" FontSize="30" Grid.Row="1"  Grid.Column="2"/>
+
+        <Label Content="Введите Имя" FontSize="30" Grid.Row="2" Grid.Column="0"/>
+        <TextBox x:Name="Fname" FontSize="30" Grid.Row="2"  Grid.Column="2"/>
+
+        <Label Content="Введите Фамилию" FontSize="30" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="Lname" FontSize="30" Grid.Row="3"  Grid.Column="2"/>
+
+        <Label Content="Введите Номер" FontSize="30" Grid.Row="4" Grid.Column="0"/>
+        <TextBox x:Name="phoneNumb" FontSize="30" Grid.Row="4"  Grid.Column="2"/>
+
+        <Label Content="Выберите роль" FontSize="30" Grid.Row="5" Grid.Column="0"/>
+        <TextBox x:Name="roleID" FontSize="30" Grid.Row="5"  Grid.Column="2"/>
+
+        <Label Content="Выберите склад" FontSize="30" Grid.Row="6" Grid.Column="0"/>
+        <TextBox x:Name="storageId" FontSize="30" Grid.Row="6"  Grid.Column="2"/>
+
+
+
+
+    </Grid>
+</Page>

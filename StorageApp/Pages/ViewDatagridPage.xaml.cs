@@ -20,25 +20,30 @@ namespace StorageApp.Windows
     /// </summary>
     public partial class ViewDatagridPage : Page
     {
-        public ViewDatagridPage(bool type)
+        public ViewDatagridPage(int type)
         {
             InitializeComponent();
 
-            if (type)
+            if (type == 0)
+            {
+                var data = App.Context.getStorages();
+                dataGrid.ItemsSource = data;
+            }
+            else if(type == 1)
             {
                 var data = App.Context.getPackages();
                 dataGrid.ItemsSource = data;
             }
-            else
+            else if (type == 2)
             {
                 var data = App.Context.getOperations();
                 dataGrid.ItemsSource = data;
             }
-
-
-
-
-
+            else if (type == 3)
+            {
+                var data = App.Context.getUsers();
+                dataGrid.ItemsSource = data;
+            }
         }
     }
 }

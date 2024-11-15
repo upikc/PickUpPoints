@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\upik\\source\\repos\\StorageApp\\StorageApp.csproj",
+      "projectUniqueName": "C:\\Users\\upik\\Desktop\\PickUpPoints\\StorageApp\\StorageApp.csproj",
       "projectName": "StorageApp",
-      "projectPath": "C:\\Users\\upik\\source\\repos\\StorageApp\\StorageApp.csproj",
+      "projectPath": "C:\\Users\\upik\\Desktop\\PickUpPoints\\StorageApp\\StorageApp.csproj",
       "packagesPath": "C:\\Users\\upik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\upik\\source\\repos\\StorageApp\\obj\\",
+      "outputPath": "C:\\Users\\upik\\Desktop\\PickUpPoints\\StorageApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\upik\\AppData\\Roaming\\NuGet\\NuGet.Config",

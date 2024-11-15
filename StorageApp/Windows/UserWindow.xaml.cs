@@ -30,16 +30,29 @@ namespace StorageApp.Windows
         {
             mainFrame.Content = new Page1();
         }
-
+        private void ShowViewDatagridPage_Storages(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ViewDatagridPage(0);
+        }
         private void ShowViewDatagridPage_Pkg(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(true);
+            mainFrame.Content = new ViewDatagridPage(1);
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(false);
+            mainFrame.Content = new ViewDatagridPage(2);
+        }
+        private void ShowViewDatagridPage_Users(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ViewDatagridPage(3);
+        }
+
+        private void ShowCreateNewStoragePage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new CreateNewStoragePage();
 
 
         }
+        
     }
 }
