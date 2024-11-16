@@ -28,17 +28,6 @@ namespace StorageApp.Pages
 
                 if (result == MessageBoxResult.Yes)
                 {
-
-                    //string text = Task.Run(async () => await App.Context.postNewUserAsync(new User(LoginTbox.Text,
-                    //                                    PassTbox.Text,
-                    //                                    Fname.Text,
-                    //                                    Lname.Text,
-                    //                                    phoneNumb.Text,
-                    //                                    int.Parse(roleID.Text),
-                    //                                    int.Parse(storageId.Text)))).Result;
-
-                    //MessageBox.Show(text);   //проблема потоков
-
                     HttpResponseMessage responseContent2 = await AddUserAsync();
                     var responseBody2 = await responseContent2.Content.ReadAsStringAsync();
                     if ((int)responseContent2.StatusCode == 200)
@@ -51,6 +40,9 @@ namespace StorageApp.Pages
             else
                 MessageBox.Show((int)responseContent.StatusCode + responseBody);
         }
+
+
+        //дальше идут конструкторы для формирования запросов
 
         public async Task<HttpResponseMessage> ValidateUserDataAsync()
         {

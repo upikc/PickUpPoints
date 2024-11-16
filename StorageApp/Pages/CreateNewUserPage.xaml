@@ -26,25 +26,25 @@
         </Grid.RowDefinitions>
 
         <Label Content="Введите логин" FontSize="30" Grid.Row="0" Grid.Column="0"/>
-        <TextBox x:Name="LoginTbox" FontSize="30" Grid.Row="0"  Grid.Column="2"/>
+        <TextBox x:Name="LoginTbox" FontSize="30" Grid.Row="0"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Введите пароль" FontSize="30" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="PassTbox" FontSize="30" Grid.Row="1"  Grid.Column="2"/>
+        <TextBox x:Name="PassTbox" FontSize="30" Grid.Row="1"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Введите Имя" FontSize="30" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="Fname" FontSize="30" Grid.Row="2"  Grid.Column="2"/>
+        <TextBox x:Name="Fname" FontSize="30" Grid.Row="2"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Введите Фамилию" FontSize="30" Grid.Row="3" Grid.Column="0"/>
-        <TextBox x:Name="Lname" FontSize="30" Grid.Row="3"  Grid.Column="2"/>
+        <TextBox x:Name="Lname" FontSize="30" Grid.Row="3"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Введите Номер" FontSize="30" Grid.Row="4" Grid.Column="0"/>
-        <TextBox x:Name="phoneNumb" FontSize="30" Grid.Row="4"  Grid.Column="2"/>
+        <TextBox x:Name="phoneNumb" FontSize="30" Grid.Row="4"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Выберите роль" FontSize="30" Grid.Row="5" Grid.Column="0"/>
-        <TextBox x:Name="roleID" FontSize="30" Grid.Row="5"  Grid.Column="2"/>
+        <TextBox x:Name="roleID" FontSize="30" Grid.Row="5"  Grid.Column="2" Margin="5"/>
 
         <Label Content="Выберите склад" FontSize="30" Grid.Row="6" Grid.Column="0"/>
-        <TextBox x:Name="storageId" FontSize="30" Grid.Row="6"  Grid.Column="2"/>
+        <TextBox x:Name="storageId" FontSize="30" Grid.Row="6"  Grid.Column="2" Margin="5"/>
 
 
        <Button Grid.Row="7"  Grid.ColumnSpan="2" Margin="90 , 2 , 90 , 2" Content="Потвердить" FontSize="25" Click="AddBtnClick"/>

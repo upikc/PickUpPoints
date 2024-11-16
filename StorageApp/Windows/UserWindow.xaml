@@ -31,7 +31,7 @@
         </StackPanel>
 
 
-        <Frame x:Name="mainFrame" Grid.Column="1" NavigationUIVisibility="Hidden" >
+        <Frame x:Name="mainFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Margin="9">
 
         </Frame>
     </Grid>

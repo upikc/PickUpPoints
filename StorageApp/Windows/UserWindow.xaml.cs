@@ -28,7 +28,7 @@ namespace StorageApp.Windows
 
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new Page1();
+            //mainFrame.Content = new Page1();
         }
         private void ShowViewDatagridPage_Storages(object sender, MouseButtonEventArgs e)
         {

@@ -112,7 +112,6 @@ namespace StorageApp
                 string responseBody = await response.Content.ReadAsStringAsync();
                 Console.WriteLine("Error response: " + responseBody);
             }
-            response.EnsureSuccessStatusCode();
             return response;
 
         }
