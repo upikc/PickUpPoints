@@ -23,7 +23,18 @@ public partial class User
 
     public virtual ICollection<PkgOperation> PkgOperations { get; set; } = new List<PkgOperation>();
 
-    public virtual UserRole Role { get; set; } = null!;
+    public virtual UserRole Role { get; set; } = default;
 
-    public virtual Storage Storage { get; set; } = null!;
+    public virtual Storage Storage { get; set; } = default;
+
+    public User(string login, string password, string firstName, string lastName, string phoneNum, int roleId, int storageId)
+    {
+        StorageId = storageId;
+        RoleId = roleId;
+        Login = login;
+        Password = password;
+        FirstName = firstName;
+        LastName = lastName;
+        PhoneNum = phoneNum;
+    }
 }

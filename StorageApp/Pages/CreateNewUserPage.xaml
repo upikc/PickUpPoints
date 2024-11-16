@@ -22,6 +22,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Label Content="Введите логин" FontSize="30" Grid.Row="0" Grid.Column="0"/>
@@ -46,6 +47,7 @@
         <TextBox x:Name="storageId" FontSize="30" Grid.Row="6"  Grid.Column="2"/>
 
 
+       <Button Grid.Row="7"  Grid.ColumnSpan="2" Margin="90 , 2 , 90 , 2" Content="Потвердить" FontSize="25" Click="AddBtnClick"/>
 
 
     </Grid>

@@ -51,6 +51,10 @@ namespace StorageApp.Windows
         {
             mainFrame.Content = new CreateNewStoragePage();
 
+        }
+        private void ShowCreateNewUserPage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new CreateNewUserPage();
 
         }
         

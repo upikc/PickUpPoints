@@ -55,3 +55,6 @@ C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\Pages\Cre
 C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\Pages\CreateNewUserPage.baml
 C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\Pages\CreateNewStoragePage.g.cs
 C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\Pages\CreateNewStoragePage.baml
+C:\Users\upik\Desktop\PickUpPoints\StorageApp\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\StorageApp.csproj.AssemblyReference.cache
+C:\Users\upik\Desktop\PickUpPoints\StorageApp\obj\Debug\net8.0-windows\StorageApp.csproj.Up2Date

@@ -39,10 +39,12 @@ namespace StorageApi.Controllers
         /// Добавляет нового пользователя.
         /// </summary>
         [HttpPost("CreateNewUser")]
-        public IActionResult CreateNewUser([FromBody] Model.User newUser)
+        public IActionResult CreateNewUser(string login, string password, string fName, string Lname, string phoneNumber, int roleID, int storageId)
         {
             try
             {
+                var newUser = new User(login , password , fName , Lname , phoneNumber , roleID , storageId);
+                newUser.UserId = DbContext.Users.Max(x => x.UserId) + 1;
                 DbContext.Users.Add(newUser);
                 DbContext.SaveChanges();
             }
@@ -60,6 +62,8 @@ namespace StorageApi.Controllers
         [HttpGet("DataValidCheck")]
         public IActionResult ValidCheck(string login, string password, string fName , string Lname, string phoneNumber, int roleID, int storageId)
         {
+            if (DbContext.UsersWithroles.Any(x=> x.Login == login))
+                return BadRequest("Данный логин уже занят");
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(fName)
                 || string.IsNullOrWhiteSpace(Lname) || string.IsNullOrWhiteSpace(phoneNumber))
                 return BadRequest("Поля пусты");

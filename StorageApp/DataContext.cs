@@ -1,6 +1,10 @@
 ﻿using StorageApp.Model;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace StorageApp
 {
@@ -82,6 +86,35 @@ namespace StorageApp
             {
                 return ("Непредвиденная ошибка: " + ex.Message);
             }
+        }
+
+
+        public Task<HttpResponseMessage> checkUserDataValid(string login , string password , string fName , string lName , string PhonNumb , int RoleId , int Storage)
+        {
+            using var httpClient = new HttpClient();
+            string requestUrl = $"{host}/User/DataValidCheck?login={login}&password={password}&fName={fName}" +
+                                $"&Lname={lName}&phoneNumber={PhonNumb}&roleID={RoleId}&storageId={Storage}";
+
+            HttpResponseMessage response = httpClient.GetAsync(requestUrl).Result;
+
+            return Task.FromResult(response);
+            
+        }
+        public async Task<HttpResponseMessage> postNewUserAsync(string login, string password, string fName, string lName, string phoneNumb, int roleId, int storageId)
+        {
+
+            using var httpClient = new HttpClient();
+            string requestUrl = $"{host}/User/CreateNewUser?login={login}&password={password}&fName={fName}&Lname={lName}&phoneNumber={phoneNumb}&roleID={roleId}&storageId={storageId}";
+
+            var response = await httpClient.PostAsync(requestUrl, null);
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Error response: " + responseBody);
+            }
+            response.EnsureSuccessStatusCode();
+            return response;
+
         }
     }
 }

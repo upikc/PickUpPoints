@@ -20,9 +20,13 @@
             <Label FontSize="20" Content="Просмотр заказов" Margin="5" Background="#FFC0FFAA" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
             <Label FontSize="20" Content="Просмотр операций" Margin="5" Background="#FFC0FFAA"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
             <Label FontSize="20" Content="Просмотр пользователей" Margin="5" Background="#FFC0FFAA"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
+            
+            
             <Label FontSize="20" Content="Новый склад" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="ShowCreateNewStoragePage" />
-            <Label FontSize="20" Content="Новый пользователь" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="Label_MouseLeftButtonDown" />
+            <Label FontSize="20" Content="Новый пользователь" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="ShowCreateNewUserPage" />
             <Label FontSize="20" Content="Новый заказ" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="Label_MouseLeftButtonDown" />
+            
+            
             <Label FontSize="20" Content="Отправить заказ" Margin="5" Background="#FFAAEAFF"  MouseLeftButtonDown="Label_MouseLeftButtonDown" />
         </StackPanel>
 
