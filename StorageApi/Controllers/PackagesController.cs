@@ -49,14 +49,15 @@ namespace StorageApi.Controllers
         /// }
         /// </remarks>
         [HttpPost("CreatePackage")]
-        public IActionResult CreatePackage([FromBody] Package Pack)
+        public IActionResult CreatePackage(decimal weight , string ClientFullName , string Mail , string Number , int AdminId)
         {
             var Packid = DbContext.Packages.Max(p => p.PackageId) + 1;
+            Package Pack = new Package(0 , weight , ClientFullName , Mail , Number);
             Pack.PackageId = Packid;
             DbContext.Packages.Add(Pack);
             try
             {
-                PkgOperation pkgOP = new PkgOperation();
+                PkgOperation pkgOP = new PkgOperation(); //посылка создана, создаем операцию того как она была добавлена
 
                 //pkg.OperationId = AI
                 pkgOP.PackageId = Packid;

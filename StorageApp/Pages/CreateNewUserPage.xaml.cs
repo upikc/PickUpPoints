@@ -14,6 +14,16 @@ namespace StorageApp.Pages
         public CreateNewUserPage()
         {
             InitializeComponent();
+
+            foreach (var s in App.Context.getStorages())
+                storageId.Items.Add(s.storageId + " " + s.storageAddr);
+            storageId.SelectedIndex = 0;
+
+
+            roleID.Items.Add(1 + " manager");
+            roleID.Items.Add(2 + " storekeeper");
+            roleID.SelectedIndex = 0;
+
         }
 
         private async void AddBtnClick(object sender, System.Windows.RoutedEventArgs e)
@@ -53,10 +63,10 @@ namespace StorageApp.Pages
                 Fname.Text,
                 Lname.Text,
                 phoneNumb.Text,
-                int.Parse(roleID.Text),
-                int.Parse(storageId.Text));
+                NumbBeforeSpace(roleID.SelectedValue as string),
+                NumbBeforeSpace(storageId.SelectedValue as string));
 
-            return responseContent;
+                return responseContent;
             }
             catch (Exception ex)
             {
@@ -74,8 +84,8 @@ namespace StorageApp.Pages
                     Fname.Text,
                     Lname.Text,
                     phoneNumb.Text,
-                    int.Parse(roleID.Text),
-                    int.Parse(storageId.Text));
+                    NumbBeforeSpace(roleID.SelectedValue as string),
+                    NumbBeforeSpace(storageId.SelectedValue as string));
 
                 return responseContent;
             }
@@ -83,6 +93,12 @@ namespace StorageApp.Pages
             {
                 return default(HttpResponseMessage);
             }
+        }
+
+
+        static int NumbBeforeSpace(string text)
+        {
+            return int.Parse(text.Split(' ', 2)[0]);
         }
     }
 }

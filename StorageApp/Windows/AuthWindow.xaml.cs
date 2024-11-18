@@ -37,6 +37,7 @@ namespace StorageApp
             }
             else
             {
+                MessageBox.Show($"Добро пожаловать {user.FirstName} {user.LastName} вы зашли как {user.Role}");
                 new UserWindow(user).Show();
                 this.Close();
             }

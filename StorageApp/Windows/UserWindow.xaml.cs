@@ -21,9 +21,11 @@ namespace StorageApp.Windows
     /// </summary>
     public partial class UserWindow : Window
     {
+        public User User = default;
         public UserWindow(User thisUser)
         {
             InitializeComponent();
+            User = thisUser;
         }
 
         private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

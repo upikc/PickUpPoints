@@ -19,13 +19,13 @@ public partial class Package
     public virtual ICollection<PkgOperation> PkgOperations { get; set; } = new List<PkgOperation>();
 
 
-    //internal Package(PackageDTO Pack)
-    //{
-    //    PackageId = Pack.PackageId;
-    //    Weight  = Pack.Weight;
-    //    ClientFullname = Pack.ClientFullname;
-    //    ClientMail = Pack.ClientMail;
-    //    ClientNumber  = Pack.ClientNumber;
+    public Package(int PackageId , decimal Weight , string ClientFullname , string ClientMail , string ClientNumber)
+    {
+        this.PackageId = PackageId;
+        this.Weight = Weight;
+        this.ClientFullname = ClientFullname;
+        this.ClientMail = ClientMail;
+        this.ClientNumber = ClientNumber;
 
-    //}
+    }
 }
