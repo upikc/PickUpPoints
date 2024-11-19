@@ -65,7 +65,7 @@ namespace StorageApi.Controllers
             var User = DbContext.UsersWithroles.FirstOrDefault(x => x.UserId == userId);
 
             if (package == default || User == default || !new[] { 1, 2, 3, 4 }.Contains(TypeOfOperation))
-                return BadRequest("не верные ");
+                return BadRequest("поля не верны");
 
             var UserRole = User.RoleId;
 
