@@ -19,6 +19,9 @@
     <Compile Update="Pages\Page1.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\PostNewPkgOperation.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Windows\UserWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\Page1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\PostNewPkgOperation.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\AuthWindow.xaml">

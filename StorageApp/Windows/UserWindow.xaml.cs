@@ -59,6 +59,11 @@ namespace StorageApp.Windows
             mainFrame.Content = new CreateNewUserPage();
 
         }
-        
+        private void ShowCreateNewPackagePage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new CreateNewPackagePage(User.UserId);
+
+        }
+
     }
 }

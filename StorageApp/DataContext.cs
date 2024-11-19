@@ -115,5 +115,21 @@ namespace StorageApp
             return response;
 
         }
+
+        public async Task<HttpResponseMessage> postNewPackageAsync(decimal weight, string ClientFullName, string Mail, string Number, int AdminId)
+        {
+
+            using var httpClient = new HttpClient();
+            string requestUrl = $"{host}/Packages/CreatePackage?weight={weight}&ClientFullName={ClientFullName}&Mail={Mail}&Number={Number}&AdminId={AdminId}";
+
+            var response = await httpClient.PostAsync(requestUrl, null);
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Error response: " + responseBody);
+            }
+            return response;
+
+        }
     }
 }
