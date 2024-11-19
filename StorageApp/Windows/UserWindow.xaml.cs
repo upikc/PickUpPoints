@@ -26,6 +26,7 @@ namespace StorageApp.Windows
         {
             InitializeComponent();
             User = thisUser;
+            this.Title = $"{thisUser.FirstName} {thisUser.LastName} роль: {thisUser.Role}";
         }
         private void ShowViewDatagridPage_Storages(object sender, MouseButtonEventArgs e)
         {
