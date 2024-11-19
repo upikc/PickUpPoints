@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Media.Media3D;
 
 namespace StorageApp
 {
@@ -48,6 +50,15 @@ namespace StorageApp
             Package[] packages = httpclient.GetFromJsonAsync<Package[]>(requestUri).Result;
 
             return packages;
+        }
+
+        public Package[] getPackagesFromStorage(int storageID)
+        {
+            using var httpclient = new HttpClient();
+            string requestUri = $"{host}/Packages/GetPackagesByStorageID?storageId={storageID}";
+            Package[] packagesFromStorage = httpclient.GetFromJsonAsync<Package[]>(requestUri).Result;
+
+            return packagesFromStorage;
         }
 
         public Operation[] getOperations()
@@ -132,8 +143,19 @@ namespace StorageApp
 
         }
 
-        //public async Task<HttpResponseMessage> postNewPkgOperationAsync( int AdminId)
-        //{
-        //}
+        public async Task<HttpResponseMessage> postNewPkgOperationAsync(int pkgId, int userId, int TypeOfOperation, int ActionStorageID)
+        {
+
+            using var httpClient = new HttpClient();
+            string requestUrl = $"{host}/TransferOperation/CreateTransferOperation?pkgId={pkgId}&userId={userId}&TypeOfOperation={TypeOfOperation}&ActionStorageID={ActionStorageID}";
+
+            var response = await httpClient.PostAsync(requestUrl, null);
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Error response: " + responseBody);
+            }
+            return response;
+        }
     }
 }

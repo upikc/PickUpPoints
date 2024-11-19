@@ -27,11 +27,6 @@ namespace StorageApp.Windows
             InitializeComponent();
             User = thisUser;
         }
-
-        private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //mainFrame.Content = new Page1();
-        }
         private void ShowViewDatagridPage_Storages(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new ViewDatagridPage(0);
@@ -52,17 +47,18 @@ namespace StorageApp.Windows
         private void ShowCreateNewStoragePage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new CreateNewStoragePage();
-
         }
         private void ShowCreateNewUserPage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new CreateNewUserPage();
-
         }
         private void ShowCreateNewPackagePage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new CreateNewPackagePage(User.UserId);
-
+        }
+        private void ShowCreateNewPkgOperatioPage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new CreateNewPkgOperation(User.UserId , User.StorageId);
         }
 
     }

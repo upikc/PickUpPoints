@@ -25,9 +25,9 @@
             <Label FontSize="20" Content="Новый склад" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="ShowCreateNewStoragePage" />
             <Label FontSize="20" Content="Новый пользователь" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="ShowCreateNewUserPage" />
             <Label FontSize="20" Content="Новый заказ" Margin="5" Background="#FFAAFFD2"  MouseLeftButtonDown="ShowCreateNewPackagePage" />
-            
-            
-            <Label FontSize="20" Content="Отправить заказ" Margin="5" Background="#FFAAEAFF"  MouseLeftButtonDown="Label_MouseLeftButtonDown" />
+
+
+            <Label FontSize="20" Content="Отправить заказ" Margin="5" Background="#FFAAEAFF"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
         </StackPanel>
 
 

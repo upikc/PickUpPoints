@@ -58,7 +58,7 @@ namespace StorageApi.Controllers
         /// }
         /// </remarks>
         [HttpPost("CreateTransferOperation")]
-        public IActionResult CreateTransferOperation([FromBody] int pkgId, int userId, int TypeOfOperation)
+        public IActionResult CreateTransferOperation(int pkgId, int userId, int TypeOfOperation , int ActionStorageID)
         {
 
             var package = DbContext.PackagesWithstatuses.FirstOrDefault(x => x.PackageId == pkgId);
@@ -96,7 +96,7 @@ namespace StorageApi.Controllers
                 pkgOP.UserId = userId;
                 pkgOP.TypeId = TypeOfOperation; //оператор пвз совершает остальные операии
                 pkgOP.OperationDate = DateTime.Now;
-                pkgOP.ActionstorageId = user.StorageId;
+                pkgOP.ActionstorageId = ActionStorageID;
                 DbContext.PkgOperations.Add(pkgOP);
 
                 DbContext.SaveChanges();

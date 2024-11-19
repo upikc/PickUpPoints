@@ -10,16 +10,13 @@
     <Compile Update="Pages\CreateNewPackagePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\CreateNewPkgOperation.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\CreateNewStoragePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\CreateNewUserPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\Page1.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Pages\PostNewPkgOperation.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Windows\UserWindow.xaml.cs">
@@ -33,16 +30,13 @@
     <Page Update="Pages\CreateNewPackagePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\CreateNewPkgOperation.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\CreateNewStoragePage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\CreateNewUserPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\Page1.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Pages\PostNewPkgOperation.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\AuthWindow.xaml">
