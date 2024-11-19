@@ -157,5 +157,24 @@ namespace StorageApp
             }
             return response;
         }
+
+        public bool ContainsNullOrWhiteSpace(string[] array)
+        {
+            if (array == null)
+            {
+                return true;
+            }
+
+            foreach (var str in array)
+            {
+                if (string.IsNullOrWhiteSpace(str))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

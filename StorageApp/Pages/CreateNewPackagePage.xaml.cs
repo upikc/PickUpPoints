@@ -32,8 +32,16 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
         {
-            HttpResponseMessage responseContent = await AddPackageAsync();
+            if (App.Context.ContainsNullOrWhiteSpace(new string[] { weightTbox.Text,
+                fullNameTbox.Text,
+                mailTbox.Text,
+                numbTbox.Text}))
+            {
+                MessageBox.Show("заполните поля");
+                return;
+            }
 
+            HttpResponseMessage responseContent = await AddPackageAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();
             MessageBox.Show((int)responseContent.StatusCode + responseBody);
         }

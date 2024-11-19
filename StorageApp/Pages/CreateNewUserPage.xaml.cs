@@ -28,6 +28,19 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, System.Windows.RoutedEventArgs e)
         {
+
+            if (App.Context.ContainsNullOrWhiteSpace(new string[] { LoginTbox.Text,
+                PassTbox.Text,
+                Fname.Text,
+                Lname.Text,
+                phoneNumb.Text,
+                roleID.SelectedValue as string,
+                storageId.SelectedValue as string }))
+            { 
+                MessageBox.Show("заполните поля");
+                return;
+            }
+
             HttpResponseMessage responseContent = await ValidateUserDataAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();
 

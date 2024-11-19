@@ -29,8 +29,13 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
         {
-            string adress = adressTbox.Text;
-            string responseContent = Task.Run(async () => await App.Context.postNewStorageAsync(adress)).Result;
+
+            if (string.IsNullOrEmpty(adressTbox.Text))
+            {
+                MessageBox.Show("заполните поля");
+                return;
+            }
+            string responseContent = Task.Run(async () => await App.Context.postNewStorageAsync(adressTbox.Text as string)).Result;
             MessageBox.Show(responseContent);
 
         }
