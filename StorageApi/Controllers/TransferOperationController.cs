@@ -60,9 +60,14 @@ namespace StorageApi.Controllers
         [HttpPost("CreateTransferOperation")]
         public IActionResult CreateTransferOperation([FromBody] int pkgId, int userId, int TypeOfOperation)
         {
-            var package = DbContext.PackagesWithstatuses.FirstOrDefault(x => x.PackageId == pkgId);
-            var UserRole = DbContext.UsersWithroles.FirstOrDefault(x => x.UserId == userId).RoleId;
 
+            var package = DbContext.PackagesWithstatuses.FirstOrDefault(x => x.PackageId == pkgId);
+            var User = DbContext.UsersWithroles.FirstOrDefault(x => x.UserId == userId);
+
+            if (package == default || User == default || !new[] { 1, 2, 3, 4 }.Contains(TypeOfOperation))
+                return BadRequest("не верные ");
+
+            var UserRole = User.RoleId;
 
             //0-declare   1-manager
             //1-transfer  
