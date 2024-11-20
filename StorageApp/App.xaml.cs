@@ -6,7 +6,6 @@ namespace StorageApp
 {
     public partial class App : Application
     {
-        public static DataContext Context { get; } = new DataContext();
     }
 
 }

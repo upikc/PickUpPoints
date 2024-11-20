@@ -27,12 +27,12 @@ namespace StorageApp.Pages
             InitializeComponent();
             userId = userID;
 
-            foreach (var p in App.Context.getPackagesFromStorage(storageId))
+            foreach (var p in Context.getPackagesFromStorage(storageId))
                 Pkg_id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.StatusDate);
             Pkg_id.SelectedIndex = 0;
 
 
-            foreach (var s in App.Context.getStorages())
+            foreach (var s in Context.getStorages())
             {
                 if (s.storageId != storageId)
                 Storage_id.Items.Add(s.storageId + " " + s.storageAddr);
@@ -57,11 +57,11 @@ namespace StorageApp.Pages
         {
             try
             {
-                HttpResponseMessage responseContent = await App.Context.postNewPkgOperationAsync(
-                    NumbBeforeSpace(Pkg_id.SelectedValue as string),
+                HttpResponseMessage responseContent = await Context.postNewPkgOperationAsync(
+                    Context.NumbBeforeSpace(Pkg_id.SelectedValue as string),
                     userId,
                     1,//отправка с склада
-                    NumbBeforeSpace(Storage_id.SelectedValue as string));
+                    Context.NumbBeforeSpace(Storage_id.SelectedValue as string));
 
                 return responseContent;
             }
@@ -71,9 +71,6 @@ namespace StorageApp.Pages
             }
         }
 
-        static int NumbBeforeSpace(string text)
-        {
-            return int.Parse(text.Split(' ', 2)[0]);
-        }// перенести в ДАТАконтекст
+        
     }
 }

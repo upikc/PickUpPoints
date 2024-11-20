@@ -10,10 +10,10 @@ using System.Windows.Media.Media3D;
 
 namespace StorageApp
 {
-    public class DataContext
+    public static class Context
     {
         static string host = "https://localhost:7005";
-        public User UserEnterCheck(string login, string password)
+        static public User UserEnterCheck(string login, string password)
         {
             User user = default;
             try
@@ -25,7 +25,7 @@ namespace StorageApp
             catch (Exception ex){}
             return user;
         }
-        public Storage[] getStorages()
+        static public Storage[] getStorages()
         {
             using var httpclient = new HttpClient();
             string requestUri = $"{host}/Storages/GetStorages";
@@ -34,7 +34,7 @@ namespace StorageApp
             return storages;
         }
 
-        public User[] getUsers()
+        static public User[] getUsers()
         {
             using var httpclient = new HttpClient();
             string requestUri = $"{host}/User/GetUsers";
@@ -43,7 +43,7 @@ namespace StorageApp
             return Users;
         }
 
-        public Package[] getPackages()
+        static public Package[] getPackages()
         {
             using var httpclient = new HttpClient();
             string requestUri = $"{host}/Packages/GetPackages";
@@ -52,7 +52,7 @@ namespace StorageApp
             return packages;
         }
 
-        public Package[] getPackagesFromStorage(int storageID)
+        static public Package[] getPackagesFromStorage(int storageID)
         {
             using var httpclient = new HttpClient();
             string requestUri = $"{host}/Packages/GetPackagesByStorageID?storageId={storageID}";
@@ -61,7 +61,7 @@ namespace StorageApp
             return packagesFromStorage;
         }
 
-        public Operation[] getOperations()
+        static public Operation[] getOperations()
         {
             using var httpclient = new HttpClient();
             string requestUri = $"{host}/TransferOperation/GetOperations";
@@ -70,7 +70,7 @@ namespace StorageApp
             return operation;
         }
 
-        public async Task<string> postNewStorageAsync(string adress)
+        static public async Task<string> postNewStorageAsync(string adress) //по этому примеру переделать все 
         {
 
             try
@@ -100,7 +100,7 @@ namespace StorageApp
         }
 
 
-        public Task<HttpResponseMessage> checkUserDataValid(string login , string password , string fName , string lName , string PhonNumb , int RoleId , int Storage)
+        static public Task<HttpResponseMessage> checkUserDataValid(string login , string password , string fName , string lName , string PhonNumb , int RoleId , int Storage)
         {
             using var httpClient = new HttpClient();
             string requestUrl = $"{host}/User/DataValidCheck?login={login}&password={password}&fName={fName}" +
@@ -111,7 +111,7 @@ namespace StorageApp
             return Task.FromResult(response);
             
         }
-        public async Task<HttpResponseMessage> postNewUserAsync(string login, string password, string fName, string lName, string phoneNumb, int roleId, int storageId)
+        static public async Task<HttpResponseMessage> postNewUserAsync(string login, string password, string fName, string lName, string phoneNumb, int roleId, int storageId)
         {
 
             using var httpClient = new HttpClient();
@@ -127,7 +127,7 @@ namespace StorageApp
 
         }
 
-        public async Task<HttpResponseMessage> postNewPackageAsync(decimal weight, string ClientFullName, string Mail, string Number, int AdminId)
+        static public async Task<HttpResponseMessage> postNewPackageAsync(decimal weight, string ClientFullName, string Mail, string Number, int AdminId)
         {
 
             using var httpClient = new HttpClient();
@@ -143,7 +143,7 @@ namespace StorageApp
 
         }
 
-        public async Task<HttpResponseMessage> postNewPkgOperationAsync(int pkgId, int userId, int TypeOfOperation, int ActionStorageID)
+        static public async Task<HttpResponseMessage> postNewPkgOperationAsync(int pkgId, int userId, int TypeOfOperation, int ActionStorageID)
         {
 
             using var httpClient = new HttpClient();
@@ -158,7 +158,7 @@ namespace StorageApp
             return response;
         }
 
-        public bool ContainsNullOrWhiteSpace(string[] array)
+        static public bool ContainsNullOrWhiteSpace(string[] array)
         {
             if (array == null)
             {
@@ -174,6 +174,10 @@ namespace StorageApp
             }
 
             return false;
+        }
+        static public int NumbBeforeSpace(string text)
+        {
+            return int.Parse(text.Split(' ', 2)[0]);
         }
 
     }

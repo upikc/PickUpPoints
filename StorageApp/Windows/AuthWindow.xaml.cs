@@ -17,11 +17,13 @@ namespace StorageApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AuthWindow : Window
     {
-        public MainWindow()
+        public Model.User user;
+        public AuthWindow()
         {
             InitializeComponent();
+            this.Closed += appClose;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -30,7 +32,7 @@ namespace StorageApp
             string password = PassTbox.Text;
 
 
-            var user = App.Context.UserEnterCheck(login , password);
+            user = Context.UserEnterCheck(login , password);
             if (user == null )
             {
                 MessageBox.Show("Данные не верны, повторите ввод");
@@ -42,8 +44,12 @@ namespace StorageApp
                 this.Close();
             }
         }
+        private void appClose(object sender, EventArgs e)
+        {
+            if (user == null)
+                Application.Current.Shutdown();
+        }
 
-        
 
     }
 }

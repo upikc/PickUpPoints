@@ -15,7 +15,7 @@ namespace StorageApp.Pages
         {
             InitializeComponent();
 
-            foreach (var s in App.Context.getStorages())
+            foreach (var s in Context.getStorages())
                 storageId.Items.Add(s.storageId + " " + s.storageAddr);
             storageId.SelectedIndex = 0;
 
@@ -29,7 +29,7 @@ namespace StorageApp.Pages
         private async void AddBtnClick(object sender, System.Windows.RoutedEventArgs e)
         {
 
-            if (App.Context.ContainsNullOrWhiteSpace(new string[] { LoginTbox.Text,
+            if (Context.ContainsNullOrWhiteSpace(new string[] { LoginTbox.Text,
                 PassTbox.Text,
                 Fname.Text,
                 Lname.Text,
@@ -70,7 +70,7 @@ namespace StorageApp.Pages
         public async Task<HttpResponseMessage> ValidateUserDataAsync()
         {
             try { 
-            HttpResponseMessage responseContent = await App.Context.checkUserDataValid(
+            HttpResponseMessage responseContent = await Context.checkUserDataValid(
                 LoginTbox.Text,
                 PassTbox.Text,
                 Fname.Text,
@@ -92,7 +92,7 @@ namespace StorageApp.Pages
         {
             try
             {
-                HttpResponseMessage responseContent = await App.Context.postNewUserAsync(LoginTbox.Text,
+                HttpResponseMessage responseContent = await Context.postNewUserAsync(LoginTbox.Text,
                     PassTbox.Text,
                     Fname.Text,
                     Lname.Text,

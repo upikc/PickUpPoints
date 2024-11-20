@@ -78,7 +78,7 @@ namespace StorageApi.Controllers
 
             var user = DbContext.Users.FirstOrDefault(x => x.UserId == userId);
             if (package == default || !DbContext.Storages.Any(x => x.StorageId == user.StorageId)
-                || !DbContext.UsersWithroles.Any(x => x.UserId == userId && x.RoleId == 1))
+                || !DbContext.UsersWithroles.Any(x => x.UserId == userId ))
                 return StatusCode(406);
 
 

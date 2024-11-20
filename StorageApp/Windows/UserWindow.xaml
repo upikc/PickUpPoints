@@ -15,7 +15,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
+        <StackPanel x:Name="ManagerStackPanel">
             <Label FontSize="20" Content="Просмотр Складов" Margin="5" Background="#FFC0FFAA" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
             <Label FontSize="20" Content="Просмотр заказов" Margin="5" Background="#FFC0FFAA" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
             <Label FontSize="20" Content="Просмотр операций" Margin="5" Background="#FFC0FFAA"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
@@ -28,6 +28,11 @@
 
 
             <Label FontSize="20" Content="Отправить заказ" Margin="5" Background="#FFAAEAFF"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
+        </StackPanel>
+
+        <StackPanel x:Name="StorekeeperStackPanel" >
+            <Label FontSize="20" Content="Просмотр заказов ПВЗ" Margin="5" Background="#FFC0FFAA" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label FontSize="20" Content="Потвердить получение" Margin="5" Background="#FFAAFFD2" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
         </StackPanel>
 
 

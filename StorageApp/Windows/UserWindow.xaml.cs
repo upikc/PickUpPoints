@@ -25,24 +25,37 @@ namespace StorageApp.Windows
         public UserWindow(User thisUser)
         {
             InitializeComponent();
+            this.Closed += ThisWindow_Closed;
             User = thisUser;
             this.Title = $"{thisUser.FirstName} {thisUser.LastName} роль: {thisUser.Role}";
+            
+            if (thisUser.RoleId == 1)
+                StorekeeperStackPanel.Visibility = Visibility.Hidden;
+            else
+                ManagerStackPanel.Visibility = Visibility.Hidden;
+
+        }
+
+        private void ThisWindow_Closed(object sender, EventArgs e)
+        {
+            var window = new AuthWindow();
+            window.Show();
         }
         private void ShowViewDatagridPage_Storages(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(0);
+            mainFrame.Content = new ViewDatagridPage(Context.getStorages());
         }
         private void ShowViewDatagridPage_Pkg(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(1);
+            mainFrame.Content = new ViewDatagridPage(Context.getPackages());
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(2);
+            mainFrame.Content = new ViewDatagridPage(Context.getOperations());
         }
         private void ShowViewDatagridPage_Users(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(3);
+            mainFrame.Content = new ViewDatagridPage(Context.getUsers());
         }
 
         private void ShowCreateNewStoragePage(object sender, MouseButtonEventArgs e)
@@ -62,5 +75,15 @@ namespace StorageApp.Windows
             mainFrame.Content = new CreateNewPkgOperation(User.UserId , User.StorageId);
         }
 
+        //============================================= 
+
+        private void ShowViewDatagridPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ViewDatagridPage(Context.getPackagesFromStorage(User.StorageId));
+        }
+        private void ShowСonfirmReceiptPage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new СonfirmReceiptPage(User);
+        }
     }
 }

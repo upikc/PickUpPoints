@@ -32,7 +32,7 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
         {
-            if (App.Context.ContainsNullOrWhiteSpace(new string[] { weightTbox.Text,
+            if (Context.ContainsNullOrWhiteSpace(new string[] { weightTbox.Text,
                 fullNameTbox.Text,
                 mailTbox.Text,
                 numbTbox.Text}))
@@ -51,7 +51,7 @@ namespace StorageApp.Pages
         {
             try
             {
-                HttpResponseMessage responseContent = await App.Context.postNewPackageAsync(decimal.Parse(weightTbox.Text),
+                HttpResponseMessage responseContent = await Context.postNewPackageAsync(decimal.Parse(weightTbox.Text),
                     fullNameTbox.Text,
                     mailTbox.Text,
                     numbTbox.Text,

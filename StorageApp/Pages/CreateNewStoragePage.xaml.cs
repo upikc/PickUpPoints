@@ -35,7 +35,7 @@ namespace StorageApp.Pages
                 MessageBox.Show("заполните поля");
                 return;
             }
-            string responseContent = Task.Run(async () => await App.Context.postNewStorageAsync(adressTbox.Text as string)).Result;
+            string responseContent = Task.Run(async () => await Context.postNewStorageAsync(adressTbox.Text as string)).Result;
             MessageBox.Show(responseContent);
 
         }
