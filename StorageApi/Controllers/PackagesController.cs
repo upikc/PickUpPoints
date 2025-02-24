@@ -59,7 +59,7 @@ namespace StorageApi.Controllers
             {
                 PkgOperation pkgOP = new PkgOperation(); //посылка создана, создаем операцию того как она была добавлена
 
-                if (!DbContext.Users.Any(u => u.UserId == AdminId && u.RoleId == 1)) //в идеале для русных запросов
+                if (!DbContext.Users.Any(u => u.UserId == AdminId && u.RoleId == 1)) //в идеале для ручных запросов
                     return BadRequest("Запрос на добавление от неизвестного администратора");
 
                 //pkg.OperationId = AI
@@ -67,7 +67,7 @@ namespace StorageApi.Controllers
                 pkgOP.UserId = AdminId;
                 pkgOP.TypeId = 0;
                 pkgOP.OperationDate = DateTime.Now;
-                pkgOP.ActionstorageId = 0;
+                pkgOP.ActionstorageId = DbContext.Users.First(x => x.UserId == AdminId).StorageId;
                 DbContext.PkgOperations.Add(pkgOP);
 
                 DbContext.SaveChanges();

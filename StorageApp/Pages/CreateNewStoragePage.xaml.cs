@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StorageApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -35,7 +36,7 @@ namespace StorageApp.Pages
                 MessageBox.Show("заполните поля");
                 return;
             }
-            string responseContent = Task.Run(async () => await Context.postNewStorageAsync(adressTbox.Text as string)).Result;
+            string responseContent = await Context.postNewStorageAsync(adressTbox.Text as string);
             MessageBox.Show(responseContent);
 
         }
