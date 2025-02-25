@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StorageApi.Model;
+using System.Net.Mail;
+using System.Net;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 namespace StorageApi.Controllers
 {
     [ApiController]
@@ -80,5 +85,56 @@ namespace StorageApi.Controllers
             return Ok("Сохранено успешно");
         }
 
+
+        /// <summary>
+        /// Получение кода для проверки 
+        /// </summary>
+        [HttpGet("getPackCode")]
+        public IActionResult getPackCode(int PackId)
+        {
+            return Ok(Metods.GetLast4CharHashFromString(PackId));
+        }
+
+
     }
+    public static class Metods
+    {
+        public static void SendPackageMail(PackagesWithstatus package)
+        {
+            if (package == default)
+                return;
+
+            string mail = package.ClientMail;
+
+
+
+            SmtpClient smtpClient = new SmtpClient("smtp.yandex.ru")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("artemyusup@yandex.ru", "ZOID"),
+                EnableSsl = true,
+            };
+
+            MailMessage mailMessage = new MailMessage
+            {
+                From = new MailAddress("artemyusup@yandex.ru"),
+                Subject = "Код для получения заказа",
+                Body = $"Ваш код: {GetLast4CharHashFromString(package.PackageId)}.",
+                IsBodyHtml = false,
+            };
+            mailMessage.To.Add(mail);
+            smtpClient.Send(mailMessage);
+
+        }
+
+        public static string GetLast4CharHashFromString(int numb)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(numb.ToString()));
+                return (BitConverter.ToString(hashBytes).Replace("-", "").ToLower())[^4..];
+            }
+        }
+    }
+
 }

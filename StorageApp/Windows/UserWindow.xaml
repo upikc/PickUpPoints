@@ -33,6 +33,7 @@
         <StackPanel x:Name="StorekeeperStackPanel" >
             <Label FontSize="20" Content="Просмотр заказов ПВЗ" Margin="5" Background="#FFC0FFAA" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
             <Label FontSize="20" Content="Потвердить получение" Margin="5" Background="#FFAAFFD2" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
+            <Label FontSize="20" Content="Потвердить получение" Margin="5" Background="#FFAAFFD2" MouseLeftButtonDown="ShowConfirmIssuePage" />
         </StackPanel>
 
 

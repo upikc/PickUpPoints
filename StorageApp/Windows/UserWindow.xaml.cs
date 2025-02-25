@@ -85,5 +85,9 @@ namespace StorageApp.Windows
         {
             mainFrame.Content = new СonfirmReceiptPage(User);
         }
+        private void ShowConfirmIssuePage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ConfirmIssuePage(User);
+        }
     }
 }

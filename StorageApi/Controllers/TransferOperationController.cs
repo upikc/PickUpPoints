@@ -100,8 +100,14 @@ namespace StorageApi.Controllers
                 DbContext.PkgOperations.Add(pkgOP);
 
                 DbContext.SaveChanges();
+                    if (TypeOfOperation == 2) //отправляем письмо что пришла посылка
+                    {
+                        Metods.SendPackageMail(package);
+                        return Ok("Сохранено успешно, письмо на получение отправлено");
+                    }
                 return Ok("Сохранено успешно");
                 }
+
             catch (Exception ex)
             {
                 return BadRequest(ex.InnerException.Message);
