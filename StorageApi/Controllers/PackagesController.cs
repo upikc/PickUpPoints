@@ -119,8 +119,14 @@ namespace StorageApi.Controllers
             {
                 From = new MailAddress("artemyusup@yandex.ru"),
                 Subject = "Код для получения заказа",
-                Body = $"Ваш код: {GetLast4CharHashFromString(package.PackageId)}.",
-                IsBodyHtml = false,
+                Body = $@"
+                <div style='font-size: 20px;'>
+                    Ваш код: 
+                    <span style='font-size: 24px; font-weight: bold;'>
+                        {GetLast4CharHashFromString(package.PackageId)}
+                    </span>
+                </div>",
+                IsBodyHtml = true,
             };
             mailMessage.To.Add(mail);
             smtpClient.Send(mailMessage);
