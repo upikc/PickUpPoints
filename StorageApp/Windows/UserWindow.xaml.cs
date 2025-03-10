@@ -47,11 +47,11 @@ namespace StorageApp.Windows
         }
         private void ShowViewDatagridPage_Pkg(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(Context.getPackages());
+            mainFrame.Content = new ViewDatagridPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status]; return x;}).ToArray()); 
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(Context.getOperations());
+            mainFrame.Content = new ViewDatagridPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type]; return x; }));
         }
         private void ShowViewDatagridPage_Users(object sender, MouseButtonEventArgs e)
         {

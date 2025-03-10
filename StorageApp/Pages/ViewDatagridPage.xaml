@@ -9,7 +9,8 @@
       Title="ViewDatagridPage">
 
     <Grid>
-        <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" />
+        <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True"
+                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" />
 
     </Grid>
 </Page>
