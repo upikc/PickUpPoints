@@ -180,5 +180,14 @@ namespace StorageApp
             return int.Parse(text.Split(' ', 2)[0]);
         }
 
+
+
+        static public Dictionary<string, string> statusTranslate = new Dictionary<string, string>()
+        {
+            { "declare", "Обьявлен"},
+            { "transfer", "В пути на ПВЗ"},
+            { "received", "Получен на ПВЗ"},
+            { "issue", "Выдана"}
+        };
     }
 }

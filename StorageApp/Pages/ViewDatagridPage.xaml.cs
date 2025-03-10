@@ -1,5 +1,7 @@
-﻿using System;
+﻿using StorageApp.Model;
+using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +28,28 @@ namespace StorageApp.Windows
 
             dataGrid.ItemsSource = objects;
 
+        }
+
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+
+            if (dataGrid.ItemsSource.GetType() == typeof(StorageApp.Model.Package[]))
+            {
+                Model.Package package = dataGrid.SelectedItem as Model.Package;
+                int id = package.PackageId;
+                Operation[] operations = Context.getOperations();
+                string message = $"заказчик: {package.ClientFullname}, вес: {package.Weight}\n";
+                foreach (Operation operation in operations.Where(x => x.PackageId == id))
+                {
+                    message += $"Тип: {Context.statusTranslate[operation.Type]}\tDate: {operation.OperationDate} \n";
+                }
+
+
+
+                MessageBox.Show(message);
+
+            }
         }
     }
 }

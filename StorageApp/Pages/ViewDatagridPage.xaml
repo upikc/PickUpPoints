@@ -9,7 +9,7 @@
       Title="ViewDatagridPage">
 
     <Grid>
-        <DataGrid x:Name="dataGrid"/>
+        <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" />
 
     </Grid>
 </Page>
