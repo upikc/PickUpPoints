@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,11 +36,28 @@ namespace StorageApp.Pages
             if (Context.ContainsNullOrWhiteSpace(new string[] { weightTbox.Text,
                 fullNameTbox.Text,
                 mailTbox.Text,
-                numbTbox.Text}))
+                numbTbox.Text}) )
             {
                 MessageBox.Show("заполните поля");
                 return;
             }
+            if (!decimal.TryParse(weightTbox.Text, out _))
+            {
+
+                MessageBox.Show("Заполните вес верно");
+                return;
+            }
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(mailTbox.Text);
+            if (!match.Success)
+            {
+
+                MessageBox.Show("не верный формат Email");
+                return;
+            }
+
+
+
 
             HttpResponseMessage responseContent = await AddPackageAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();

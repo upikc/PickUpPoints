@@ -48,7 +48,7 @@ namespace StorageApp.Pages
             if (CodeTTbox.Text != GetLast4CharHashFromString(Context.NumbBeforeSpace(Pkg_Id.SelectedItem as string)))
             {
                 string s = Pkg_Id.SelectedItem as string;
-                MessageBox.Show("Код не верный " + Context.NumbBeforeSpace(Pkg_Id.SelectedItem as string));
+                MessageBox.Show("Код не верный " /*+ Context.NumbBeforeSpace(Pkg_Id.SelectedItem as string)*/);
                 return;
             }
             

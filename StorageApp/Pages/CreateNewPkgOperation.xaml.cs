@@ -22,12 +22,15 @@ namespace StorageApp.Pages
     public partial class CreateNewPkgOperation : Page
     {
         public int userId = -1;
+        public int storageID = -1;
         public CreateNewPkgOperation(int userID , int storageId)
         {
             InitializeComponent();
             userId = userID;
+            storageID = storageId;
 
-            foreach (var p in Context.getPackagesFromStorage(storageId))
+            Pkg_id.Items.Clear();
+            foreach (var p in Context.getPackagesFromStorage(storageID))
                 Pkg_id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.StatusDate);
             Pkg_id.SelectedIndex = 0;
 
@@ -46,9 +49,16 @@ namespace StorageApp.Pages
             HttpResponseMessage responseContent2 = await AddPkgOperationAsync();
             var responseBody2 = await responseContent2.Content.ReadAsStringAsync();
             if ((int)responseContent2.StatusCode == 200)
+            {
                 MessageBox.Show("Операция совершена успешно");
+                Pkg_id.Items.Clear();
+                foreach (var p in Context.getPackagesFromStorage(storageID))
+                    Pkg_id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.StatusDate);
+                Pkg_id.SelectedIndex = 0;
+            }
             else
                 MessageBox.Show("Ошибка");
+
         }
 
 

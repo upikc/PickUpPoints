@@ -99,17 +99,19 @@ namespace StorageApi.Controllers
                 pkgOP.ActionstorageId = ActionStorageID;
                 DbContext.PkgOperations.Add(pkgOP);
 
-                DbContext.SaveChanges();
                     if (TypeOfOperation == 2) //отправляем письмо что пришла посылка
                     {
                         Metods.SendPackageMail(package);
+                        DbContext.SaveChanges();
                         return Ok("Сохранено успешно, письмо на получение отправлено");
                     }
-                return Ok("Сохранено успешно");
+                    DbContext.SaveChanges();
+                    return Ok("Сохранено успешно");
                 }
 
             catch (Exception ex)
             {
+                    if (ex.InnerException.Message != null)
                 return BadRequest(ex.InnerException.Message);
             }
 
