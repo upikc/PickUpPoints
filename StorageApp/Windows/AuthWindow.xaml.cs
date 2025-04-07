@@ -31,8 +31,15 @@ namespace StorageApp
             string login = LoginTbox.Text;
             string password = PassTbox.Text;
 
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Пожалуйста заполните поля");
+                return;
+            }
 
-            user = Context.UserEnterCheck(login , password);
+
+
+                user = Context.UserEnterCheck(login , password);
             if (user == null )
             {
                 MessageBox.Show("Данные не верны, повторите ввод");
