@@ -46,6 +46,13 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
         {
+            if (Pkg_id.SelectedValue as string == null)
+            {
+                MessageBox.Show("Ошибка, выберете посылку");
+                return;
+            }
+
+
             HttpResponseMessage responseContent2 = await AddPkgOperationAsync();
             var responseBody2 = await responseContent2.Content.ReadAsStringAsync();
             if ((int)responseContent2.StatusCode == 200)

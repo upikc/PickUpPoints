@@ -20,8 +20,8 @@ namespace StorageApp.Pages
             storageId.SelectedIndex = 0;
 
 
-            roleID.Items.Add(1 + " manager");
-            roleID.Items.Add(2 + " storekeeper");
+            roleID.Items.Add(1 + " Менеджер");
+            roleID.Items.Add(2 + " Оператор ПВЗ");
             roleID.SelectedIndex = 0;
 
         }

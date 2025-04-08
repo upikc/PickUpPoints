@@ -189,5 +189,11 @@ namespace StorageApp
             { "received", "Получен на ПВЗ"},
             { "issue", "Выдана"}
         };
+
+        static public Dictionary<string, string> roleTranslate = new Dictionary<string, string>()
+        {
+            { "manager", "Менеджер"},
+            { "storekeeper", "Оператор распределительного центра"}
+        };
     }
 }

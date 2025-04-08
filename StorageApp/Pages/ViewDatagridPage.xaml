@@ -10,7 +10,16 @@
 
     <Grid>
         <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True"
-                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" />
+                  AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" CanUserAddRows="False" RowHeight="35"
+                  FontSize="16">
+            
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="BorderBrush" Value="#FFFFDE00" />
+                    <Setter Property="BorderThickness" Value="0 0 0 4"/>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
 
     </Grid>
 </Page>

@@ -60,7 +60,7 @@ namespace StorageApp.Windows
                     e.Column.Header = "ID склада";
                     break;
                 case "storageAddr":
-                    e.Column.Header = "Адресс склада";
+                    e.Column.Header = "Адрес склада";
                     break;
                 //
                 case "PackageId":

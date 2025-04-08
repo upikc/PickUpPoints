@@ -27,7 +27,7 @@ namespace StorageApp.Windows
             InitializeComponent();
             this.Closed += ThisWindow_Closed;
             User = thisUser;
-            this.Title = $"{thisUser.FirstName} {thisUser.LastName} роль: {thisUser.Role}";
+            this.Title = $"{thisUser.FirstName} {thisUser.LastName} роль: {Context.roleTranslate[thisUser.Role]}";
             
             if (thisUser.RoleId == 1)
                 StorekeeperStackPanel.Visibility = Visibility.Hidden;
