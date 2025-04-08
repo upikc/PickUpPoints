@@ -13,7 +13,7 @@
             <TextBox x:Name="LoginTbox" FontSize="30" Margin="5"/>
 
             <Label Content="Введите пароль" FontSize="30"/>
-            <TextBox x:Name="PassTbox" FontSize="30" Margin="5"/>
+            <PasswordBox x:Name="PassTbox" FontSize="30" Margin="5" PasswordChar="•"/>
             
             <Button Content="Войти" FontSize="30" Margin="5" Click="Button_Click"/>
         </StackPanel>

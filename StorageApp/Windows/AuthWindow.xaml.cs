@@ -29,7 +29,7 @@ namespace StorageApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string login = LoginTbox.Text;
-            string password = PassTbox.Text;
+            string password = PassTbox.Password;
 
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             {
