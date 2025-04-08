@@ -26,10 +26,10 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Просмотр складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
-            <Label FontSize="20" Content="Просмотр заказов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
-            <Label FontSize="20" Content="Просмотр операций" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
-            <Label FontSize="20" Content="Просмотр пользователей" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
+            <Label FontSize="20" Content="Просмотр складов" ToolTip="Отобразить список доступных складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
+            <Label FontSize="20" ToolTip="Отобразить товары, ожидающие выдачи" Content="Просмотр заказов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
+            <Label FontSize="20" Content="Просмотр операций" ToolTip="Отобразить все операции" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
+            <Label FontSize="20" Content="Просмотр пользователей" ToolTip="Отобразить список пользователей системы" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
 
 
             <Label Content="Добавление ▶" FontSize="17" FontWeight="Bold">
@@ -41,12 +41,12 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Новый склад" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewStoragePage" />
-            <Label FontSize="20" Content="Новый пользователь" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewUserPage" />
-            <Label FontSize="20" Content="Новый заказ" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPackagePage" />
+            <Label FontSize="20" Content="Новый склад" ToolTip="Создать новый склад" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewStoragePage" />
+            <Label FontSize="20" Content="Новый пользователь" ToolTip="Добавить нового пользователя" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewUserPage" />
+            <Label FontSize="20" Content="Новый заказ" ToolTip="Объявить новый заказ" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPackagePage" />
 
 
-            <Label Content="Изминение статуса ▶" FontSize="17" FontWeight="Bold">
+            <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black"/>
@@ -55,7 +55,7 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Отправить заказ" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
+            <Label FontSize="20" Content="Отправить заказ" ToolTip="Отправить заказ на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
         </StackPanel>
 
         <StackPanel x:Name="StorekeeperStackPanel" >
@@ -69,8 +69,8 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Просмотр заказов ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
-            <Label Content="Изминение статуса ▶" FontSize="17" FontWeight="Bold">
+            <Label FontSize="20" Content="Просмотр заказов ПВЗ" ToolTip="Отобразить заказы, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black"/>
@@ -79,8 +79,8 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Подтвердить получение" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
-            <Label FontSize="20" Content="Выдача заказов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
+            <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение заказа в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
+            <Label FontSize="20" Content="Выдача заказов" ToolTip="Выдать заказ получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
         </StackPanel>
 
 

@@ -47,7 +47,7 @@
         <ComboBox x:Name="storageId" FontSize="25" Grid.Row="6"  Grid.Column="2" Margin="5"/>
 
 
-       <Button Grid.Row="7"  Grid.ColumnSpan="2" Margin="90 , 2 , 90 , 2" Content="Потвердить" FontSize="25" Click="AddBtnClick"/>
+        <Button Grid.Row="7"  Grid.ColumnSpan="2" Margin="90 , 2 , 90 , 2" Content="Подтвердить" FontSize="25" Click="AddBtnClick"/>
 
 
     </Grid>
