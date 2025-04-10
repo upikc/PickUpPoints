@@ -61,7 +61,7 @@ namespace StorageApp.Pages
 
             HttpResponseMessage responseContent = await AddPackageAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();
-            MessageBox.Show((int)responseContent.StatusCode + responseBody);
+            MessageBox.Show(/*(int)responseContent.StatusCode +*/ responseBody);
         }
 
 

@@ -11,7 +11,7 @@
     <Grid>
         <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True"
                   AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" CanUserAddRows="False" RowHeight="35"
-                  FontSize="16">
+                  FontSize="16" Margin="0,0,0,55">
             
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -21,5 +21,7 @@
             </DataGrid.RowStyle>
         </DataGrid>
 
+
+        <TextBox x:Name="SearchBox" VerticalAlignment="Bottom" FontSize="20" MouseLeave="SearchBox_MouseLeave"/>
     </Grid>
 </Page>

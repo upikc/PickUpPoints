@@ -16,7 +16,7 @@ namespace StorageApp.Pages
             InitializeComponent();
 
             foreach (var s in Context.getStorages())
-                storageId.Items.Add(s.storageId + " " + s.storageAddr);
+                    storageId.Items.Add(s.storageId + " " + s.storageAddr);
             storageId.SelectedIndex = 0;
 
 
@@ -61,7 +61,7 @@ namespace StorageApp.Pages
                 }
             }
             else
-                MessageBox.Show((int)responseContent.StatusCode + responseBody);
+                MessageBox.Show(/*(int)responseContent.StatusCode*/ responseBody);
         }
 
 

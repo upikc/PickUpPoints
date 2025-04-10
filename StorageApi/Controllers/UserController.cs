@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StorageApi.Model;
+using System.Text.RegularExpressions;
 namespace StorageApi.Controllers
 {
     [ApiController]
@@ -62,8 +63,15 @@ namespace StorageApi.Controllers
         [HttpGet("DataValidCheck")]
         public IActionResult ValidCheck(string login, string password, string fName , string Lname, string phoneNumber, int roleID, int storageId)
         {
+
+            var phonePattern = "^(\\+7|8)[\\s\\-]?\\(?\\d{3}\\)?[\\s\\-]?\\d{3}[\\s\\-]?\\d{2}[\\s\\-]?\\d{2}$";
+            if (!Regex.IsMatch(phoneNumber, phonePattern))
+                return BadRequest("Номер телефона не валиден");
+
             if (DbContext.UsersWithroles.Any(x=> x.Login == login))
                 return BadRequest("Данный логин уже занят");
+            if (DbContext.UsersWithroles.Any(x => x.PhoneNum == phoneNumber))
+                return BadRequest("Номер телефона занят");
             if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(fName)
                 || string.IsNullOrWhiteSpace(Lname) || string.IsNullOrWhiteSpace(phoneNumber))
                 return BadRequest("Поля пусты");

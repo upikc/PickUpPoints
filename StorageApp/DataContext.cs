@@ -184,16 +184,22 @@ namespace StorageApp
 
         static public Dictionary<string, string> statusTranslate = new Dictionary<string, string>()
         {
-            { "declare", "Обьявлен"},
-            { "transfer", "В пути на ПВЗ"},
-            { "received", "Получен на ПВЗ"},
-            { "issue", "Выдана"}
+            { "declare", "обьявлен"},
+            { "transfer", "в пути на пвз"},
+            { "received", "получен на пвз"},
+            { "issue", "выдана"},
+            { "обьявлен", "обьявлен"},
+            { "в пути на пвз", "в пути на пвз"},
+            { "получен на пвз", "получен на пвз"},
+            { "выдана", "выдана"}
         };
 
         static public Dictionary<string, string> roleTranslate = new Dictionary<string, string>()
         {
-            { "manager", "Менеджер"},
-            { "storekeeper", "Оператор распределительного центра"}
+            { "manager", "менеджер"},
+            { "storekeeper", "оператор распределительного центра"},
+            { "менеджер", "менеджер"},
+            { "оператор распределительного центра", "оператор распределительного центра"},
         };
     }
 }
