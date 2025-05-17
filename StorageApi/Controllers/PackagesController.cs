@@ -54,28 +54,70 @@ namespace StorageApi.Controllers
         /// }
         /// </remarks>
         [HttpPost("CreatePackage")]
-        public IActionResult CreatePackage(decimal weight , string ClientFullName , string Mail , string Number , int AdminId)
+        public IActionResult CreatePackage(
+            decimal weight,
+            int unitofWeightId,
+            string dimensionId,
+            string senderFname,
+            string senderSname,
+            string senderLname,
+            string senderMail,
+            string? senderNumber,
+            string recipientFname,
+            string recipientSname,
+            string recipientLname,
+            string recipientMail,
+            string? recipientNumber,
+            int user_id)
         {
-            var Packid = DbContext.Packages.Max(p => p.PackageId) + 1;
-            Package Pack = new Package(0 , weight , ClientFullName , Mail , Number);
-            Pack.PackageId = Packid;
+
+            var Packid = DbContext.Packages.Count() + 1;
+
+            if (!DbContext.UnitofWeights.Any(u => u.UnitofWeightId == unitofWeightId))
+                return BadRequest("Недопустимая единица измерения веса");
+
+            var user = DbContext.Users.FirstOrDefault(u => u.UserId == user_id && u.RoleId == 2);
+            if (user == null)
+                return BadRequest("Недостаточно прав для создания посылки");
+
+
+
+            var Pack = new Package
+            {
+                PackageId = Packid,
+                Weight = weight,
+                UnitofWeightId = unitofWeightId,
+                DimensionId = dimensionId,
+                SenderFname = senderFname,
+                SenderSname = senderSname,
+                SenderLname = senderLname,
+                SenderMail = senderMail,
+                SenderNumber = senderNumber,
+                RecipientFname = recipientFname,
+                RecipientSname = recipientSname,
+                RecipientLname = recipientLname,
+                RecipientMail = recipientMail,
+                RecipientNumber = recipientNumber
+            };
+
+            var initialOperation = new PkgOperation
+            {
+                Package = Pack,
+                UserId = user_id,
+                TypeId = 0, // Тип операции "Создание"
+                OperationDate = DateTime.Now,
+                ActionstorageId = user.StorageId
+            };
+
+
             DbContext.Packages.Add(Pack);
             try
             {
-                PkgOperation pkgOP = new PkgOperation(); //посылка создана, создаем операцию того как она была добавлена
 
-                if (!DbContext.Users.Any(u => u.UserId == AdminId && u.RoleId == 1)) //в идеале для ручных запросов
-                    return BadRequest("Запрос на добавление от неизвестного администратора");
-
-                //pkg.OperationId = AI
-                pkgOP.PackageId = Packid;
-                pkgOP.UserId = AdminId;
-                pkgOP.TypeId = 0;
-                pkgOP.OperationDate = DateTime.Now;
-                pkgOP.ActionstorageId = DbContext.Users.First(x => x.UserId == AdminId).StorageId;
-                DbContext.PkgOperations.Add(pkgOP);
-
+                DbContext.Packages.Add(Pack);
+                DbContext.PkgOperations.Add(initialOperation);
                 DbContext.SaveChanges();
+                // ТУТБУДЕТ СМС С ОПОВЕЩЕНИЕМ ОП ПОСЫЛКЕ
 
             }
             catch (Exception ex)
@@ -104,7 +146,7 @@ namespace StorageApi.Controllers
             if (package == default)
                 return;
 
-            string mail = package.ClientMail;
+            string mail = package.RecipientMail;
 
 
 

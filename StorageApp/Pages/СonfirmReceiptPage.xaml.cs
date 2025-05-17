@@ -28,8 +28,8 @@ namespace StorageApp.Pages
             InitializeComponent();
             User = TUser;
 
-            foreach (var p in Context.getPackagesFromStorage(TUser.StorageId).Where(p => p.Status == "transfer"))
-                Pkg_Id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.ClientNumber);
+            foreach (Model.Package p in Context.getPackagesFromStorage(TUser.StorageId).Where(p => p.Status == "transfer"))
+                Pkg_Id.Items.Add(p.PackageId + " " + p.recipientFullName() + " " + p.RecipientNumber);
             Pkg_Id.SelectedIndex = 0;
         }
 

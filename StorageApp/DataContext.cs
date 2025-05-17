@@ -7,6 +7,8 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Media.Media3D;
+using System.Globalization;
+using System.Net.Http;
 
 namespace StorageApp
 {
@@ -15,7 +17,7 @@ namespace StorageApp
         static string host = "https://localhost:7005";
         static public User UserEnterCheck(string login, string password)
         {
-            User user = default;
+            User user = null;
             try
             {
                 using var httpclient = new HttpClient();
@@ -127,11 +129,50 @@ namespace StorageApp
 
         }
 
-        static public async Task<HttpResponseMessage> postNewPackageAsync(decimal weight, string ClientFullName, string Mail, string Number, int AdminId)
-        {
+        static public async Task<HttpResponseMessage> postNewPackageAsync(
+            decimal weight,
+            int unitofWeightId,
+            string dimensionId,
+            string senderFname,
+            string senderSname,
+            string senderLname,
+            string senderMail,
+            string senderNumber,
+            string recipientFname,
+            string recipientSname,
+            string recipientLname,
+            string recipientMail,
+            string recipientNumber,
+            int user_id)
+           {
+            var parameters = new Dictionary<string, string>
+            {
+                ["weight"] = weight.ToString(CultureInfo.InvariantCulture),
+                ["unitofWeightId"] = unitofWeightId.ToString(),
+                ["dimensionId"] = dimensionId,
+                ["senderFname"] = senderFname,
+                ["senderSname"] = senderSname,
+                ["senderLname"] = senderLname,
+                ["senderMail"] = senderMail,
+                ["senderNumber"] = senderNumber,
+                ["recipientFname"] = recipientFname,
+                ["recipientSname"] = recipientSname,
+                ["recipientLname"] = recipientLname, 
+                ["recipientMail"] = recipientMail,
+                ["recipientNumber"] = recipientNumber,
+                ["user_id"] = user_id.ToString()
+            };
+
+            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+            foreach (var param in parameters)
+            {
+                queryString[param.Key] = param.Value;
+            }
 
             using var httpClient = new HttpClient();
-            string requestUrl = $"{host}/Packages/CreatePackage?weight={weight}&ClientFullName={ClientFullName}&Mail={Mail}&Number={Number}&AdminId={AdminId}";
+            string requestUrl = $"{host}/Packages/CreatePackage?{queryString}";
+
+
 
             var response = await httpClient.PostAsync(requestUrl, null);
             if (!response.IsSuccessStatusCode)
@@ -180,6 +221,10 @@ namespace StorageApp
             return int.Parse(text.Split(' ', 2)[0]);
         }
 
+        static public string TextBeforeSpace(string text)
+        {
+            return text.Split(' ', 2)[0];
+        }
 
 
         static public Dictionary<string, string> statusTranslate = new Dictionary<string, string>()
@@ -200,6 +245,65 @@ namespace StorageApp
             { "storekeeper", "оператор распределительного центра"},
             { "менеджер", "менеджер"},
             { "оператор распределительного центра", "оператор распределительного центра"},
+        };
+
+        static public Dictionary<string, string> dimensionsTranslate = new Dictionary<string, string>()
+        {
+            { "L_box", "Большая Посылка"},
+            { "m_box", "Средняя посылка"},
+            { "pack", "Пакет"},
+            { "s_box", "Маленькая посылка"},
+        };
+
+        static public Dictionary<string, string> propertiesTranslate = new Dictionary<string, string>()
+{
+            //склады
+            { "storageid", "ID склада" },
+            { "storageaddr", "Адрес склада" },
+    
+            //посылки
+            { "packageid", "Номер посылки" },
+            { "weight", "вес" },
+            { "weightunit", "мера веса" },
+
+            { "senderfname", "Имя отправителя" },
+            { "sendersname", "Фамилия отправителя" },
+            { "senderlname", "Отчество отправителя" },
+            { "sendermail", "э.почта отправителя" },
+            { "sendernumber", "номер т. отправителя" },
+
+            { "recipientfname", "Имя получателя" },
+            { "recipientsname", "Фамилия получателя" },
+            { "recipientlname", "Отчество получателя" },
+            { "recipientmail", "э.почта получателя" },
+            { "recipientnumber", "номер т. получателя" },
+            
+            { "dimensiontitle", "Классификация обьема" },
+            { "unitofweight_title", "Мера веса" },
+
+
+            { "status", "Статус" },
+            { "statusdate", "Дата изменения статуса" },
+            { "actionstorageid", "ID склада исполнителя" },
+
+            //операции
+            { "operationid", "Id операции" },
+            { "userid", "Id пользователя" },
+            { "type", "Тип операции" },
+            { "operationdate", "Дата проведения операции" },
+            { "typeid", "Id типа" },
+            { "commandingstorageid", "id склада исполнителя" },
+
+            //пользователи
+            { "STORAGEID", "Id склада" },
+            { "roleid", "id роли" },
+            { "role", "Роль" },
+            { "login", "Логин" },
+            { "password", "Пароль" },
+            { "firstname", "Имя" },
+            { "lastname", "Фамилия" },
+            { "phonenum", "Номер Телефона" },
+
         };
     }
 }

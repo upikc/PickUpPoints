@@ -85,9 +85,9 @@ namespace StorageApi.Controllers
 
 
 
-            if ((package.Status == "declare" && UserRole == 1 && TypeOfOperation == 1) ||
-                (package.Status == "transfer" && UserRole == 2 && TypeOfOperation == 2) ||
-                (package.Status == "received" && UserRole == 2 && TypeOfOperation == 3) )
+            //if ((package.Status == "declare" && UserRole == 1 && TypeOfOperation == 1) ||
+            //    (package.Status == "transfer" && UserRole == 2 && TypeOfOperation == 2) ||
+            //    (package.Status == "received" && UserRole == 2 && TypeOfOperation == 3) )
             try
             {
                 PkgOperation pkgOP = new PkgOperation();
@@ -101,7 +101,7 @@ namespace StorageApi.Controllers
 
                     if (TypeOfOperation == 2) //отправляем письмо что пришла посылка
                     {
-                        Metods.SendPackageMail(package);
+                        //Metods.SendPackageMail(package); //РАЗКОМЕНТИТЬ ДЛЯ ПИСЬМА
                         DbContext.SaveChanges();
                         return Ok("Сохранено успешно, письмо на получение отправлено");
                     }

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization.DataContracts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,6 +18,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace StorageApp.Pages
 {
@@ -33,10 +39,17 @@ namespace StorageApp.Pages
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
         {
-            if (Context.ContainsNullOrWhiteSpace(new string[] { weightTbox.Text,
-                fullNameTbox.Text,
-                mailTbox.Text,
-                numbTbox.Text}) )
+            if (Context.ContainsNullOrWhiteSpace(new string[] {
+                weightTbox.Text,
+                senderFnameTbox.Text,
+                senderSnameTbox.Text,
+                senderLnameTbox.Text,
+                senderMailTbox.Text,
+                recipientFnameTbox.Text,
+                recipientSnameTbox.Text,
+                recipientLnameTbox.Text,
+                recipientMailTbox.Text,
+            }) || unitOfWeightComboBox.SelectedItem == null || dimensionComboBox.SelectedItem == null)
             {
                 MessageBox.Show("заполните поля");
                 return;
@@ -48,7 +61,14 @@ namespace StorageApp.Pages
                 return;
             }
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(mailTbox.Text);
+            Match match = regex.Match(recipientMailTbox.Text);
+            if (!match.Success)
+            {
+
+                MessageBox.Show("не верный формат Email");
+                return;
+            }
+            match = regex.Match(senderMailTbox.Text);
             if (!match.Success)
             {
 
@@ -61,26 +81,75 @@ namespace StorageApp.Pages
 
             HttpResponseMessage responseContent = await AddPackageAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();
-            MessageBox.Show(/*(int)responseContent.StatusCode +*/ responseBody);
+            MessageBox.Show((int)responseContent.StatusCode + responseBody);
         }
 
 
         public async Task<HttpResponseMessage> AddPackageAsync()
         {
             try
-            {
-                HttpResponseMessage responseContent = await Context.postNewPackageAsync(decimal.Parse(weightTbox.Text),
-                    fullNameTbox.Text,
-                    mailTbox.Text,
-                    numbTbox.Text,
+            { 
+                
+                int unitOfWeightId = unitOfWeightComboBox.SelectedIndex;
+                string dimensionId = "pack";
+                switch (dimensionComboBox.SelectedIndex)
+                {
+                    case 0:
+                        dimensionId = "L_box";
+                        break;
+                    case 1:
+                        dimensionId = "m_box";
+                        break;
+                    case 2:
+                        dimensionId = "s_box";
+                        break;
+                    case 3:
+                        dimensionId = "pack";
+                        break;
+                    default:
+                        dimensionId = "pack";
+                        break;
+                }
+
+                decimal weight = decimal.Parse(weightTbox.Text);
+                string senderFname = senderFnameTbox.Text;
+                string senderSname = senderSnameTbox.Text;
+                string senderLname = senderLnameTbox.Text;
+                string senderMail = senderMailTbox.Text;
+                string senderNumber = senderNumberTbox.Text;
+
+                string recipientFname = recipientFnameTbox.Text;
+                string recipientSname = recipientSnameTbox.Text;
+                string recipientLname = recipientLnameTbox.Text;
+                string recipientMail = recipientMailTbox.Text;
+                string recipientNumber = recipientNumberTbox.Text;
+
+
+                HttpResponseMessage responseContent = await Context.postNewPackageAsync(
+                    weight,
+                    unitOfWeightId,
+                    dimensionId,
+                    senderFname,
+                    senderSname,
+                    senderLname,
+                    senderMail,
+                    senderNumber,
+                    recipientFname,
+                    recipientSname,
+                    recipientLname,
+                    recipientMail,
+                    recipientNumber,
                     userId);
 
                 return responseContent;
             }
             catch (Exception ex)
             {
-                return default(HttpResponseMessage);
+                // Обработка ошибок
+                Console.WriteLine("Error: " + ex.Message);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
+
     }
 }

@@ -30,5 +30,9 @@ public partial class User
         LastName = lastName;
         PhoneNum = phoneNum;
     }
+
+    public User()
+    {
+    }
 }
 

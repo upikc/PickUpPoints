@@ -12,6 +12,7 @@ public partial class Storage
     public virtual ICollection<PkgOperation> PkgOperations { get; set; } = new List<PkgOperation>();
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
+
 }
 public partial class StorageDTO
 {

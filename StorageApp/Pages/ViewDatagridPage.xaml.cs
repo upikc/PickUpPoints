@@ -47,7 +47,7 @@ namespace StorageApp.Windows
 
                 int id = package.PackageId;
                 Operation[] operations = Context.getOperations();
-                string message = $"заказчик: {package.ClientFullname}, вес в центнерах: {package.Weight}\n";
+                string message = $"отправитель: {package.senderFullName()}, получатель: {package.recipientFullName()}, вес в центнерах: {package.Weight}\n";
                 foreach (Operation operation in operations.Where(x => x.PackageId == id))
                 {
                     message += $"Тип: {Context.statusTranslate[operation.Type]}\tDate: {operation.OperationDate} {Context.getStorages().FirstOrDefault(x => x.storageId == operation.ActionstorageId)} \n";
@@ -62,83 +62,13 @@ namespace StorageApp.Windows
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            switch (e.PropertyName)
+            if (Context.propertiesTranslate.TryGetValue(e.PropertyName.ToLower(), out var header))
             {
-                case "storageId":
-                    e.Column.Header = "ID склада";
-                    break;
-                case "storageAddr":
-                    e.Column.Header = "Адрес склада";
-                    break;
-                //
-                case "PackageId":
-                    e.Column.Header = "ID посылки";
-                    break;
-                case "Weight":
-                    e.Column.Header = "вес в центнерах";
-                    break;
-                case "ClientFullname":
-                    e.Column.Header = "Ф.И.О. Клиента";
-                    break;
-                case "ClientMail":
-                    e.Column.Header = "Эл. почта Клиента";
-                    break;
-                case "ClientNumber":
-                    e.Column.Header = "Т.номер Клиента";
-                    break;
-                case "Status":
-                    e.Column.Header = "Статус";
-                    break;
-                case "StatusDate":
-                    e.Column.Header = "Дата изменения статуса";
-                    break;
-                case "ActionstorageId":
-                    e.Column.Header = "ID склада исполнителя";
-                    break;
-                //
-                case "OperationId":
-                    e.Column.Header = "Id операции";
-                    break;
-                case "UserId":
-                    e.Column.Header = "Id пользователя";
-                    break;
-                case "Type":
-                    e.Column.Header = "Тип операции";
-                    break;
-                case "OperationDate":
-                    e.Column.Header = "Дата проведения операции";
-                    break;
-                case "TypeId":
-                    e.Column.Header = "Id типа";
-                    break;
-                case "CommandingstorageId":
-                    e.Column.Header = "id склада исполнителя";
-                    break;
-                //
-                case "StorageId":
-                    e.Column.Header = "Id склада";
-                    break;
-                case "RoleId":
-                    e.Column.Header = "id роли";
-                    break;
-                case "Role":
-                    e.Column.Header = "Роль";
-                    break;
-                case "Login":
-                    e.Column.Header = "Логин";
-                    break;
-                case "Password":
-                    e.Column.Header = "Пароль";
-                    break;
-                case "FirstName":
-                    e.Column.Header = "Имя";
-                    break;
-                case "LastName":
-                    e.Column.Header = "Фамилия";
-                    break;
-                case "PhoneNum":
-                    e.Column.Header = "Номер Телефона";
-                    break;
+                e.Column.Header = header;
+            }
+            else
+            {
+                e.Column.Header = "ERROR: " + e.PropertyName;
             }
 
         }

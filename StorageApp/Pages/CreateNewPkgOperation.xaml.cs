@@ -31,11 +31,11 @@ namespace StorageApp.Pages
 
             Pkg_id.Items.Clear();
             foreach (var p in Context.getPackagesFromStorage(storageID))
-                Pkg_id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.StatusDate);
+                Pkg_id.Items.Add(p.PackageId + " " + p.recipientFullName() + " " + p.StatusDate);
             Pkg_id.SelectedIndex = 0;
 
 
-            foreach (var s in Context.getStorages())
+            foreach (var s in Context.getStorages().Where(x => x.storageId != 0))
             {
                 if (s.storageId != storageId)
                 Storage_id.Items.Add(s.storageId + " " + s.storageAddr);
@@ -51,6 +51,11 @@ namespace StorageApp.Pages
                 MessageBox.Show("Ошибка, выберете посылку");
                 return;
             }
+            if (Storage_id.SelectedValue as string == null)
+            {
+                MessageBox.Show("Ошибка, выберете склад");
+                return;
+            }
 
 
             HttpResponseMessage responseContent2 = await AddPkgOperationAsync();
@@ -60,7 +65,7 @@ namespace StorageApp.Pages
                 MessageBox.Show("Операция совершена успешно");
                 Pkg_id.Items.Clear();
                 foreach (var p in Context.getPackagesFromStorage(storageID))
-                    Pkg_id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.StatusDate);
+                    Pkg_id.Items.Add(p.PackageId + " " + p.recipientFullName() + " " + p.StatusDate);
                 Pkg_id.SelectedIndex = 0;
             }
             else
@@ -77,7 +82,7 @@ namespace StorageApp.Pages
                 HttpResponseMessage responseContent = await Context.postNewPkgOperationAsync(
                     Context.NumbBeforeSpace(Pkg_id.SelectedValue as string),
                     userId,
-                    1,//отправка с склада
+                    storageID,//отправка с склада
                     Context.NumbBeforeSpace(Storage_id.SelectedValue as string));
 
                 return responseContent;

@@ -1,11 +1,11 @@
 ﻿<Page x:Class="StorageApp.Pages.CreateNewPackagePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:StorageApp.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d"
+      d:DesignHeight="700" d:DesignWidth="800"
       Title="CreateNewPackagePage">
 
     <Grid>
@@ -23,25 +23,66 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Label Content="Введите вес в центнерах" FontSize="30" Grid.Row="0" Grid.Column="0"/>
-        <TextBox x:Name="weightTbox" FontSize="30" Grid.Row="0"  Grid.Column="2" Margin="5"/>
+        <!-- Детали посылки -->
+        <Label Content="Вес" FontSize="20" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="weightTbox" FontSize="20" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-        <Label Content="Введите Фио Клиента" FontSize="30" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="fullNameTbox" FontSize="30" Grid.Row="1"  Grid.Column="2" Margin="5"/>
+        <Label Content="ID единицы веса" FontSize="20" Grid.Row="1" Grid.Column="0"/>
+        <ComboBox x:Name="unitOfWeightComboBox" FontSize="20" Grid.Row="1" Grid.Column="1" Margin="5">
+            <ComboBoxItem Content="0 Грамм"/>
+            <ComboBoxItem Content="1 Килограмм"/>
+        </ComboBox>
 
-        <Label Content="Введите эл.адрес клиента" FontSize="30" Grid.Row="2" Grid.Column="0"/>
-        <TextBox x:Name="mailTbox" FontSize="30" Grid.Row="2"  Grid.Column="2" Margin="5"/>
+        <Label Content="ID размер посылки" FontSize="20" Grid.Row="2" Grid.Column="0"/>
+        <ComboBox x:Name="dimensionComboBox" FontSize="20" Grid.Row="2" Grid.Column="1" Margin="5">
+            <ComboBoxItem Content="L_box"/>
+            <ComboBoxItem Content="m_box"/>
+            <ComboBoxItem Content="s_box"/>
+            <ComboBoxItem Content="pack"/>
+        </ComboBox>
 
-        <Label Content="Введите номер тел. клиента" FontSize="30" Grid.Row="3" Grid.Column="0"/>
-        <TextBox x:Name="numbTbox" FontSize="30" Grid.Row="3"  Grid.Column="2" Margin="5"/>
+        <!-- Информация об отправителе -->
+        <Label Content="Имя отправителя" FontSize="20" Grid.Row="3" Grid.Column="0"/>
+        <TextBox x:Name="senderFnameTbox" FontSize="20" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Фамилия отправителя" FontSize="20" Grid.Row="4" Grid.Column="0"/>
+        <TextBox x:Name="senderSnameTbox" FontSize="20" Grid.Row="4" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Отчество отправителя" FontSize="20" Grid.Row="5" Grid.Column="0"/>
+        <TextBox x:Name="senderLnameTbox" FontSize="20" Grid.Row="5" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Email отправителя" FontSize="20" Grid.Row="6" Grid.Column="0"/>
+        <TextBox x:Name="senderMailTbox" FontSize="20" Grid.Row="6" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Номер телефона отправителя" FontSize="20" Grid.Row="7" Grid.Column="0"/>
+        <TextBox x:Name="senderNumberTbox" FontSize="20" Grid.Row="7" Grid.Column="1" Margin="5"/>
+
+        <!-- Информация о получателе -->
+        <Label Content="Имя получателя" FontSize="20" Grid.Row="8" Grid.Column="0"/>
+        <TextBox x:Name="recipientFnameTbox" FontSize="20" Grid.Row="8" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Фамилия получателя" FontSize="20" Grid.Row="9" Grid.Column="0"/>
+        <TextBox x:Name="recipientSnameTbox" FontSize="20" Grid.Row="9" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Отчество получателя" FontSize="20" Grid.Row="10" Grid.Column="0"/>
+        <TextBox x:Name="recipientLnameTbox" FontSize="20" Grid.Row="10" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Email получателя" FontSize="20" Grid.Row="11" Grid.Column="0"/>
+        <TextBox x:Name="recipientMailTbox" FontSize="20" Grid.Row="11" Grid.Column="1" Margin="5"/>
+
+        <Label Content="Номер телефона получателя" FontSize="20" Grid.Row="12" Grid.Column="0"/>
+        <TextBox x:Name="recipientNumberTbox" FontSize="20" Grid.Row="12" Grid.Column="1" Margin="5"/>
 
 
-
-
-        <Button Grid.Row="7"  Grid.ColumnSpan="2" Margin="90 , 2 , 90 , 2" Content="Подтвердить" FontSize="25" Click="AddBtnClick"/>
-
-
+        <!-- Кнопка отправки -->
+        <Button Grid.Row="14" Grid.ColumnSpan="2" Margin="90, 2, 90, 2" Content="Подтвердить" FontSize="25" Click="AddBtnClick"/>
     </Grid>
 </Page>

@@ -29,7 +29,7 @@ namespace StorageApp.Pages
             User = TUser;
 
             foreach (var p in Context.getPackagesFromStorage(TUser.StorageId).Where(p => p.Status == "received"))
-                Pkg_Id.Items.Add(p.PackageId + " " + p.ClientFullname + " " + p.ClientNumber);
+                Pkg_Id.Items.Add(p.PackageId + " " + p.RecipientFname + " "+ p.RecipientSname + " " + p.RecipientLname + " " + p.RecipientNumber);
             Pkg_Id.SelectedIndex = 0;
         }
         private async void ConfirmPkg(object sender, RoutedEventArgs e)
