@@ -13,12 +13,31 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Yellow.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+
+            <!-- Тул тип большой такой -->
+            <Style TargetType="ToolTip">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Background" Value="LightYellow"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Setter Property="Padding" Value="8"/>
+
+                <!-- Задержка перед появлением -->
+                <Setter Property="ToolTipService.InitialShowDelay" Value="50"/>
+
+                <!-- Время отображения (в миллисекундах) -->
+                <Setter Property="ToolTipService.ShowDuration" Value="50"/>
+
+                <!-- Задержка между повторными показами -->
+                <Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
+            </Style>
+
+
             <!-- Цветовые ресурсы -->
             <SolidColorBrush x:Key="MyYellowBrush" Color="#FFFFDE00"/>
             <SolidColorBrush x:Key="MyYellowDarkBrush" Color="#FFFFC107"/>
             <SolidColorBrush x:Key="MyYellowLightBrush" Color="#FFFFEB3B"/>
 
-            <!-- Стиль для TextBox (полная реализация без BasedOn) -->
+            <!-- Стиль для TextBox -->
             <Style TargetType="TextBox">
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="BorderBrush" Value="{StaticResource MyYellowBrush}"/>

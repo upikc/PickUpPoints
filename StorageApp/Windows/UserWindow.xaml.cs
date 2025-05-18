@@ -37,6 +37,17 @@ namespace StorageApp.Windows
 
         }
 
+        private void ShowUserProfilePage(object sender, EventArgs e)
+        {
+            mainFrame.Content = new ProfilePage(User);
+        }
+
+
+        private void ShowManagerProfilePage(object sender, EventArgs e)
+        {
+            mainFrame.Content = new ProfilePage(User);
+        }
+
         private void ThisWindow_Closed(object sender, EventArgs e)
         {
             var window = new AuthWindow();
@@ -48,12 +59,31 @@ namespace StorageApp.Windows
         }
         private void ShowViewDatagridPage_Pkg(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x;}).ToArray()); 
+            PKGSHOW();
+        }
+
+        public void PKGSHOW()
+        {
+            mainFrame.Content = new ViewDatagridPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
+            //если админ
+            if (User.RoleId == 1)
             mainFrame.Content = new ViewDatagridPage(
             Context.getOperations().Select(x =>
+            {
+                if (Context.statusTranslate != null && Context.statusTranslate.TryGetValue(x.Type.ToLower(), out var translatedStatus))
+                {
+                    x.Type = translatedStatus;
+                }
+                return x;
+            }));
+
+            else
+            //если оператор пвз
+            mainFrame.Content = new ViewDatagridPage(
+            Context.getOperations().Where(x => x.ActionstorageId == User.StorageId || x.CommandingstorageId == User.StorageId).Select(x =>
             {
                 if (Context.statusTranslate != null && Context.statusTranslate.TryGetValue(x.Type.ToLower(), out var translatedStatus))
                 {
@@ -78,7 +108,7 @@ namespace StorageApp.Windows
         }
         private void ShowCreateNewPackagePage(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new CreateNewPackagePage(User.UserId);
+            mainFrame.Content = new CreateNewPackagePage(User.UserId , this);
         }
         private void ShowCreateNewPkgOperatioPage(object sender, MouseButtonEventArgs e)
         {
@@ -90,6 +120,10 @@ namespace StorageApp.Windows
         private void ShowViewDatagridPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new ViewDatagridPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+        }
+        private void ShowViewDatagridPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ViewDatagridPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToArray());
         }
         private void ShowСonfirmReceiptPage(object sender, MouseButtonEventArgs e)
         {

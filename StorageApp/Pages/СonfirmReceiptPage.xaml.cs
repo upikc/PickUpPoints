@@ -44,12 +44,18 @@ namespace StorageApp.Pages
             HttpResponseMessage responseContent2 = await ConfirmReceiptPkg();
             var responseBody2 = await responseContent2.Content.ReadAsStringAsync();
             if ((int)responseContent2.StatusCode == 200)
+            {
                 MessageBox.Show("Операция совершена успешно");
+                Pkg_Id.Items.Clear();
+                foreach (Model.Package p in Context.getPackagesFromStorage(User.StorageId).Where(p => p.Status == "transfer"))
+                    Pkg_Id.Items.Add(p.PackageId + " " + p.recipientFullName() + " " + p.RecipientNumber);
+                Pkg_Id.SelectedIndex = 0;
+            }
             else
                 MessageBox.Show("Ошибка");
 
             string Content = await responseContent2.Content.ReadAsStringAsync();
-            MessageBox.Show(Content);
+            //MessageBox.Show(Content);
         }
 
         public async Task<HttpResponseMessage> ConfirmReceiptPkg()

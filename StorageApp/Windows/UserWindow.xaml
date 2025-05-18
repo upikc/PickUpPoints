@@ -7,16 +7,21 @@
         mc:Ignorable="d"
         Height="500" Width="800"
         MinHeight="700" MinWidth="800"
-        MaxHeight="900"
+        WindowState="Maximized"
         
-        Background="White">
+        Background="White"
+        Icon="icon.ico">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.47 *"/>
+            <ColumnDefinition Width="233"/>
+            <ColumnDefinition Width="5"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <StackPanel x:Name="ManagerStackPanel">
+            <Label FontSize="20" Content="Профиль" ToolTip="Отобразить список доступных складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowManagerProfilePage"/>
+
             <Label Content="Просмотр ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -27,7 +32,7 @@
                 </Label.Foreground>
             </Label>
             <Label FontSize="20" Content="Просмотр складов" ToolTip="Отобразить список доступных складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
-            <Label FontSize="20" ToolTip="Отобразить товары, ожидающие выдачи" Content="Просмотр заказов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
+            <Label FontSize="20" ToolTip="Отобразить товары, ожидающие выдачи" Content="Просмотр посылок" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
             <Label FontSize="20" Content="Просмотр операций" ToolTip="Отобразить все операции" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
             <Label FontSize="20" Content="Просмотр пользователей" ToolTip="Отобразить список пользователей системы" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
 
@@ -49,6 +54,8 @@
 
         <StackPanel x:Name="StorekeeperStackPanel" >
 
+
+            <Label FontSize="20" Content="Профиль" ToolTip="Отобразить мои данные" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowUserProfilePage" />
             <Label Content="Просмотр ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -58,7 +65,8 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Просмотр заказов ПВЗ" ToolTip="Отобразить заказы, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_OperationFromMyStorage" />
             <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -68,12 +76,13 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Отправить заказ" ToolTip="Отправить заказ на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
-            <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение заказа в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
-            <Label FontSize="20" Content="Выдача заказов" ToolTip="Выдать заказ получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
+            <Label FontSize="20" Content="Отправить посылку" ToolTip="Отправить посылку на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
+            <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение посылки в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
+            <Label FontSize="20" Content="Выдача посылок" ToolTip="Выдать посылку получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
 
 
-            
+
+
             <Label Content="Добавление ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -83,10 +92,31 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Новый заказ" ToolTip="Объявить новый заказ" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPackagePage" />
+
+
+            <Label FontSize="20" Content="Новая посылка" ToolTip="Объявить новую посылку" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPackagePage" />
+            
+
+
         </StackPanel>
 
+        <Image Height="178" Source="/Logo.jpg" Stretch="Fill" Width="219" VerticalAlignment="Bottom" Margin="0,0,0,60"/>
+        
+        <Label FontSize="20" Content="База знаний" ToolTip="Информация о работе" Margin="5" Background="#FFFFDE00"  VerticalAlignment="Bottom" />
 
-        <Frame x:Name="mainFrame" Grid.Column="1" NavigationUIVisibility="Hidden" Margin="6" BorderBrush="#FFFFDE00" BorderThickness="4"/>
+
+
+        <GridSplitter Grid.Column="1"
+                    Width="5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="#FF4C4C4C"
+                    Panel.ZIndex="1"
+                    Cursor="SizeWE"
+                    ResizeBehavior="PreviousAndNext"/>
+
+
+
+        <Frame x:Name="mainFrame" Grid.Column="3" NavigationUIVisibility="Hidden" Margin="6" BorderBrush="#FFFFDE00" BorderThickness="4"/>
     </Grid>
 </Window>

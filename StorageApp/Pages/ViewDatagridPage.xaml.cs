@@ -13,8 +13,12 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Controls;
+
 
 namespace StorageApp.Windows
 {
@@ -36,6 +40,11 @@ namespace StorageApp.Windows
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+            
+
+
+
 
 
             if (dataGrid.ItemsSource.GetType() == typeof(StorageApp.Model.Package[]))
@@ -47,21 +56,101 @@ namespace StorageApp.Windows
 
                 int id = package.PackageId;
                 Operation[] operations = Context.getOperations();
-                string message = $"отправитель: {package.senderFullName()}, получатель: {package.recipientFullName()}, вес в центнерах: {package.Weight}\n";
+                string message = " ";
                 foreach (Operation operation in operations.Where(x => x.PackageId == id))
                 {
-                    message += $"Тип: {Context.statusTranslate[operation.Type]}\tDate: {operation.OperationDate} {Context.getStorages().FirstOrDefault(x => x.storageId == operation.ActionstorageId)} \n";
+                    message += $"Тип: {Context.statusTranslate[operation.Type]}\tДата: {operation.OperationDate} {Context.getStorages().FirstOrDefault(x => x.storageId == operation.ActionstorageId).storageAddr} \n";
+                }
+
+
+                string SenderNumber = package.SenderNumber;
+                string RecipientNumber = package.RecipientNumber;
+
+
+                if (package.SenderNumber == " ")
+                {
+                    SenderNumber = "не указан";
+                }
+                if (package.RecipientNumber == " ")
+                {
+                    RecipientNumber = "не указан";
                 }
 
 
 
-                MessageBox.Show(message);
+                // Формируем текст для QR-кода
+                string qrText = $@"=== ИНФОРМАЦИЯ О ПОСЫЛКЕ ===
+
+                Вес: {package.Weight} {package.WeightUnit}
+                Тип упаковки: {package.DimensionTitle}
+
+                === ОТПРАВИТЕЛЬ ===
+                ФИО: {package.senderFullName()}
+                Телефон: {package.SenderNumber}
+                Email: {package.SenderMail}
+
+                === ПОЛУЧАТЕЛЬ ===
+                ФИО: {package.recipientFullName()}
+                Телефон: {package.RecipientNumber}
+                Email: {package.RecipientMail}
+
+
+                {message}
+
+                ";
+
+
+
+
+
+
+
+                ShowPackageInfo(qrText, package.PackageId.ToString());
+
+
+
+                //string qrText = $@"=== ИНФОРМАЦИЯ О ПОСЫЛКЕ ===
+
+                //Вес: {weight} {unitOfWeightComboBox.Text.Split(" ")[2]}
+                //Тип упаковки: {dimensionName}
+
+                //=== ОТПРАВИТЕЛЬ ===
+                //ФИО: {senderLname} {senderFname} {senderSname}
+                //Телефон: {senderNumber}
+                //Email: {senderMail}
+
+                //=== ПОЛУЧАТЕЛЬ ===
+                //ФИО: {recipientLname} {recipientFname} {recipientSname}
+                //Телефон: {recipientNumber}
+                //Email: {recipientMail}
+                //";
+
+
+                //Context.GenerateAndSaveQRCodeAsPdf(qrText, @$"C:\qrcode_{}.pdf");
 
             }
         }
 
         private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
+
+            var columnsToHide = new List<string>
+                {
+                    "storageid",
+                    "userid",
+                    "actionstorageid",
+                    "commandingstorageid",
+                    "roleid",
+                    "actionstorageId",
+                    "commandingstorageId",
+                    "typeid"
+                };
+
+            if (columnsToHide.Contains(e.PropertyName.ToLower()))
+            {
+                e.Cancel = true; // отменяяяем
+            }
+
             if (Context.propertiesTranslate.TryGetValue(e.PropertyName.ToLower(), out var header))
             {
                 e.Column.Header = header;
@@ -108,5 +197,58 @@ namespace StorageApp.Windows
 
             return false;
         }
+
+        public void ShowPackageInfo(string message , string packId)
+        {
+            // 1. Создаём окно
+            var window = new Window
+            {
+                Title = "Информация о посылке",
+                Width = 600,
+                Height = 800,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = Application.Current.MainWindow // Делаем модальным
+            };
+
+            // 2. Добавляем TextBlock с прокруткой
+            var textBlock = new TextBlock
+            {
+                Text = message,
+                FontSize = 18,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(10)
+            };
+
+            var scrollViewer = new ScrollViewer
+            {
+                Content = textBlock,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            // 3. Добавляем кнопку для QR-кода
+            var qrButton = new Button
+            {
+                Content = "Создать QR-код",
+                Margin = new Thickness(10),
+                Height = 30
+            };
+
+            qrButton.Click += (sender, e) =>
+            {
+                Context.GenerateAndSaveQRCodeAsPdf(message, @$"C:\qrcode_{packId}.pdf");
+                MessageBox.Show("QR-код создан!");
+            };
+
+            // 4. Компоновка элементов
+            var stackPanel = new StackPanel();
+            stackPanel.Children.Add(scrollViewer);
+            stackPanel.Children.Add(qrButton);
+
+            window.Content = stackPanel;
+            window.ShowDialog();
+        }
+
+
     }
+
 }

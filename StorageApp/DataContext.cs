@@ -9,6 +9,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Media.Media3D;
 using System.Globalization;
 using System.Net.Http;
+using System.Drawing;
+using System.IO;
+using QRCoder;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace StorageApp
 {
@@ -241,9 +248,9 @@ namespace StorageApp
 
         static public Dictionary<string, string> roleTranslate = new Dictionary<string, string>()
         {
-            { "manager", "менеджер"},
+            { "manager", "Администратор"},
             { "storekeeper", "оператор распределительного центра"},
-            { "менеджер", "менеджер"},
+            { "Администратор", "Администратор"},
             { "оператор распределительного центра", "оператор распределительного центра"},
         };
 
@@ -258,7 +265,7 @@ namespace StorageApp
         static public Dictionary<string, string> propertiesTranslate = new Dictionary<string, string>()
 {
             //склады
-            { "storageid", "ID склада" },
+            { "storageid", "Номер склада" },
             { "storageaddr", "Адрес склада" },
     
             //посылки
@@ -284,19 +291,19 @@ namespace StorageApp
 
             { "status", "Статус" },
             { "statusdate", "Дата изменения статуса" },
-            { "actionstorageid", "ID склада исполнителя" },
+            { "actionstorageid", "Номер склада исполнителя" },
 
             //операции
-            { "operationid", "Id операции" },
-            { "userid", "Id пользователя" },
+            { "operationid", "номер операции" },
+            { "userid", "идентификатор пользователя" },
             { "type", "Тип операции" },
             { "operationdate", "Дата проведения операции" },
-            { "typeid", "Id типа" },
-            { "commandingstorageid", "id склада исполнителя" },
+            { "typeid", "номер типа" },
+            { "commandingstorageid", "Номер склада исполнителя" },
 
             //пользователи
-            { "STORAGEID", "Id склада" },
-            { "roleid", "id роли" },
+            { "STORAGEID", "Номер склада" },
+            { "roleid", "Номер роли" },
             { "role", "Роль" },
             { "login", "Логин" },
             { "password", "Пароль" },
@@ -305,5 +312,75 @@ namespace StorageApp
             { "phonenum", "Номер Телефона" },
 
         };
+
+        public static void GenerateAndSaveQRCodeAsPdf(string text, string pdfPath)
+        {
+            // Создаем директорию, если не существует
+            Directory.CreateDirectory(Path.GetDirectoryName(pdfPath));
+
+            // Генерируем QR-код
+            Bitmap qrImage = null;
+            FileStream fileStream = null;
+            Document document = null;
+            PdfWriter writer = null;
+            MemoryStream imageStream = null;
+
+            try
+            {
+                // 1. Генерация QR-кода
+                qrImage = GenerateQRCode(text, 25); // Увеличенный размер для лучшей читаемости
+
+                // 2. Создание PDF документа
+                document = new Document();
+                fileStream = new FileStream(pdfPath, FileMode.Create);
+                writer = PdfWriter.GetInstance(document, fileStream);
+
+                document.Open();
+
+                // 3. Конвертация изображения
+                imageStream = new MemoryStream();
+                qrImage.Save(imageStream, ImageFormat.Png);
+                imageStream.Position = 0; // Сбрасываем позицию потока
+
+                var pdfImage = iTextSharp.text.Image.GetInstance(imageStream.ToArray());
+
+                // 4. Настройка размера и положения
+                pdfImage.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
+
+                // Автоматическое масштабирование под страницу
+                if (pdfImage.Width > document.PageSize.Width - 72 ||
+                    pdfImage.Height > document.PageSize.Height - 72)
+                {
+                    pdfImage.ScaleToFit(document.PageSize.Width - 72, document.PageSize.Height - 72);
+                }
+
+                document.Add(pdfImage);
+            }
+            catch (Exception ex)
+            {
+                // Логирование ошибки
+                Debug.WriteLine($"Ошибка при генерации PDF: {ex.Message}");
+                throw; // Можно заменить на свой обработчик ошибок
+            }
+            finally
+            {
+                // 5. Корректное освобождение ресурсов
+                document?.Close();
+                writer?.Close();
+                fileStream?.Close();
+                imageStream?.Close();
+                qrImage?.Dispose();
+            }
+        }
+
+
+        private static Bitmap GenerateQRCode(string text, int size = 20)
+        {
+            var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            var qrCode = new QRCode(qrCodeData);
+            return qrCode.GetGraphic(size, Color.Black, Color.White, true);
+        }
+
     }
 }

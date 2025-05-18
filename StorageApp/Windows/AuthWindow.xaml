@@ -5,17 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StorageApp"
         mc:Ignorable="d"
-        Title="Вход" Height="450" Width="400"
-        >
+        Title="Вход" Height="450" Width="800"
+        Icon="icon.ico">
+    
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="#00000000" >
             <Label Content="Введите логин" FontSize="30"/>
             <TextBox x:Name="LoginTbox" FontSize="30" Margin="5"/>
 
             <Label Content="Введите пароль" FontSize="30"/>
             <PasswordBox x:Name="PassTbox" FontSize="30" Margin="5" PasswordChar="•"/>
-            
+
             <Button Content="Войти" FontSize="30" Margin="5" Click="Button_Click"/>
         </StackPanel>
+        <Image Source="/Logo.jpg" Grid.Column="1"/>
     </Grid>
 </Window>

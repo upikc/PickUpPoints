@@ -6,6 +6,8 @@ public partial class User
 
     public int StorageId { get; set; }
 
+    public string? StorageAddress { get { return Context.getStorages().FirstOrDefault(x => x.storageId == StorageId).storageAddr; } }
+
     public int RoleId { get; set; }
 
     public string Role { get; set; }
@@ -29,10 +31,8 @@ public partial class User
         FirstName = firstName;
         LastName = lastName;
         PhoneNum = phoneNum;
+
     }
 
-    public User()
-    {
-    }
 }
 

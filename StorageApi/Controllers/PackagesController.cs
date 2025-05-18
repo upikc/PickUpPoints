@@ -104,7 +104,8 @@ namespace StorageApi.Controllers
             {
                 Package = Pack,
                 UserId = user_id,
-                TypeId = 0, // Тип операции "Создание"
+                TypeId = 0, //
+                            // операции "Создание"
                 OperationDate = DateTime.Now,
                 ActionstorageId = user.StorageId
             };

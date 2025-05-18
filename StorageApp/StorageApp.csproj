@@ -9,8 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Logo.jpg" />
+    <None Remove="Windows\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Logo.jpg" />
+    <Resource Include="Windows\icon.ico" />
   </ItemGroup>
 
 </Project>
