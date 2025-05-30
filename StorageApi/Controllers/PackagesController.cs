@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using System;
 namespace StorageApi.Controllers
 {
     [ApiController]
@@ -28,6 +29,46 @@ namespace StorageApi.Controllers
         {
             return Ok(DbContext.PackagesWithstatuses.ToArray());
         }
+
+        /// <summary>
+        /// Получает сообщения для трекинга 
+        /// </summary>
+        [HttpGet("GetPackageTracking")]
+        public IActionResult GetPackageTracking(int packageId)
+        {
+
+            try
+            {
+                // Получаем основную информацию о посылке
+                var package = DbContext.PackagesWithstatuses
+                    .FirstOrDefault(p => p.PackageId == packageId);
+
+                if (package == null)
+                {
+                    _logger.LogWarning("Посылка {PackageId} не найдена", packageId);
+                    return NotFound($"Посылка {packageId} не найдена");
+                }
+
+                // Получаем историю операций
+                var operations = DbContext.PkqOperationsWithstorages
+                    .Where(o => o.PackageId == packageId)
+                    .OrderBy(o => o.OperationDate)
+                    .ToList();
+
+                // Генерируем сообщение
+                var trackingMessage = Metods.GetTrackerMessage(package, operations);
+
+
+                return Ok(trackingMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка при получении трекинг-информации для посылки {PackageId}", packageId);
+                return StatusCode(500, "Внутренняя ошибка сервера");
+            }
+        }
+
+    
 
         /// <summary>
         /// Получает все заказы определенного склада
@@ -184,6 +225,82 @@ namespace StorageApi.Controllers
                 return (BitConverter.ToString(hashBytes).Replace("-", "").ToLower())[^4..];
             }
         }
+
+
+        public static string GetTrackerMessage(PackagesWithstatus package, List<PkqOperationsWithstorage> operations)
+        {
+            var sb = new StringBuilder();
+
+            // Заголовок
+            sb.AppendLine($"📦 Трекинг посылки #**{package.PackageId}**");
+            sb.AppendLine("----------------------------------------");
+
+            // Основная информация о посылке
+            sb.AppendLine("\n📄 **Основные данные:**");
+            sb.AppendLine($"⚖️ Вес: {package.Weight} {package.WeightUnit ?? ""}");
+            sb.AppendLine($"📏 Тип упаковки: {package.DimensionTitle ?? "не указан"}");
+            sb.AppendLine($"📅 Дата последнего статуса: {package.StatusDate:dd.MM.yyyy HH:mm}");
+            sb.AppendLine("----------------------------------------");
+
+            // Информация об отправителе
+            sb.AppendLine("\n📤 **Отправитель:**");
+            sb.AppendLine($"👤 {package.SenderLname} {package.SenderFname} {package.SenderSname}");
+            sb.AppendLine($"📧 {package.SenderMail}");
+            sb.AppendLine($"📞 {package.SenderNumber ?? "не указан"}");
+
+            // Информация о получателе
+            sb.AppendLine("\n📥 **Получатель:**");
+            sb.AppendLine($"👤 {package.RecipientLname} {package.RecipientFname} {package.RecipientSname}");
+            sb.AppendLine($"📧 {package.RecipientMail}");
+            sb.AppendLine($"📞 {package.RecipientNumber ?? "не указан"}");
+            sb.AppendLine("----------------------------------------");
+
+            // История операций
+            sb.AppendLine("\n🕒 **История перемещений:**");
+            if (operations.Any())
+            {
+                foreach (var op in operations.OrderBy(o => o.OperationDate))
+                {
+                    var emoji = op.Type switch
+                    {
+                        "declare" => "📝",
+                        "transfer" => "🚚",
+                        "received" => "📦",
+                        "issue" => "✅",
+                        _ => "🔹"
+                    };
+
+                    sb.AppendLine($"\n{emoji} **{GetRussianStatus(op.Type)}**");
+                    sb.AppendLine($"🗓️ {op.OperationDate:dd.MM.yyyy HH:mm}");
+                    sb.AppendLine($"🏢 Склад: {op.ActionstorageId}");
+                }
+            }
+            else
+            {
+                sb.AppendLine("\nИстория перемещений отсутствует");
+            }
+
+            // Текущий статус
+            sb.AppendLine("\n----------------------------------------");
+            sb.AppendLine($"🚩 **Текущий статус:** {GetRussianStatus(package.Status)}");
+            sb.AppendLine("\nℹ️ Для уточнения деталей обращайтесь в поддержку");
+
+            return sb.ToString();
+        }
+
+        private static string GetRussianStatus(string englishStatus)
+        {
+            return englishStatus.ToLower() switch
+            {
+                "declare" => "Оформлена",
+                "transfer" => "В пути",
+                "received" => "Принята на складе",
+                "issue" => "Выдана",
+                _ => englishStatus
+            };
+        }
+
+
     }
 
 }

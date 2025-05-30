@@ -169,13 +169,21 @@ namespace StorageApp.Windows
 
         private bool FilterData(object item)
         {
+            // Фильтрация по статусу
+            if (filterBox.SelectedItem != null && filterBox.SelectedItem is ComboBoxItem selectedStatus)
+            {
+                string status = selectedStatus.Content.ToString();
+
+                if (status != "все" && item is Model.Package package && package.Status != status)
+                    return false;
+            }
+
             if (string.IsNullOrWhiteSpace(SearchBox.Text))
                 return true;
 
             var searchText = SearchBox.Text.ToLower();
             var itemType = item.GetType();
 
-            // Проверяем все видимые столбцы
             foreach (DataGridColumn column in dataGrid.Columns)
             {
                 if (column.Visibility != Visibility.Visible)
@@ -191,7 +199,7 @@ namespace StorageApp.Windows
                     continue;
 
                 var value = prop.GetValue(item)?.ToString()?.ToLower() ?? "";
-                if (value.Contains(searchText.ToLower()))
+                if (value.Contains(searchText))
                     return true;
             }
 
@@ -248,7 +256,11 @@ namespace StorageApp.Windows
             window.ShowDialog();
         }
 
+        private void filterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+            _collectionView.Refresh();
+        }
     }
 
 }

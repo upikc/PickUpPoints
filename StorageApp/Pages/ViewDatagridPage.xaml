@@ -9,9 +9,25 @@
       Title="ViewDatagridPage">
 
     <Grid>
-        <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True"
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ComboBox x:Name="filterBox" Grid.Column="1" FontSize="24" SelectionChanged="filterBox_SelectionChanged">
+            <ComboBoxItem  FontSize="24">обьявлен</ComboBoxItem>
+            <ComboBoxItem  FontSize="24">в пути на пвз</ComboBoxItem>
+            <ComboBoxItem  FontSize="24">получен на пвз</ComboBoxItem>
+            <ComboBoxItem  FontSize="24">выдана</ComboBoxItem>
+            <ComboBoxItem  FontSize="24">все</ComboBoxItem>
+        </ComboBox>
+
+        <TextBox x:Name="SearchBox" VerticalAlignment="Top" FontSize="24" MouseLeave="SearchBox_MouseLeave"/>
+
+        <DataGrid x:Name="dataGrid" SelectionChanged="dataGrid_SelectionChanged" IsReadOnly="True" Grid.ColumnSpan="2"
                   AutoGeneratingColumn="DataGrid_AutoGeneratingColumn" CanUserAddRows="False" RowHeight="35"
-                  FontSize="16" Margin="0,0,0,55">
+                  FontSize="16" Margin="0,50,0,0">
             
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -21,7 +37,5 @@
             </DataGrid.RowStyle>
         </DataGrid>
 
-
-        <TextBox x:Name="SearchBox" VerticalAlignment="Bottom" FontSize="20" MouseLeave="SearchBox_MouseLeave"/>
     </Grid>
 </Page>
