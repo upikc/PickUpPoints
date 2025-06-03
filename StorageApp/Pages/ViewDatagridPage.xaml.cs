@@ -34,6 +34,16 @@ namespace StorageApp.Windows
 
             dataGrid.ItemsSource = objects;
 
+
+            filterBox.Visibility = Visibility.Collapsed;
+
+
+            if (dataGrid.ItemsSource.GetType() == typeof(StorageApp.Model.Package[]))
+            { 
+                filterBox.Visibility = Visibility.Visible;
+            }
+
+
             _collectionView = CollectionViewSource.GetDefaultView(dataGrid.ItemsSource);
             _collectionView.Filter = FilterData;
         }
@@ -169,7 +179,7 @@ namespace StorageApp.Windows
 
         private bool FilterData(object item)
         {
-            // Фильтрация по статусу
+            // Фильтрация по статусу посылок 
             if (filterBox.SelectedItem != null && filterBox.SelectedItem is ComboBoxItem selectedStatus)
             {
                 string status = selectedStatus.Content.ToString();

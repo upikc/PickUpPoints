@@ -15,7 +15,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="filterBox" Grid.Column="1" FontSize="24" SelectionChanged="filterBox_SelectionChanged">
+        <ComboBox x:Name="filterBox" Grid.Column="1" FontSize="24" SelectionChanged="filterBox_SelectionChanged" VerticalAlignment="Top">
             <ComboBoxItem  FontSize="24">обьявлен</ComboBoxItem>
             <ComboBoxItem  FontSize="24">в пути на пвз</ComboBoxItem>
             <ComboBoxItem  FontSize="24">получен на пвз</ComboBoxItem>

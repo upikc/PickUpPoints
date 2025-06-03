@@ -248,9 +248,9 @@ namespace StorageApp
 
         static public Dictionary<string, string> roleTranslate = new Dictionary<string, string>()
         {
-            { "manager", "Администратор"},
+            { "manager", "администратор"},
             { "storekeeper", "оператор распределительного центра"},
-            { "Администратор", "Администратор"},
+            { "администратор", "администратор"},
             { "оператор распределительного центра", "оператор распределительного центра"},
         };
 
