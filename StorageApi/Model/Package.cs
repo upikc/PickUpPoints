@@ -38,7 +38,4 @@ public partial class Package
     public virtual ICollection<PkgOperation> PkgOperations { get; set; } = new List<PkgOperation>();
 
     public virtual UnitofWeight UnitofWeight { get; set; } = null!;
-
-
-
 }
