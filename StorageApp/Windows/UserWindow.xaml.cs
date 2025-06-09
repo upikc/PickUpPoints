@@ -3,6 +3,7 @@ using StorageApp.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ namespace StorageApp.Windows
 
         public void PKGSHOW()
         {
-            mainFrame.Content = new ViewDatagridPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            mainFrame.Content = new ViewUserControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
@@ -121,7 +122,24 @@ namespace StorageApp.Windows
         {
             mainFrame.Content = new ViewDatagridPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
-        private void ShowViewDatagridPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)
+
+        private void ShowViewUserControlsPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
+        {
+
+            mainFrame.Content = new ViewUserControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            
+        }
+
+        private void ShowViewUserControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
+        {
+                mainFrame.Content = new ViewUserControlsPage(Context.getPackages().ToArray());
+        }
+
+
+
+
+        
+        private void ShowViewDatagridPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)//по складу
         {
             mainFrame.Content = new ViewDatagridPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToArray());
         }

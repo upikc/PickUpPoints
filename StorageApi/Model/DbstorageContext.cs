@@ -42,7 +42,7 @@ public partial class DbstorageContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;user=root;password=1234;port=3307;database=dbstorage", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;port=3307;user=root;password=1234;database=dbstorage", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -91,6 +91,7 @@ public partial class DbstorageContext : DbContext
             entity.Property(e => e.PackageId)
                 .ValueGeneratedNever()
                 .HasColumnName("package_id");
+            entity.Property(e => e.DestinationStorageId).HasColumnName("destination_storage_id");
             entity.Property(e => e.DimensionId)
                 .HasMaxLength(6)
                 .HasColumnName("dimension_id");
@@ -147,6 +148,7 @@ public partial class DbstorageContext : DbContext
                 .ToView("packages_withstatus");
 
             entity.Property(e => e.ActionstorageId).HasColumnName("actionstorage_id");
+            entity.Property(e => e.DestinationStorageId).HasColumnName("destination_storage_id");
             entity.Property(e => e.DimensionTitle)
                 .HasMaxLength(45)
                 .HasColumnName("dimension_title");
@@ -319,6 +321,7 @@ public partial class DbstorageContext : DbContext
             entity.Property(e => e.UserId)
                 .ValueGeneratedNever()
                 .HasColumnName("user_id");
+            entity.Property(e => e.Enable).HasColumnName("enable");
             entity.Property(e => e.FirstName)
                 .HasMaxLength(45)
                 .HasColumnName("first_name");

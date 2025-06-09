@@ -37,16 +37,18 @@ public class Package
 
     public int ActionstorageId { get; set; }
 
+    public int DestinationStorageId { get; set; } //пункт пазначения
+
 
 
     public string recipientFullName()
     {
-        return $"{RecipientFname} {RecipientSname} {RecipientLname}";
+        return $"{RecipientLname} {RecipientFname} {RecipientSname}";
     }
 
     public string senderFullName()
     {
-        return $"{SenderFname} {SenderSname} {SenderLname}";
+        return $"{SenderLname} {SenderFname} {SenderSname}";
     }
 }
 

@@ -14,7 +14,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="233"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
                 </Label.Foreground>
             </Label>
             <Label FontSize="20" Content="Просмотр складов" ToolTip="Отобразить список доступных складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
-            <Label FontSize="20" ToolTip="Отобразить товары, ожидающие выдачи" Content="Просмотр посылок" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Pkg" />
+            <Label FontSize="20" ToolTip="Отобразить товары, всех складов" Content="Просмотр посылок" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewUserControlsPage_Storages"  MouseRightButtonDown="ShowViewDatagridPage_Pkg" />
             <Label FontSize="20" Content="Просмотр операций" ToolTip="Отобразить все операции" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
             <Label FontSize="20" Content="Просмотр пользователей" ToolTip="Отобразить список пользователей системы" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
 
@@ -52,6 +52,19 @@
 
         </StackPanel>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         <StackPanel x:Name="StorekeeperStackPanel" >
 
 
@@ -65,8 +78,10 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewUserControlsPage_StoragesFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
             <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_OperationFromMyStorage" />
+            
+            
             <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">
                 <Label.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -76,9 +91,9 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Отправить посылку" ToolTip="Отправить посылку на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
-            <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение посылки в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
-            <Label FontSize="20" Content="Выдача посылок" ToolTip="Выдать посылку получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
+            <!--отправить посылку-->                <Label FontSize="20" Content="Отправить посылку" ToolTip="Отправить посылку на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
+            <!--подтвердить получение на склад-->   <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение посылки в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
+            <!--выдать посылку клиенту-->           <Label FontSize="20" Content="Выдача посылок" ToolTip="Выдать посылку получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
 
 
 
@@ -106,14 +121,14 @@
 
 
 
-        <GridSplitter Grid.Column="1"
+        <!--<GridSplitter Grid.Column="1"
                     Width="5"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
                     Background="#FF4C4C4C"
                     Panel.ZIndex="1"
                     Cursor="SizeWE"
-                    ResizeBehavior="PreviousAndNext"/>
+                    ResizeBehavior="PreviousAndNext"/>-->
 
 
 

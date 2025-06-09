@@ -14,10 +14,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BarcodeLib" Version="3.1.5" />
+    <PackageReference Include="BarcodeLib.Barcode" Version="7.4.2.4" />
+    <PackageReference Include="BarcodeLib.Barcode.Common" Version="7.4.1.1" />
     <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="QRCoder" Version="1.6.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>
 
   <ItemGroup>

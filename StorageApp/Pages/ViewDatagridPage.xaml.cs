@@ -17,6 +17,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows;
+using BarcodeLib;
 using System.Windows.Controls;
 
 
@@ -33,6 +34,7 @@ namespace StorageApp.Windows
             InitializeComponent();
 
             dataGrid.ItemsSource = objects;
+            filterBox.SelectedIndex = filterBox.Items.Count;
 
 
             filterBox.Visibility = Visibility.Collapsed;
@@ -251,9 +253,14 @@ namespace StorageApp.Windows
                 Height = 30
             };
 
+
+            //ВАЖНО убрал связь с message
+            //ВАЖНО вернул на место
+
+
             qrButton.Click += (sender, e) =>
             {
-                Context.GenerateAndSaveQRCodeAsPdf(message, @$"C:\qrcode_{packId}.pdf");
+                Context.GenerateAndSaveBarcodeAsPdf(packId, @$"C:\Barcode_{packId}.pdf" , message);
                 MessageBox.Show("QR-код создан!");
             };
 
@@ -268,8 +275,12 @@ namespace StorageApp.Windows
 
         private void filterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
+                _collectionView.Refresh();
+            }
+            catch (Exception ex) { }
 
-            _collectionView.Refresh();
         }
     }
 

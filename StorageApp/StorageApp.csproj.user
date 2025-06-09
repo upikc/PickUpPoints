@@ -25,7 +25,13 @@
     <Compile Update="Pages\ProfilePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ViewPackageControlsPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\СonfirmReceiptPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\PackageControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Windows\UserWindow.xaml.cs">
@@ -54,7 +60,13 @@
     <Page Update="Pages\ProfilePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ViewPackageControlsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\СonfirmReceiptPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\PackageControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\AuthWindow.xaml">

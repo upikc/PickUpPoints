@@ -21,6 +21,7 @@ namespace StorageApp.Pages
     /// </summary>
     public partial class CreateNewPkgOperation : Page
     {
+        //<!--отправить посылку-->    
         public int userId = -1;
         public int storageID = -1;
         public CreateNewPkgOperation(int userID , int storageId)
@@ -82,7 +83,7 @@ namespace StorageApp.Pages
                 HttpResponseMessage responseContent = await Context.postNewPkgOperationAsync(
                     Context.NumbBeforeSpace(Pkg_id.SelectedValue as string),
                     userId,
-                    storageID,//отправка с склада
+                    1,//потвердить отправление в доставку
                     Context.NumbBeforeSpace(Storage_id.SelectedValue as string));
 
                 return responseContent;

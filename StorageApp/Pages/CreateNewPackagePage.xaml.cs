@@ -4,28 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.Serialization.DataContracts;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Xml.Linq;
-using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Drawing.Imaging;
-using QRCoder;
-using System.Drawing;
-using StorageApp.Windows;
+using StorageApp.Windows; // Ensure this namespace is correct for UserWindow
 
 namespace StorageApp.Pages
 {
@@ -35,12 +17,27 @@ namespace StorageApp.Pages
     public partial class CreateNewPackagePage : Page
     {
         public int userId = -1;
+        public int thisStorageId = -1;
         public UserWindow win;
-        public CreateNewPackagePage(int userID , UserWindow window)
+
+        public CreateNewPackagePage(int userID, UserWindow window)
         {
             InitializeComponent();
             win = window;
-            userId=userID;
+            thisStorageId = Context.getUsers().FirstOrDefault(x => x.UserId == userID).StorageId;
+            userId = userID;
+            // Load storages when the page initializes
+            LoadStorages();
+        }
+
+        private void LoadStorages()
+        {
+            var storages = Context.getStorages().Where(x => x.storageId != 0 && x.storageId != thisStorageId);
+            destinationStorageComboBox.ItemsSource = storages;
+            if (storages != null)
+            {
+                destinationStorageComboBox.SelectedIndex = 0;
+            }
         }
 
         private async void AddBtnClick(object sender, RoutedEventArgs e)
@@ -55,120 +52,112 @@ namespace StorageApp.Pages
                 recipientSnameTbox.Text,
                 recipientLnameTbox.Text,
                 recipientMailTbox.Text,
-            }) || unitOfWeightComboBox.SelectedItem == null || dimensionComboBox.SelectedItem == null)
+            }) || unitOfWeightComboBox.SelectedItem == null || dimensionComboBox.SelectedItem == null || destinationStorageComboBox.SelectedItem == null)
             {
-                MessageBox.Show("заполните поля");
+                MessageBox.Show("Заполните все обязательные поля.");
                 return;
             }
-            if (!decimal.TryParse(weightTbox.Text, out _) && weightTbox.Text.Trim() == "0")
-            {
 
-                MessageBox.Show("Заполните вес верно");
+            if (!decimal.TryParse(weightTbox.Text, out decimal weight) || weight <= 0) // Changed to check for non-positive weight as well
+            {
+                MessageBox.Show("Заполните вес верно (должно быть число больше 0).");
                 return;
             }
-            //MAIL
+
             Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(recipientMailTbox.Text);
-            if (!match.Success)
+            if (!regex.IsMatch(recipientMailTbox.Text))
             {
-
-                MessageBox.Show("не верный формат Email получателя");
+                MessageBox.Show("Неверный формат Email получателя.");
                 return;
             }
-            match = regex.Match(senderMailTbox.Text);
-            if (!match.Success)
+            if (!regex.IsMatch(senderMailTbox.Text))
             {
-
-                MessageBox.Show("не верный формат Email отправителя");
+                MessageBox.Show("Неверный формат Email отправителя.");
                 return;
             }
 
-            //PHONE
             Regex phoneRegex = new Regex(@"^\s*(\+7|8)[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d[\s\-()]*\d\s*$");
-            if (!phoneRegex.IsMatch(senderNumberTbox.Text.Trim()) && senderNumberTbox.Text.Trim() != "")
+            if (!string.IsNullOrWhiteSpace(senderNumberTbox.Text) && !phoneRegex.IsMatch(senderNumberTbox.Text.Trim()))
             {
-                MessageBox.Show("Неверный формат номера телефона отправителя");
+                MessageBox.Show("Неверный формат номера телефона отправителя.");
                 return;
             }
 
-            if (!phoneRegex.IsMatch(recipientNumberTbox.Text.Trim()) && recipientNumberTbox.Text.Trim() != "")
+            if (!string.IsNullOrWhiteSpace(recipientNumberTbox.Text) && !phoneRegex.IsMatch(recipientNumberTbox.Text.Trim()))
             {
-                MessageBox.Show("Неверный формат номера телефона получателя");
+                MessageBox.Show("Неверный формат номера телефона получателя.");
                 return;
             }
 
+            string dimensionId = "pack"; // Default value
+            switch (dimensionComboBox.SelectedIndex)
+            {
+                case 0: dimensionId = "L_box"; break;
+                case 1: dimensionId = "m_box"; break;
+                case 2: dimensionId = "s_box"; break;
+                case 3: dimensionId = "pack"; break;
+            }
+
+            int unitOfWeightId = unitOfWeightComboBox.SelectedIndex;
+
+            if (destinationStorageComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите пункт назначения.");
+                return;
+            }
+            int destinationStorageId = (int)destinationStorageComboBox.SelectedValue;
 
 
+            HttpResponseMessage responseContent = await AddPackageAsync(
+                weight,
+                unitOfWeightId,
+                dimensionId,
+                senderFnameTbox.Text,
+                senderSnameTbox.Text,
+                senderLnameTbox.Text,
+                senderMailTbox.Text,
+                senderNumberTbox.Text, 
+                recipientFnameTbox.Text,
+                recipientSnameTbox.Text,
+                recipientLnameTbox.Text,
+                recipientMailTbox.Text,
+                recipientNumberTbox.Text, 
+                userId,
+                destinationStorageId 
+            );
 
-
-            HttpResponseMessage responseContent = await AddPackageAsync();
             var responseBody = await responseContent.Content.ReadAsStringAsync();
-            MessageBox.Show(/*(int)responseContent.StatusCode*/ responseBody);
+            MessageBox.Show(responseBody);
+
+            try
+            {
+                Package newPack = Context.getPackages().Last(x => x.ActionstorageId == (Context.getUsers().First(x => x.UserId == userId)).StorageId);
+                Context.GenerateAndSaveReceiptAsPdf(newPack, @$"C:\Квинтация_{newPack.PackageId}.pdf");
+            }
+            catch { MessageBox.Show("Проблема с генерацией квитанции"); }
 
             win.PKGSHOW();
-
         }
 
-
-        public async Task<HttpResponseMessage> AddPackageAsync()
+        public async Task<HttpResponseMessage> AddPackageAsync(
+            decimal weight,
+            int unitOfWeightId,
+            string dimensionId,
+            string senderFname,
+            string senderSname,
+            string senderLname,
+            string senderMail,
+            string? senderNumber,
+            string recipientFname,
+            string recipientSname,
+            string recipientLname,
+            string recipientMail,
+            string? recipientNumber,
+            int userId,
+            int destinationStorageId) 
         {
             try
-            { 
-                
-                int unitOfWeightId = unitOfWeightComboBox.SelectedIndex;
-                string dimensionId = "pack";
-                switch (dimensionComboBox.SelectedIndex)
-                {
-                    case 0:
-                        dimensionId = "L_box";
-                        break;
-                    case 1:
-                        dimensionId = "m_box";
-                        break;
-                    case 2:
-                        dimensionId = "s_box";
-                        break;
-                    case 3:
-                        dimensionId = "pack";
-                        break;
-                    default:
-                        dimensionId = "pack";
-                        break;
-                }
-
-                decimal weight = decimal.Parse(weightTbox.Text);
-                string senderFname = senderFnameTbox.Text;
-                string senderSname = senderSnameTbox.Text;
-                string senderLname = senderLnameTbox.Text;
-                string senderMail = senderMailTbox.Text;
-                string senderNumber = senderNumberTbox.Text;
-
-                string recipientFname = recipientFnameTbox.Text;
-                string recipientSname = recipientSnameTbox.Text;
-                string recipientLname = recipientLnameTbox.Text;
-                string recipientMail = recipientMailTbox.Text;
-                string recipientNumber = recipientNumberTbox.Text;
-
-                string dimensionName = "Пакет"; // По умолчанию
-                switch (dimensionComboBox.SelectedIndex)
-                {
-                    case 0:
-                        dimensionId = "L_box";
-                        dimensionName = "Большая коробка";
-                        break;
-                    case 1:
-                        dimensionId = "m_box";
-                        dimensionName = "Средняя коробка";
-                        break;
-                    case 2:
-                        dimensionId = "s_box";
-                        dimensionName = "Маленькая коробка";
-                        break;
-                    case 3:
-                        dimensionId = "pack";
-                        dimensionName = "Пакет";
-                        break;
-                }
+            {
 
                 HttpResponseMessage responseContent = await Context.postNewPackageAsync(
                     weight,
@@ -184,29 +173,17 @@ namespace StorageApp.Pages
                     recipientLname,
                     recipientMail,
                     recipientNumber,
-                    userId);
-
-
-                if (senderNumber == " ")
-                {
-                    senderNumber = "не указан";
-                }
-                if (recipientNumber == " ")
-                {
-                    recipientNumber = "не указан";
-                }
-
-
+                    userId,
+                    destinationStorageId
+                );
 
                 return responseContent;
             }
             catch (Exception ex)
             {
-                // Обработка ошибок
                 Console.WriteLine("Error: " + ex.Message);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
-
     }
 }

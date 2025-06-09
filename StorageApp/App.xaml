@@ -37,6 +37,13 @@
             <SolidColorBrush x:Key="MyYellowDarkBrush" Color="#FFFFC107"/>
             <SolidColorBrush x:Key="MyYellowLightBrush" Color="#FFFFEB3B"/>
 
+
+            <!-- цветовые темы для статусов -->
+            <SolidColorBrush x:Key="DeclareStatusColor" Color="#FFADD8E6"/>
+            <SolidColorBrush x:Key="TransferStatusColor" Color="#FFFFA500"/>
+            <SolidColorBrush x:Key="ReceivedStatusColor" Color="#FF90EE90"/>
+            <SolidColorBrush x:Key="IssueStatusColor" Color="#FFE6E6FA"/>
+
             <!-- Стиль для TextBox -->
             <Style TargetType="TextBox">
                 <Setter Property="Background" Value="White"/>

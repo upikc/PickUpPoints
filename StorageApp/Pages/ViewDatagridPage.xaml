@@ -20,7 +20,7 @@
             <ComboBoxItem  FontSize="24">в пути на пвз</ComboBoxItem>
             <ComboBoxItem  FontSize="24">получен на пвз</ComboBoxItem>
             <ComboBoxItem  FontSize="24">выдана</ComboBoxItem>
-            <ComboBoxItem  FontSize="24">все</ComboBoxItem>
+            <ComboBoxItem  FontSize="24">все статусы</ComboBoxItem>
         </ComboBox>
 
         <TextBox x:Name="SearchBox" VerticalAlignment="Top" FontSize="24" MouseLeave="SearchBox_MouseLeave"/>

@@ -96,23 +96,32 @@ namespace StorageApi.Controllers
         /// </remarks>
         [HttpPost("CreatePackage")]
         public IActionResult CreatePackage(
-            decimal weight,
-            int unitofWeightId,
-            string dimensionId,
-            string senderFname,
-            string senderSname,
-            string senderLname,
-            string senderMail,
-            string? senderNumber,
-            string recipientFname,
-            string recipientSname,
-            string recipientLname,
-            string recipientMail,
-            string? recipientNumber,
-            int user_id)
+    decimal weight,
+    int unitofWeightId,
+    string dimensionId,
+    string senderFname,
+    string senderSname,
+    string senderLname,
+    string senderMail,
+    string? senderNumber,
+    string recipientFname,
+    string recipientSname,
+    string recipientLname,
+    string recipientMail,
+    string? recipientNumber,
+    int user_id,
+    int destinationStorageId)
         {
 
-            var Packid = DbContext.Packages.Count() + 1;
+            Random random = new Random();
+            int start = random.Next(100, 1000); // 100 - 999
+            int end = random.Next(100, 1000); 
+
+            string uniqueId = $"{start}{DbContext.Packages.Count() + 1}{end}";
+
+
+
+            int Packid = int.Parse(uniqueId);
 
             if (!DbContext.UnitofWeights.Any(u => u.UnitofWeightId == unitofWeightId))
                 return BadRequest("Недопустимая единица измерения веса");
@@ -121,7 +130,10 @@ namespace StorageApi.Controllers
             if (user == null)
                 return BadRequest("Недостаточно прав для создания посылки");
 
-
+            if (!DbContext.Storages.Any(s => s.StorageId == destinationStorageId))
+            {
+                return BadRequest("Указанный пункт назначения (склад) не существует.");
+            }
 
             var Pack = new Package
             {
@@ -138,15 +150,15 @@ namespace StorageApi.Controllers
                 RecipientSname = recipientSname,
                 RecipientLname = recipientLname,
                 RecipientMail = recipientMail,
-                RecipientNumber = recipientNumber
+                RecipientNumber = recipientNumber,
+                DestinationStorageId = destinationStorageId 
             };
 
             var initialOperation = new PkgOperation
             {
                 Package = Pack,
                 UserId = user_id,
-                TypeId = 0, //
-                            // операции "Создание"
+                TypeId = 0, // операции "Создание"
                 OperationDate = DateTime.Now,
                 ActionstorageId = user.StorageId
             };
@@ -155,16 +167,14 @@ namespace StorageApi.Controllers
             DbContext.Packages.Add(Pack);
             try
             {
-
                 DbContext.Packages.Add(Pack);
                 DbContext.PkgOperations.Add(initialOperation);
                 DbContext.SaveChanges();
                 // ТУТБУДЕТ СМС С ОПОВЕЩЕНИЕМ ОП ПОСЫЛКЕ
-
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.InnerException.Message);
+                return BadRequest($"Ошибка при сохранении: {ex.InnerException?.Message ?? ex.Message}");
             }
             return Ok("Сохранено успешно");
         }
@@ -270,7 +280,7 @@ namespace StorageApi.Controllers
                         _ => "🔹"
                     };
 
-                    sb.AppendLine($"\n{emoji} **{GetRussianStatus(op.Type)}**");
+                    sb.AppendLine($"\n{emoji} **{GetTransStatus(op.Type)}**");
                     sb.AppendLine($"🗓️ {op.OperationDate:dd.MM.yyyy HH:mm}");
                     sb.AppendLine($"🏢 Склад: {op.ActionstorageId}");
                 }
@@ -282,13 +292,13 @@ namespace StorageApi.Controllers
 
             // Текущий статус
             sb.AppendLine("\n----------------------------------------");
-            sb.AppendLine($"🚩 **Текущий статус:** {GetRussianStatus(package.Status)}");
+            sb.AppendLine($"🚩 **Текущий статус:** {GetTransStatus(package.Status)}");
             sb.AppendLine("\nℹ️ Для уточнения деталей обращайтесь в поддержку");
 
             return sb.ToString();
         }
 
-        private static string GetRussianStatus(string englishStatus)
+        private static string GetTransStatus(string englishStatus)
         {
             return englishStatus.ToLower() switch
             {

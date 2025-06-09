@@ -33,6 +33,8 @@ public partial class Package
 
     public string? RecipientNumber { get; set; }
 
+    public int DestinationStorageId { get; set; }
+
     public virtual Dimension Dimension { get; set; } = null!;
 
     public virtual ICollection<PkgOperation> PkgOperations { get; set; } = new List<PkgOperation>();

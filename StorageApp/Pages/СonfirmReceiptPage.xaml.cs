@@ -65,7 +65,7 @@ namespace StorageApp.Pages
                 HttpResponseMessage responseContent = await Context.postNewPkgOperationAsync(
                     Context.NumbBeforeSpace(Pkg_Id.SelectedItem as string),
                     User.UserId,
-                    2,
+                    2,//подтвердить получение
                     User.StorageId);
 
                 return responseContent;

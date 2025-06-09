@@ -38,4 +38,6 @@ public partial class PackagesWithstatus
     public DateTime StatusDate { get; set; }
 
     public int ActionstorageId { get; set; }
+
+    public int DestinationStorageId { get; set; }
 }

@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Windows.Media.Media3D;
 using System.Globalization;
-using System.Net.Http;
 using System.Drawing;
 using System.IO;
 using QRCoder;
@@ -16,6 +15,9 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+using System;
+using BarcodeStandard;
+using SkiaSharp;
 
 namespace StorageApp
 {
@@ -31,7 +33,7 @@ namespace StorageApp
                 string requestUri = $"{host}/User/EnterValidCheck?login={login}&password={password}";
                 user = httpclient.GetFromJsonAsync<User>(requestUri).Result;
             }
-            catch (Exception ex){}
+            catch (Exception ex) { }
             return user;
         }
         static public Storage[] getStorages()
@@ -91,7 +93,7 @@ namespace StorageApp
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return("Склад успешно создан: " + responseContent);
+                    return ("Склад успешно создан: " + responseContent);
                 }
                 else
                 {
@@ -109,7 +111,7 @@ namespace StorageApp
         }
 
 
-        static public Task<HttpResponseMessage> checkUserDataValid(string login , string password , string fName , string lName , string PhonNumb , int RoleId , int Storage)
+        static public Task<HttpResponseMessage> checkUserDataValid(string login, string password, string fName, string lName, string PhonNumb, int RoleId, int Storage)
         {
             using var httpClient = new HttpClient();
             string requestUrl = $"{host}/User/DataValidCheck?login={login}&password={password}&fName={fName}" +
@@ -118,7 +120,7 @@ namespace StorageApp
             HttpResponseMessage response = httpClient.GetAsync(requestUrl).Result;
 
             return Task.FromResult(response);
-            
+
         }
         static public async Task<HttpResponseMessage> postNewUserAsync(string login, string password, string fName, string lName, string phoneNumb, int roleId, int storageId)
         {
@@ -150,8 +152,9 @@ namespace StorageApp
             string recipientLname,
             string recipientMail,
             string recipientNumber,
-            int user_id)
-           {
+            int user_id,
+            int destinationStorageId) 
+        {
             var parameters = new Dictionary<string, string>
             {
                 ["weight"] = weight.ToString(CultureInfo.InvariantCulture),
@@ -164,13 +167,17 @@ namespace StorageApp
                 ["senderNumber"] = senderNumber,
                 ["recipientFname"] = recipientFname,
                 ["recipientSname"] = recipientSname,
-                ["recipientLname"] = recipientLname, 
+                ["recipientLname"] = recipientLname,
                 ["recipientMail"] = recipientMail,
                 ["recipientNumber"] = recipientNumber,
-                ["user_id"] = user_id.ToString()
+                ["user_id"] = user_id.ToString(),
+                ["destinationStorageId"] = destinationStorageId.ToString()
             };
 
-            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+
+    
+
+        var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
             foreach (var param in parameters)
             {
                 queryString[param.Key] = param.Value;
@@ -313,13 +320,55 @@ namespace StorageApp
 
         };
 
-        public static void GenerateAndSaveQRCodeAsPdf(string text, string pdfPath)
+        public static void GenerateAndSaveBarcodeAsPdf(string text, string pdfPath, string message)
         {
-            // Создаем директорию, если не существует
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
+
+            if (!File.Exists(fontPath))
+            {
+                string localFontFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fonts");
+                Directory.CreateDirectory(localFontFolder); // Ensure the directory exists
+                string localArialPath = Path.Combine(localFontFolder, "arial.ttf");
+
+                if (File.Exists(localArialPath))
+                {
+                    fontPath = localArialPath;
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: arial.ttf not found at '{fontPath}' or '{localArialPath}'. " +
+                                      "Cyrillic text might not display correctly without a suitable font.");
+                    fontPath = null;
+                }
+            }
+
+            BaseFont baseFont;
+            iTextSharp.text.Font russianFont;
+
+            try
+            {
+                if (fontPath != null)
+                {
+                    baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                }
+                else
+                {
+                    baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                    System.Diagnostics.Debug.WriteLine("Fallback to HELVETICA with CP1250 due to missing Arial. Cyrillic support might be limited.");
+                }
+                russianFont = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error creating font: {ex.Message}. Falling back to default.");
+                russianFont = FontFactory.GetFont(FontFactory.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
+            }
+
             Directory.CreateDirectory(Path.GetDirectoryName(pdfPath));
 
-            // Генерируем QR-код
-            Bitmap qrImage = null;
+            Bitmap barcodeImage = null;
             FileStream fileStream = null;
             Document document = null;
             PdfWriter writer = null;
@@ -327,27 +376,20 @@ namespace StorageApp
 
             try
             {
-                // 1. Генерация QR-кода
-                qrImage = GenerateQRCode(text, 25); // Увеличенный размер для лучшей читаемости
-
-                // 2. Создание PDF документа
+                barcodeImage = GenerateBarcode(text);
                 document = new Document();
                 fileStream = new FileStream(pdfPath, FileMode.Create);
                 writer = PdfWriter.GetInstance(document, fileStream);
 
                 document.Open();
 
-                // 3. Конвертация изображения
                 imageStream = new MemoryStream();
-                qrImage.Save(imageStream, ImageFormat.Png);
-                imageStream.Position = 0; // Сбрасываем позицию потока
+                barcodeImage.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
+                imageStream.Position = 0;
 
                 var pdfImage = iTextSharp.text.Image.GetInstance(imageStream.ToArray());
-
-                // 4. Настройка размера и положения
                 pdfImage.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
 
-                // Автоматическое масштабирование под страницу
                 if (pdfImage.Width > document.PageSize.Width - 72 ||
                     pdfImage.Height > document.PageSize.Height - 72)
                 {
@@ -355,31 +397,208 @@ namespace StorageApp
                 }
 
                 document.Add(pdfImage);
+
+                if (!string.IsNullOrEmpty(message))
+                {
+                    document.Add(new iTextSharp.text.Paragraph("\n"));
+                    var paragraph = new iTextSharp.text.Paragraph(message, russianFont)
+                    {
+                        Alignment = Element.ALIGN_CENTER
+                    };
+                    document.Add(paragraph);
+                }
             }
             catch (Exception ex)
             {
-                // Логирование ошибки
-                Debug.WriteLine($"Ошибка при генерации PDF: {ex.Message}");
-                throw; // Можно заменить на свой обработчик ошибок
+                System.Diagnostics.Debug.WriteLine($"Error generating PDF: {ex.Message}");
+                throw; 
             }
             finally
             {
-                // 5. Корректное освобождение ресурсов
                 document?.Close();
                 writer?.Close();
                 fileStream?.Close();
                 imageStream?.Close();
-                qrImage?.Dispose();
+                barcodeImage?.Dispose();
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(pdfPath)
+                {
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error opening PDF: {ex.Message}");
             }
         }
 
-
-        private static Bitmap GenerateQRCode(string text, int size = 20)
+        private static Bitmap GenerateBarcode(string text)
         {
-            var qrGenerator = new QRCodeGenerator();
-            var qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-            var qrCode = new QRCode(qrCodeData);
-            return qrCode.GetGraphic(size, Color.Black, Color.White, true);
+            SKColorF blackColor = new SKColorF(Color.Black.R / 255f, Color.Black.G / 255f, Color.Black.B / 255f, Color.Black.A / 255f);
+            SKColorF whiteColor = new SKColorF(Color.White.R / 255f, Color.White.G / 255f, Color.White.B / 255f, Color.White.A / 255f);
+            var barcode = new BarcodeStandard.Barcode();
+            var skBitmap = barcode.Encode(BarcodeStandard.Type.Code128, text, blackColor, whiteColor, 290, 120);
+
+            // Конвертация SKBitmap в System.Drawing.Bitmap
+            var bitmap = new Bitmap(skBitmap.Width, skBitmap.Height, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                                            System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                                            bitmap.PixelFormat);
+
+            skBitmap.ReadPixels(new SKImageInfo(bitmapData.Width, bitmapData.Height),
+                               bitmapData.Scan0,
+                               bitmapData.Stride,
+                               0, 0);
+
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        //              ТУТ функционал вычисления стоимости
+
+        static Dictionary<string, int> sizeCost = new Dictionary<string, int>
+        {
+            { "Стандарт коробка до 530×360×220 мм.", 500 },
+            { "Стандарт коробка до 400×270×180 мм.", 400 },
+            { "Мелкий пакет", 200 },
+            { "Стандарт коробка до 260×170×80 мм", 300 },
+            { "L_box", 500 },
+            { "m_box", 400 },
+            { "pack", 200 },
+            { "s_box", 300 }
+        };
+
+        static Dictionary<string, int> weightUnitCost = new Dictionary<string, int>
+        {
+            { "Грамм", 4 },    // стоимость за грамм (меньше = дороже)
+            { "Килограмм", 800 }  // стоимость за килограмм
+        };
+
+        static int CalculatePackPrise(string size, string weightUnit, int weight)
+        {
+            int sizeCostValue = sizeCost[size];
+            int weightUnitCostValue = weightUnitCost[weightUnit];
+
+            int totalCost = sizeCostValue + (weight * weightUnitCostValue);
+
+            return totalCost;
+        }
+
+        public static void GenerateAndSaveReceiptAsPdf(Package pack, string pdfPath)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
+
+            if (!File.Exists(fontPath))
+            {
+                string localFontFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fonts");
+                Directory.CreateDirectory(localFontFolder);
+                string localArialPath = Path.Combine(localFontFolder, "arial.ttf");
+
+                if (File.Exists(localArialPath))
+                {
+                    fontPath = localArialPath;
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: arial.ttf not found at '{fontPath}' or '{localArialPath}'. " +
+                                      "Cyrillic text might not display correctly without a suitable font.");
+                    fontPath = null;
+                }
+            }
+
+            BaseFont baseFont;
+            iTextSharp.text.Font russianFont;
+
+            try
+            {
+                if (fontPath != null)
+                {
+                    baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                }
+                else
+                {
+                    baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
+                    System.Diagnostics.Debug.WriteLine("Fallback to HELVETICA with CP1250 due to missing Arial. Cyrillic support might be limited.");
+                }
+                russianFont = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error creating font: {ex.Message}. Falling back to default.");
+                russianFont = FontFactory.GetFont(FontFactory.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
+            }
+
+            Directory.CreateDirectory(Path.GetDirectoryName(pdfPath));
+
+            Document document = null;
+            PdfWriter writer = null;
+            FileStream fileStream = null;
+
+            try
+            {
+                document = new Document();
+                fileStream = new FileStream(pdfPath, FileMode.Create);
+                writer = PdfWriter.GetInstance(document, fileStream);
+
+                document.Open();
+
+                // Generate barcode image
+                Bitmap barcodeImage = GenerateBarcode(pack.PackageId.ToString());
+                MemoryStream imageStream = new MemoryStream();
+                barcodeImage.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
+                imageStream.Position = 0;
+
+                var pdfImage = iTextSharp.text.Image.GetInstance(imageStream.ToArray());
+                pdfImage.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
+
+                if (pdfImage.Width > document.PageSize.Width - 72 ||
+                    pdfImage.Height > document.PageSize.Height - 72)
+                {
+                    pdfImage.ScaleToFit(document.PageSize.Width - 72, document.PageSize.Height - 72);
+                }
+
+                document.Add(pdfImage);
+
+                // Add package details
+                document.Add(new Paragraph("\n"));
+                document.Add(new Paragraph($"Отправитель: {pack.senderFullName()}", russianFont) { Alignment = Element.ALIGN_LEFT });
+                document.Add(new Paragraph($"Получатель: {pack.recipientFullName()}", russianFont) { Alignment = Element.ALIGN_LEFT });
+                document.Add(new Paragraph($"Вес: {pack.Weight} {pack.WeightUnit}", russianFont) { Alignment = Element.ALIGN_LEFT });
+                document.Add(new Paragraph($"Размер: {pack.DimensionTitle}", russianFont) { Alignment = Element.ALIGN_LEFT });
+                document.Add(new Paragraph($"Дата обьявления: {Context.getOperations().First(x => x.PackageId == pack.PackageId).OperationDate}", russianFont) { Alignment = Element.ALIGN_LEFT });
+
+                // Calculate and add shipping cost
+                int shippingCost = CalculatePackPrise(pack.DimensionTitle, pack.WeightUnit , (int)pack.Weight);
+                document.Add(new Paragraph($"Shipping Cost: {shippingCost}", russianFont) { Alignment = Element.ALIGN_LEFT });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error generating PDF: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                document?.Close();
+                writer?.Close();
+                fileStream?.Close();
+            }
+
+            try
+            {
+                Process.Start(new ProcessStartInfo(pdfPath)
+                {
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error opening PDF: {ex.Message}");
+            }
         }
 
     }
