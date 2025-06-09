@@ -39,7 +39,7 @@ namespace StorageApp.Pages
 
         }
 
-        private void SearchBox_TextChanged(object sender, SelectionChangedEventArgs e)
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ApplyFilters();
         }
@@ -90,5 +90,6 @@ namespace StorageApp.Pages
 
             }
         }
+
     }
 }
