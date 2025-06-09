@@ -10,13 +10,13 @@ using MahApps.Metro.Controls;
 namespace StorageApp.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ViewUserControlsPage.xaml
+    /// Логика взаимодействия для ViewPackageControlsPage.xaml
     /// </summary>
-    public partial class ViewUserControlsPage : Page
+    public partial class ViewPackageControlsPage : Page
     {
         private List<Model.Package> _allPackages;
 
-        public ViewUserControlsPage(System.Collections.IEnumerable objects)
+        public ViewPackageControlsPage(System.Collections.IEnumerable objects)
         {
             InitializeComponent();
 

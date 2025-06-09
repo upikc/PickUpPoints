@@ -85,6 +85,7 @@ CREATE TABLE `packages` (
   `recipient_Lname` varchar(150) NOT NULL,
   `recipient_mail` varchar(90) NOT NULL,
   `recipient_number` varchar(12) DEFAULT NULL,
+  `destination_storage_id` int NOT NULL,
   PRIMARY KEY (`package_id`),
   KEY `newFK1_idx` (`dimension_id`),
   KEY `newFK2_idx` (`unitof_weight_id`),
@@ -99,7 +100,7 @@ CREATE TABLE `packages` (
 
 LOCK TABLES `packages` WRITE;
 /*!40000 ALTER TABLE `packages` DISABLE KEYS */;
-INSERT INTO `packages` VALUES (0,100.00,0,'pack','Олег','Олегович','Орлов','sender@gmail.com',NULL,'Петр','Петрович','Петухов','uupikc@gmail.com',NULL),(2,20.00,0,'L_box','Октай','Оберучев','Олимпиев','senderww@gmail.com','89373688112','Памела','Пегова','Павловская','uupikc@gmail.com',NULL),(3,100.00,0,'pack','Овидий','Обрядко','Осипович','sender1@gmail.com',NULL,'Павел','Павшин','Панкратович','uupikc@gmail.com',NULL),(4,2.00,1,'s_box','Оксана','Остроушко','Оскаровна','sendermail@gmail.com',NULL,'Пелагея','Павлушкова','Прокопиева ','uupikc@gmail.com',NULL),(5,30.00,1,'L_box','Онисим','Остапов','Олегович','sender4@gmail.com',NULL,'Петр','Петросян','Парфениевич','uupikc@gmail.com',NULL);
+INSERT INTO `packages` VALUES (0,100.00,0,'pack','Олег','Олегович','Орлов','sender@gmail.com',NULL,'Петр','Адамович','Петухов','uupikc@gmail.com',NULL,1),(2,20.00,0,'L_box','Вадим','Оберучев','Бобров','senderww@gmail.com','89373688112','Максим','Аксёнович','Павловская','uupikc@gmail.com',NULL,1),(3,100.00,0,'pack','Иван','Обрядко','Осипович','sender1@gmail.com',NULL,'Павел','Захарьевич','Панкратович','uupikc@gmail.com',NULL,1),(4,2.00,1,'s_box','Оксана','Остроушко','Анисимова','sendermail@gmail.com',NULL,'Егор','Игнатович','Прокопиева ','uupikc@gmail.com',NULL,1),(5,30.00,1,'L_box','Игнат','Захарович','Веселов','sender4@gmail.com',NULL,'Петр','Иларионович','Попов','uupikc@gmail.com','1',1),(6,30.00,1,'L_box','Владислав','Герасимович','Филиппов','sender4@gmail.com',NULL,'Андрей','Леонович','Фёдоров','uupikc@gmail.com','1',1),(7,30.00,1,'L_box','Виталий','Семёнович','Марков','sender4@gmail.com',NULL,'Изот','Макарович','Лебедев','uupikc@gmail.com','1',1),(8,30.00,1,'L_box','Михаил','Тимофеевич','Большаков','sender4@gmail.com',NULL,'Прокопий','Маркович','Алексеев','uupikc@gmail.com','1',1),(9,30.00,1,'L_box','Дмитрий','Устимович','Суханов','sender4@gmail.com',NULL,'Родион','Валерьянович','Егоров','uupikc@gmail.com','1',1),(10,30.00,1,'L_box','Олег','Фёдорович','Ширяев','sender4@gmail.com',NULL,'Руслан','Арсенович','Орлов','uupikc@gmail.com','1',1),(11,30.00,1,'L_box','Егор','Борисович','Казаков','sender4@gmail.com',NULL,'Сергей','Власович','Никитин','uupikc@gmail.com','1',1),(12,30.00,1,'L_box','Илья','Анатольевич','Кузнецов','sender4@gmail.com',NULL,'Тарас','Олегович','Макаров','uupikc@gmail.com','1',1),(13,10.00,1,'L_box','Иван','Смирнов','Анатольевич','DdaMail@gmail.com',NULL,'Андрей ','Новиков ','Викторович','MmaMail@gmail.com',NULL,3),(14,12.00,0,'pack','Мария ','Петрова','Сергеевна','MailoMail@gmail.com',NULL,'Алексей','Сидоров','Владимирович','MailoMail@gmail.com',NULL,1),(15,22.00,1,'L_box','Анна ','Смирнова ','Андреевна','Ug1Mail@gmail.com','89373699112','Дмитрий ','Кузнецов ','Александрович','mailerSss@gmail.com',NULL,1),(10417277,100.00,1,'L_box','Ирина ','Морозова ','Дмитриевна','Ops4ail@gmail.com',NULL,'Андрей ','Новиков ','Викторович','HdF3ail@gmail.com',NULL,2),(22718333,10.00,1,'m_box','Артем','Юсупов','Ирекович','Gmail@gmail.com',NULL,'Gmail@gmail.com','Gmail@gmail.com','Gmail@gmail.com','Gmail@gmail.com',NULL,3),(34616697,100.00,1,'L_box','Елена ','Попова ','Михайловна','mailer@gmail.com',NULL,'Сергей ','Васильев ','Николаевич','mailer@gmail.com','89373598332',3),(73320867,10.00,1,'m_box','Елена ','Попова ','Михайловна','HdF3ail@gmail.com','89373699112','Сергей ','Васильев ','Николаевич','HdF3ail@gmail.com',NULL,2);
 /*!40000 ALTER TABLE `packages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +129,8 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `dimension_title`,
  1 AS `status`,
  1 AS `status_date`,
- 1 AS `actionstorage_id`*/;
+ 1 AS `actionstorage_id`,
+ 1 AS `destination_storage_id`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -154,7 +156,7 @@ CREATE TABLE `pkg_operations` (
   CONSTRAINT `fk7` FOREIGN KEY (`type_id`) REFERENCES `operation_types` (`type_id`),
   CONSTRAINT `fk8` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `fk9` FOREIGN KEY (`actionstorage_id`) REFERENCES `storages` (`storage_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +165,7 @@ CREATE TABLE `pkg_operations` (
 
 LOCK TABLES `pkg_operations` WRITE;
 /*!40000 ALTER TABLE `pkg_operations` DISABLE KEYS */;
-INSERT INTO `pkg_operations` VALUES (63,2,1,0,'2025-05-19 04:03:22',1),(64,3,1,0,'2025-05-19 04:06:38',1),(66,4,2,0,'2025-05-19 04:16:08',2),(67,5,1,0,'2025-05-19 04:21:00',1),(68,3,1,1,'2025-05-19 04:21:37',2);
+INSERT INTO `pkg_operations` VALUES (63,2,1,0,'2025-05-19 04:03:22',1),(64,3,1,0,'2025-05-19 04:06:38',1),(66,4,2,0,'2025-05-19 04:16:08',2),(67,5,1,0,'2025-05-19 04:21:00',1),(68,3,1,1,'2025-05-19 04:21:37',2),(69,4,2,2,'2025-06-03 20:12:01',1),(70,5,1,0,'2025-05-19 04:21:00',1),(71,6,1,0,'2025-05-19 04:21:00',1),(72,7,1,0,'2025-05-19 04:21:00',1),(73,8,1,0,'2025-05-19 04:21:00',1),(74,9,1,0,'2025-05-19 04:21:00',1),(75,10,1,0,'2025-05-19 04:21:00',1),(78,4,1,1,'2025-06-04 18:38:01',2),(80,13,1,0,'2025-06-07 20:07:10',1),(81,14,2,0,'2025-06-07 20:39:21',2),(82,14,2,1,'2025-06-07 20:39:48',1),(83,14,1,2,'2025-06-07 20:41:36',1),(84,2,1,1,'2025-06-07 20:42:48',2),(85,15,2,0,'2025-06-07 20:44:09',2),(86,15,2,1,'2025-06-07 20:44:26',1),(87,34616697,1,0,'2025-06-08 17:38:50',1),(88,10417277,1,0,'2025-06-08 21:08:58',1),(89,22718333,1,0,'2025-06-09 17:43:00',1),(91,73320867,1,0,'2025-06-09 20:31:18',1),(92,73320867,1,1,'2025-06-09 20:35:24',2),(93,73320867,2,2,'2025-06-09 20:38:57',2),(94,73320867,2,3,'2025-06-09 20:40:28',2);
 /*!40000 ALTER TABLE `pkg_operations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,6 +216,7 @@ DROP TABLE IF EXISTS `storages`;
 CREATE TABLE `storages` (
   `storage_id` int NOT NULL,
   `storage_addr` varchar(90) NOT NULL,
+  `Enable` int NOT NULL,
   PRIMARY KEY (`storage_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,7 +227,7 @@ CREATE TABLE `storages` (
 
 LOCK TABLES `storages` WRITE;
 /*!40000 ALTER TABLE `storages` DISABLE KEYS */;
-INSERT INTO `storages` VALUES (0,'АдминОффис'),(1,'Крупской 12'),(2,'Дружная 42'),(3,'Складская 98/2');
+INSERT INTO `storages` VALUES (0,'АдминОффис',0),(1,'Крупской 12',0),(2,'Дружная 42',0),(3,'Складская 98/2',0);
 /*!40000 ALTER TABLE `storages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,6 +295,7 @@ CREATE TABLE `users` (
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
   `phone_num` varchar(12) NOT NULL,
+  `enable` int NOT NULL,
   PRIMARY KEY (`user_id`),
   KEY `fk1_idx` (`role_id`),
   KEY `fk2_idx` (`storage_id`),
@@ -306,7 +310,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,1,2,'log','pas','Артем','Юсупов','89373699112'),(2,2,2,'log2','pas','Иван','Иванов','89373699112'),(3,0,1,'add','add','Генадий','Админов','89373699112'),(4,3,2,'log3','pas','Богдан','Трунов','89373699113');
+INSERT INTO `users` VALUES (1,1,2,'log','pas','Артем','Юсупов','89373699112',1),(2,2,2,'log2','pas','Иван','Иванов','89373699112',1),(3,0,1,'add','add','Генадий','Админов','89373699112',1),(4,3,2,'log3','pas','Богдан','Трунов','89373699113',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,8 +331,17 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `password`,
  1 AS `first_name`,
  1 AS `last_name`,
- 1 AS `phone_num`*/;
+ 1 AS `phone_num`,
+ 1 AS `enable`*/;
 SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping events for database 'dbstorage'
+--
+
+--
+-- Dumping routines for database 'dbstorage'
+--
 
 --
 -- Final view structure for view `packages_withstatus`
@@ -343,7 +356,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `packages_withstatus` AS select `operation_withnumber`.`package_id` AS `package_id`,`operation_withnumber`.`weight` AS `weight`,`operation_withnumber`.`weight_unit` AS `weight_unit`,`operation_withnumber`.`sender_Fname` AS `sender_Fname`,`operation_withnumber`.`sender_Sname` AS `sender_Sname`,`operation_withnumber`.`sender_Lname` AS `sender_Lname`,`operation_withnumber`.`sender_mail` AS `sender_mail`,`operation_withnumber`.`sender_number` AS `sender_number`,`operation_withnumber`.`recipient_Fname` AS `recipient_Fname`,`operation_withnumber`.`recipient_Sname` AS `recipient_Sname`,`operation_withnumber`.`recipient_Lname` AS `recipient_Lname`,`operation_withnumber`.`recipient_mail` AS `recipient_mail`,`operation_withnumber`.`recipient_number` AS `recipient_number`,`operation_withnumber`.`dimension_title` AS `dimension_title`,`operation_withnumber`.`status` AS `status`,`operation_withnumber`.`status_date` AS `status_date`,`operation_withnumber`.`actionstorage_id` AS `actionstorage_id` from (select `packages`.`package_id` AS `package_id`,`packages`.`weight` AS `weight`,`unitof_weight`.`unitof_weight_title` AS `weight_unit`,`packages`.`sender_Fname` AS `sender_Fname`,`packages`.`sender_Sname` AS `sender_Sname`,`packages`.`sender_Lname` AS `sender_Lname`,`packages`.`sender_mail` AS `sender_mail`,`packages`.`sender_number` AS `sender_number`,`packages`.`recipient_Fname` AS `recipient_Fname`,`packages`.`recipient_Sname` AS `recipient_Sname`,`packages`.`recipient_Lname` AS `recipient_Lname`,`packages`.`recipient_mail` AS `recipient_mail`,`packages`.`recipient_number` AS `recipient_number`,`dimensions`.`dimension_title` AS `dimension_title`,`pkg_operations_withtype`.`type` AS `status`,`pkg_operations_withtype`.`actionstorage_id` AS `actionstorage_id`,`pkg_operations_withtype`.`operation_date` AS `status_date`,row_number() OVER (PARTITION BY `packages`.`package_id` ORDER BY `pkg_operations_withtype`.`operation_date` desc )  AS `numb` from (((`packages` join `pkg_operations_withtype` on((`pkg_operations_withtype`.`package_id` = `packages`.`package_id`))) left join `dimensions` on((`packages`.`dimension_id` = `dimensions`.`dimension_id`))) left join `unitof_weight` on((`packages`.`unitof_weight_id` = `unitof_weight`.`unitof_weight_id`)))) `operation_withnumber` where (`operation_withnumber`.`numb` = 1) */;
+/*!50001 VIEW `packages_withstatus` AS select `operation_withnumber`.`package_id` AS `package_id`,`operation_withnumber`.`weight` AS `weight`,`operation_withnumber`.`weight_unit` AS `weight_unit`,`operation_withnumber`.`sender_Fname` AS `sender_Fname`,`operation_withnumber`.`sender_Sname` AS `sender_Sname`,`operation_withnumber`.`sender_Lname` AS `sender_Lname`,`operation_withnumber`.`sender_mail` AS `sender_mail`,`operation_withnumber`.`sender_number` AS `sender_number`,`operation_withnumber`.`recipient_Fname` AS `recipient_Fname`,`operation_withnumber`.`recipient_Sname` AS `recipient_Sname`,`operation_withnumber`.`recipient_Lname` AS `recipient_Lname`,`operation_withnumber`.`recipient_mail` AS `recipient_mail`,`operation_withnumber`.`recipient_number` AS `recipient_number`,`operation_withnumber`.`dimension_title` AS `dimension_title`,`operation_withnumber`.`status` AS `status`,`operation_withnumber`.`status_date` AS `status_date`,`operation_withnumber`.`actionstorage_id` AS `actionstorage_id`,`operation_withnumber`.`destination_storage_id` AS `destination_storage_id` from (select `packages`.`package_id` AS `package_id`,`packages`.`weight` AS `weight`,`unitof_weight`.`unitof_weight_title` AS `weight_unit`,`packages`.`sender_Fname` AS `sender_Fname`,`packages`.`sender_Sname` AS `sender_Sname`,`packages`.`sender_Lname` AS `sender_Lname`,`packages`.`sender_mail` AS `sender_mail`,`packages`.`sender_number` AS `sender_number`,`packages`.`recipient_Fname` AS `recipient_Fname`,`packages`.`recipient_Sname` AS `recipient_Sname`,`packages`.`recipient_Lname` AS `recipient_Lname`,`packages`.`recipient_mail` AS `recipient_mail`,`packages`.`recipient_number` AS `recipient_number`,`dimensions`.`dimension_title` AS `dimension_title`,`pkg_operations_withtype`.`type` AS `status`,`pkg_operations_withtype`.`actionstorage_id` AS `actionstorage_id`,`pkg_operations_withtype`.`operation_date` AS `status_date`,`packages`.`destination_storage_id` AS `destination_storage_id`,row_number() OVER (PARTITION BY `packages`.`package_id` ORDER BY `pkg_operations_withtype`.`operation_date` desc )  AS `numb` from (((`packages` join `pkg_operations_withtype` on((`pkg_operations_withtype`.`package_id` = `packages`.`package_id`))) left join `dimensions` on((`packages`.`dimension_id` = `dimensions`.`dimension_id`))) left join `unitof_weight` on((`packages`.`unitof_weight_id` = `unitof_weight`.`unitof_weight_id`)))) `operation_withnumber` where (`operation_withnumber`.`numb` = 1) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -397,7 +410,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `users_withroles` AS select `users`.`user_id` AS `user_id`,`users`.`storage_id` AS `storage_id`,`users`.`role_id` AS `role_id`,`user_roles`.`role` AS `role`,`users`.`login` AS `login`,`users`.`password` AS `password`,`users`.`first_name` AS `first_name`,`users`.`last_name` AS `last_name`,`users`.`phone_num` AS `phone_num` from (`users` join `user_roles` on((`users`.`role_id` = `user_roles`.`role_id`))) */;
+/*!50001 VIEW `users_withroles` AS select `users`.`user_id` AS `user_id`,`users`.`storage_id` AS `storage_id`,`users`.`role_id` AS `role_id`,`user_roles`.`role` AS `role`,`users`.`login` AS `login`,`users`.`password` AS `password`,`users`.`first_name` AS `first_name`,`users`.`last_name` AS `last_name`,`users`.`phone_num` AS `phone_num`,`users`.`enable` AS `enable` from (`users` join `user_roles` on((`users`.`role_id` = `user_roles`.`role_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -411,4 +424,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-31  4:34:23
+-- Dump completed on 2025-06-10  0:42:48

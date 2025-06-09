@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекинг посылки</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px; /* Отступы от краев экрана */
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column; /* Элементы в колонку */
+            justify-content: center; /* Центрируем содержимое по вертикали */
+            align-items: center; /* Центрируем по горизонтали */
+            min-height: 100vh; /* Занимаем всю высоту экрана */
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            width: 100%; /* Занимаем всю доступную ширину */
+            max-width: 450px; /* Ограничиваем максимальную ширину на больших экранах, но переопределим это для мобильных */
+            text-align: center;
+            border: 1px solid #e5e5e5;
+            
+            /* Новые стили для растягивания на мобильных */
+            min-height: calc(100vh - 40px); /* Минимальная высота: вся высота экрана минус padding body (20px сверху + 20px снизу) */
+            display: flex; /* Делаем контейнер тоже flex-контейнером */
+            flex-direction: column; /* Элементы внутри контейнера располагаем в колонку */
+            justify-content: space-between; /* Распределяем пространство между элементами */
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.95em;
+            text-align: left;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #response-section {
+            margin-top: auto; /* Прижимает этот блок к низу flex-контейнера */
+            text-align: left;
+            flex-grow: 1; /* Позволяет блоку занимать все доступное пространство */
+            display: flex; /* Делаем flex для содержимого результата */
+            flex-direction: column;
+        }
+        
+        #response-section h2 {
+            margin-top: 0; /* Убираем лишний верхний отступ, так как margin-top: auto у родителя */
+            margin-bottom: 10px;
+            flex-shrink: 0; /* Запрещаем сжиматься */
+        }
+
+        #response {
+            padding: 15px;
+            background-color: #fdfdfd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #ddd;
+            color: #444;
+            font-size: 0.95em;
+            line-height: 1.5;
+            min-height: 80px;
+            overflow-y: auto;
+            flex-grow: 1; /* Позволяет блоку ответа растягиваться */
+            display: flex; /* Flex-контейнер для текста ответа */
+            align-items: center; /* Центрируем текст вертикально, если его мало */
+            justify-content: center; /* Центрируем текст горизонтально, если его мало */
+        }
+
+        #error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            font-weight: 500;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                padding: 40px;
+            }
+            .container {
+                padding: 35px 40px;
+                max-width: 550px;
+                min-height: auto; /* Убираем полную высоту на десктопе */
+                justify-content: flex-start; /* На десктопе выравниваем элементы к началу */
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            label {
+                font-size: 1.1em;
+            }
+            input[type="number"] {
+                padding: 12px;
+                font-size: 1.1em;
+            }
+            button {
+                padding: 14px 25px;
+                font-size: 1.1em;
+            }
+            #response {
+                padding: 20px;
+                font-size: 1.05em;
+                min-height: 120px;
+                max-height: 400px;
+                align-items: flex-start; /* Снова выравниваем текст к верху */
+                justify-content: flex-start; /* Снова выравниваем текст к левому краю */
+            }
+            #error-message {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Трекинг посылки</h1>
+
+        <label for="packageId">Введите ID посылки:</label>
+        <input type="number" id="packageId" placeholder="Например, 12345">
+        
+        <button onclick="getPackageTracking()">Получить трекинг</button>
+        
+        <div id="error-message"></div>
+
+        <div id="response-section">
+            <h2>Результат:</h2>
+            <div id="response">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function getPackageTracking() {
+            const packageIdInput = document.getElementById('packageId');
+            const responseDiv = document.getElementById('response');
+            const errorMessageDiv = document.getElementById('error-message');
+            const packageId = packageIdInput.value;
+
+            responseDiv.textContent = 'Загрузка...';
+            responseDiv.style.color = '#888';
+            errorMessageDiv.textContent = '';
+
+            if (!packageId) {
+                errorMessageDiv.textContent = 'Пожалуйста, введите ID посылки.';
+                responseDiv.textContent = '';
+                responseDiv.style.color = '#495057';
+                return;
+            }
+
+            const apiBaseUrl = "https://localhost:7005";
+            const apiUrl = `${apiBaseUrl}/Packages/GetPackageTracking?packageId=${packageId}`;
+
+            try {
+                const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    const errorDetails = await response.text();
+                    errorMessageDiv.textContent = `Ошибка: ${response.status} - ${errorDetails || 'Неизвестная ошибка API'}`;
+                    responseDiv.textContent = 'Не удалось получить данные.';
+                    responseDiv.style.color = '#dc3545';
+                    return;
+                }
+
+                const data = await response.text();
+
+                responseDiv.textContent = data;
+                responseDiv.style.color = '#495057';
+
+            } catch (error) {
+                console.error('Ошибка при выполнении запроса:', error);
+                errorMessageDiv.textContent = `Не удалось подключиться к API. Убедитесь, что он запущен и доступен по адресу: ${apiBaseUrl}`;
+                responseDiv.textContent = 'Ошибка подключения.';
+                responseDiv.style.color = '#dc3545';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -32,7 +32,7 @@
                 </Label.Foreground>
             </Label>
             <Label FontSize="20" Content="Просмотр складов" ToolTip="Отобразить список доступных складов" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_Storages" />
-            <Label FontSize="20" ToolTip="Отобразить товары, всех складов" Content="Просмотр посылок" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewUserControlsPage_Storages"  MouseRightButtonDown="ShowViewDatagridPage_Pkg" />
+            <Label FontSize="20" ToolTip="Отобразить товары, всех складов" Content="Просмотр посылок" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewPackageControlsPage_Storages"  MouseRightButtonDown="ShowViewDatagridPage_Pkg" />
             <Label FontSize="20" Content="Просмотр операций" ToolTip="Отобразить все операции" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Operation" />
             <Label FontSize="20" Content="Просмотр пользователей" ToolTip="Отобразить список пользователей системы" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowViewDatagridPage_Users" />
 
@@ -78,8 +78,8 @@
                     </LinearGradientBrush>
                 </Label.Foreground>
             </Label>
-            <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewUserControlsPage_StoragesFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
-            <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewDatagridPage_OperationFromMyStorage" />
+            <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewPackageControlsPage_StoragesFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
+            <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewOperationControlPage_OperationFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage"/>
             
             
             <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">

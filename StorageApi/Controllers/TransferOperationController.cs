@@ -101,7 +101,7 @@ namespace StorageApi.Controllers
 
                     if (TypeOfOperation == 2) //отправляем письмо что пришла посылка
                     {
-                        //Metods.SendPackageMail(package); //РАЗКОМЕНТИТЬ ДЛЯ ПИСЬМА
+                        Metods.SendPackageMail(package); //РАЗКОМЕНТИТЬ ДЛЯ ПИСЬМА
                         DbContext.SaveChanges();
                         return Ok("Сохранено успешно, письмо на получение отправлено");
                     }
@@ -113,6 +113,26 @@ namespace StorageApi.Controllers
             {
                     if (ex.InnerException.Message != null)
                 return BadRequest(ex.InnerException.Message);
+            }
+
+            return BadRequest("Не верный порядок операций");
+
+        }
+
+
+        [HttpPost("mailtest")]
+        public IActionResult mailtest()
+        {
+
+            try
+            {
+                Metods.SendPackageMail(default); 
+                DbContext.SaveChanges();
+                return Ok("Сохранено успешно, письмо на получение отправлено");
+            }
+
+            catch (Exception ex)
+            {
             }
 
             return BadRequest("Не верный порядок операций");

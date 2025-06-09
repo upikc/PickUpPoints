@@ -45,7 +45,6 @@ namespace StorageApi.Controllers
 
                 if (package == null)
                 {
-                    _logger.LogWarning("Посылка {PackageId} не найдена", packageId);
                     return NotFound($"Посылка {packageId} не найдена");
                 }
 
@@ -63,7 +62,6 @@ namespace StorageApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка при получении трекинг-информации для посылки {PackageId}", packageId);
                 return StatusCode(500, "Внутренняя ошибка сервера");
             }
         }
@@ -205,7 +203,7 @@ namespace StorageApi.Controllers
             SmtpClient smtpClient = new SmtpClient("smtp.yandex.ru")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("artemyusup@yandex.ru", "ZOID"),
+                Credentials = new NetworkCredential("artemyusup@yandex.ru", AppSettings.MailPassword),
                 EnableSsl = true,
             };
 
@@ -252,18 +250,16 @@ namespace StorageApi.Controllers
             sb.AppendLine($"📅 Дата последнего статуса: {package.StatusDate:dd.MM.yyyy HH:mm}");
             sb.AppendLine("----------------------------------------");
 
-            // Информация об отправителе
-            sb.AppendLine("\n📤 **Отправитель:**");
-            sb.AppendLine($"👤 {package.SenderLname} {package.SenderFname} {package.SenderSname}");
-            sb.AppendLine($"📧 {package.SenderMail}");
-            sb.AppendLine($"📞 {package.SenderNumber ?? "не указан"}");
+            //sb.AppendLine("\n📤 **Отправитель:**");
+            //sb.AppendLine($"👤 {package.SenderLname} {package.SenderFname} {package.SenderSname}");
+            //sb.AppendLine($"📧 {package.SenderMail}");
+            //sb.AppendLine($"📞 {package.SenderNumber ?? "не указан"}");
 
-            // Информация о получателе
-            sb.AppendLine("\n📥 **Получатель:**");
-            sb.AppendLine($"👤 {package.RecipientLname} {package.RecipientFname} {package.RecipientSname}");
-            sb.AppendLine($"📧 {package.RecipientMail}");
-            sb.AppendLine($"📞 {package.RecipientNumber ?? "не указан"}");
-            sb.AppendLine("----------------------------------------");
+            //sb.AppendLine("\n📥 **Получатель:**");
+            //sb.AppendLine($"👤 {package.RecipientLname} {package.RecipientFname} {package.RecipientSname}");
+            //sb.AppendLine($"📧 {package.RecipientMail}");
+            //sb.AppendLine($"📞 {package.RecipientNumber ?? "не указан"}");
+            //sb.AppendLine("----------------------------------------");
 
             // История операций
             sb.AppendLine("\n🕒 **История перемещений:**");

@@ -25,10 +25,16 @@
     <Compile Update="Pages\ProfilePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Pages\ViewOperationControlPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\ViewPackageControlsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Pages\СonfirmReceiptPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\OperationControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\PackageControl.xaml.cs">
@@ -60,10 +66,16 @@
     <Page Update="Pages\ProfilePage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Pages\ViewOperationControlPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Pages\ViewPackageControlsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\СonfirmReceiptPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UserControls\OperationControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UserControls\PackageControl.xaml">

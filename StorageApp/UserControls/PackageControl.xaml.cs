@@ -196,8 +196,12 @@ namespace StorageApp.UserControls
             Context.GenerateAndSaveBarcodeAsPdf(ThisPackage.PackageId.ToString(), @$"C:\Barcode_{ThisPackage.PackageId}.pdf", message);
             MessageBox.Show("Штрихкод создан!");
 
-            //Context.GenerateAndSaveReceiptAsPdf(ThisPackage, @$"C:\Квинтация_{ThisPackage.PackageId}.pdf");
-            //MessageBox.Show("Квитанция создана!");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Context.GenerateAndSaveReceiptAsPdf(ThisPackage, @$"C:\Квинтация_{ThisPackage.PackageId}.pdf");
+            MessageBox.Show("Квитанция создана!");
         }
     }
 }

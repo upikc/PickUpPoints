@@ -65,7 +65,7 @@ namespace StorageApp.Windows
 
         public void PKGSHOW()
         {
-            mainFrame.Content = new ViewUserControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
@@ -123,16 +123,16 @@ namespace StorageApp.Windows
             mainFrame.Content = new ViewDatagridPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
 
-        private void ShowViewUserControlsPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
+        private void ShowViewPackageControlsPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
         {
 
-            mainFrame.Content = new ViewUserControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
             
         }
 
-        private void ShowViewUserControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
+        private void ShowViewPackageControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
         {
-                mainFrame.Content = new ViewUserControlsPage(Context.getPackages().ToArray());
+                mainFrame.Content = new ViewPackageControlsPage(Context.getPackages().ToArray());
         }
 
 
@@ -143,6 +143,13 @@ namespace StorageApp.Windows
         {
             mainFrame.Content = new ViewDatagridPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToArray());
         }
+
+        private void ShowViewOperationControlPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)//по складу
+        {
+            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Where(x => x.ActionstorageId == User.StorageId).Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
+
+        }
+
         private void ShowСonfirmReceiptPage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new СonfirmReceiptPage(User);

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="StorageApp.UserControls.OperationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:StorageApp.UserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="60" d:DesignWidth="1200">
+    <Border BorderBrush="Black" BorderThickness="2" Padding="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="170"/>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="210"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Content="ID операции:" FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" x:Name="OperationIdText" FontSize="24"/>
+
+            <Label Grid.Row="0" Grid.Column="1" Content="ID посылки:" FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="PackageIdText" FontSize="24"/>
+
+            <Label Grid.Row="0" Grid.Column="2" Content="ID пользователя:" FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" x:Name="UserIdText" FontSize="24"/>
+
+            <Label Grid.Row="0" Grid.Column="3" Content="Тип:   " FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="3" x:Name="TypeText" FontSize="24"/>
+
+            <Label Grid.Row="0" Grid.Column="4" Content="Дата операции:" FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="4" x:Name="OperationDateText" FontSize="24"/>
+
+            <Label Grid.Row="0" Grid.Column="5" Content="ID склада:" FontWeight="Bold" Margin="5,0,5,0" FontSize="24"/>
+            <TextBlock Grid.Row="1" Grid.Column="5" x:Name="CommandingStorageIdText" FontSize="24"/>
+        </Grid>
+    </Border>
+</UserControl>
