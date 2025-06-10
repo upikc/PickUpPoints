@@ -52,19 +52,12 @@ namespace StorageApp.Windows
 
         private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            
-
-
-
-
 
             if (dataGrid.ItemsSource.GetType() == typeof(StorageApp.Model.Package[]))
             {
                 Model.Package package = dataGrid.SelectedItem as Model.Package;
                 if (package == null)
                     return;
-
 
                 int id = package.PackageId;
                 Operation[] operations = Context.getOperations();
@@ -140,6 +133,11 @@ namespace StorageApp.Windows
 
                 //Context.GenerateAndSaveQRCodeAsPdf(qrText, @$"C:\qrcode_{}.pdf");
 
+            }// ДАТАГРИД нажали на посылку
+
+            else // тут нажмем на другое
+            {
+
             }
         }
 
@@ -155,7 +153,8 @@ namespace StorageApp.Windows
                     "roleid",
                     "actionstorageId",
                     "commandingstorageId",
-                    "typeid"
+                    "typeid",
+                    "enable"
                 };
 
             if (columnsToHide.Contains(e.PropertyName.ToLower()))

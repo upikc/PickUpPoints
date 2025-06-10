@@ -317,7 +317,14 @@ namespace StorageApp
             { "firstname", "Имя" },
             { "lastname", "Фамилия" },
             { "phonenum", "Номер Телефона" },
+            { "StatusText", "Статус"},
 
+        };
+
+        static public Dictionary<string, string> EnDisTranslater = new Dictionary<string, string>()
+        {
+            { "1", "Активен"},
+            { "0", "Отключен"}
         };
 
         public static void GenerateAndSaveBarcodeAsPdf(string text, string pdfPath, string message)

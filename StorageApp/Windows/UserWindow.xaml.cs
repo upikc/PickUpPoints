@@ -96,7 +96,7 @@ namespace StorageApp.Windows
         }
         private void ShowViewDatagridPage_Users(object sender, MouseButtonEventArgs e)
         {
-            mainFrame.Content = new ViewDatagridPage(Context.getUsers().Select(x => { x.Role = Context.roleTranslate[x.Role.ToLower()]; x.Password = "****"; return x; }));
+            mainFrame.Content = new ViewDatagridPage(Context.getUsers().Select(x => { x.Role = Context.roleTranslate[x.Role.ToLower()]; x.Password = "****"; ; x.Password = "****"; return x; }));
         }
 
         private void ShowCreateNewStoragePage(object sender, MouseButtonEventArgs e)
