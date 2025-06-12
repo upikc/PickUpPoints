@@ -26,29 +26,18 @@ namespace StorageApp.UserControls
 
         private void PopulatePackageData(Model.Package package)
         {
-            // Заголовок
             txtPackageId.Text = $"📦 Посылка #{package.PackageId}";
-
-            // Вес
             txtWeight.Text = $"{package.Weight} {package.WeightUnit ?? ""}".Trim();
-
-            // Отправитель
             txtSender.Text = FormatPersonInfo(
                 package.senderFullName(),
                 package.SenderMail,
                 package.SenderNumber);
-
-            // Получатель
             txtRecipient.Text = FormatPersonInfo(
                 package.recipientFullName(),
                 package.RecipientMail,
                 package.RecipientNumber);
-
-            // Габариты
             txtDimensions.Text = package.DimensionTitle ?? "Не указаны";
 
-            // Статус
-            // Используем словарь для перевода статуса
             string translatedStatus = TranslateStatus(package.Status);
             txtStatus.Text = $"{translatedStatus} (обновлен: {package.StatusDate:dd.MM.yyyy HH:mm})";
 
@@ -114,17 +103,13 @@ namespace StorageApp.UserControls
             {
                 return "Не указан";
             }
-            // Пытаемся получить перевод из словаря
-            // Приводим ключ к нижнему регистру для соответствия ключам словаря
             if (Context.statusTranslate.TryGetValue(statusKey.ToLower(), out string? translatedValue))
             {
                 return translatedValue;
             }
-            // Если перевод не найден, возвращаем исходный ключ
             return statusKey;
         }
 
-        // Вспомогательные методы (без изменений)
         private string FormatPersonInfo(string fullName, string email, string phone)
         {
             var result = $"👤 {fullName}";
@@ -142,10 +127,9 @@ namespace StorageApp.UserControls
 
         private string FormatPhoneNumber(string phone)
         {
-            // Форматирование номера телефона для 11-значных номеров
             return phone.Length == 11
                 ? $"+{phone[0]} ({phone.Substring(1, 3)}) {phone.Substring(4, 3)}-{phone.Substring(7, 2)}-{phone.Substring(9)}"
-                : phone; // Возвращаем как есть, если длина не 11
+                : phone; 
         }
 
         private void UpdateTextBlockColor(string status)
@@ -154,13 +138,13 @@ namespace StorageApp.UserControls
 
             switch (status)
             {
-                case "обьявлен":
+                case "создана":
                     brush = (SolidColorBrush)Application.Current.Resources["DeclareStatusColor"];
                     break;
                 case "в пути на пвз":
                     brush = (SolidColorBrush)Application.Current.Resources["TransferStatusColor"];
                     break;
-                case "получен на пвз":
+                case "получена на пвз":
                     brush = (SolidColorBrush)Application.Current.Resources["ReceivedStatusColor"];
                     break;
                 case "выдана":

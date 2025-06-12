@@ -24,9 +24,9 @@
             <ComboBox x:Name="filterBox"
                       Width="300"
                       FontSize="38" SelectionChanged="FilterBox_SelectionChanged">
-                <ComboBoxItem>обьявлен</ComboBoxItem>
+                <ComboBoxItem>создана</ComboBoxItem>
                 <ComboBoxItem>в пути на пвз</ComboBoxItem>
-                <ComboBoxItem>получен на пвз</ComboBoxItem>
+                <ComboBoxItem>получена на пвз</ComboBoxItem>
                 <ComboBoxItem>выдана</ComboBoxItem>
                 <ComboBoxItem>все статусы</ComboBoxItem>
             </ComboBox>

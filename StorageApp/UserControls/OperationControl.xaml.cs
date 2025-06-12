@@ -44,9 +44,23 @@ namespace StorageApp.UserControls
 
             TypeText.Text = operation.Type.ToString();
 
+            //если тип будет отправлен, нужно вывести адресс куда
+            if(operation.Type.ToString() == "в пути на пвз")
+            {
+                TypeText.Text = "отправлена";
+                transferAdress.Text = operation.StorageAddress;
+
+            }
+            else
+            {
+                transferAdressLABEL.Visibility = Visibility.Hidden;
+                transferAdress.Visibility = Visibility.Hidden;
+            }
+
+
             OperationDateText.Text = operation.OperationDate.ToString();
 
-            CommandingStorageIdText.Text = operation.CommandingstorageId.ToString();
+            CommandingStorageAddress.Text = operation.CommandingStorageAddress.ToString();
         }
 
         public Model.Operation GetOperation()
@@ -60,6 +74,33 @@ namespace StorageApp.UserControls
         public string GetDate()
         {
             return OperationDateText.Text;
+        }
+        private void CopyTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                Clipboard.SetText(textBlock.Text);
+                MessageBox.Show("Текст скопирован в буфер обмена.");
+            }
+        }
+
+        private void CopyTextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                textBlock.Cursor = Cursors.Hand;
+            }
+        }
+
+        private void CopyTextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var textBlock = sender as TextBlock;
+            if (textBlock != null)
+            {
+                textBlock.Cursor = Cursors.Arrow;
+            }
         }
     }
 }

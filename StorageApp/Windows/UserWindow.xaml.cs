@@ -132,7 +132,7 @@ namespace StorageApp.Windows
 
         private void ShowViewPackageControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
         {
-                mainFrame.Content = new ViewPackageControlsPage(Context.getPackages().ToArray());
+                mainFrame.Content = new ViewPackageControlsPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
 
 
@@ -146,7 +146,12 @@ namespace StorageApp.Windows
 
         private void ShowViewOperationControlPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)//по складу
         {
-            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Where(x => x.ActionstorageId == User.StorageId).Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
+            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Where(x => x.CommandingstorageId == User.StorageId).Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
+        }
+
+        private void ShowViewOperationControlPage(object sender, MouseButtonEventArgs e)//админ
+        {
+            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
 
         }
 

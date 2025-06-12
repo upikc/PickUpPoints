@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:StorageApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="1200"
+      d:DesignHeight="600" d:DesignWidth="1400"
       Title="ViewOperationControlPage">
 
     <Grid>
@@ -25,12 +25,22 @@
 
             <ComboBox x:Name="filterBox"
                   Width="300"
-                  FontSize="38" SelectionChanged="FilterBox_SelectionChanged">
-                <ComboBoxItem>обьявлен</ComboBoxItem>
+                  FontSize="38" SelectionChanged="FilterBox_SelectionChanged"
+                  Margin="0,0,20,0">
+                <ComboBoxItem>создана</ComboBoxItem>
                 <ComboBoxItem>в пути на пвз</ComboBoxItem>
-                <ComboBoxItem>получен на пвз</ComboBoxItem>
+                <ComboBoxItem>получена на пвз</ComboBoxItem>
                 <ComboBoxItem>выдана</ComboBoxItem>
                 <ComboBoxItem>все статусы</ComboBoxItem>
+            </ComboBox>
+
+            <ComboBox x:Name="sortBox"
+                Width="300"
+                FontSize="38" SelectionChanged="FilterBox_SelectionChanged">
+                <ComboBoxItem>по дате ↑</ComboBoxItem>
+                <ComboBoxItem>по дате ↓</ComboBoxItem>
+                <ComboBoxItem>по фио ↑</ComboBoxItem>
+                <ComboBoxItem>по фио ↓</ComboBoxItem>
             </ComboBox>
         </StackPanel>
 

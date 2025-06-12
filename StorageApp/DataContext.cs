@@ -243,21 +243,21 @@ namespace StorageApp
 
         static public Dictionary<string, string> statusTranslate = new Dictionary<string, string>()
         {
-            { "declare", "обьявлен"},
+            { "declare", "создана"},
             { "transfer", "в пути на пвз"},
-            { "received", "получен на пвз"},
+            { "received", "получена на пвз"},
             { "issue", "выдана"},
-            { "обьявлен", "обьявлен"},
+            { "создана", "создана"},
             { "в пути на пвз", "в пути на пвз"},
-            { "получен на пвз", "получен на пвз"},
+            { "получена на пвз", "получена на пвз"},
             { "выдана", "выдана"}
         };
 
         static public Dictionary<string, string> roleTranslate = new Dictionary<string, string>()
         {
-            { "manager", "администратор"},
+            { "manager", "Администратор"},
             { "storekeeper", "оператор распределительного центра"},
-            { "администратор", "администратор"},
+            { "администратор", "Администратор"},
             { "оператор распределительного центра", "оператор распределительного центра"},
         };
 
@@ -273,7 +273,7 @@ namespace StorageApp
 {
             //склады
             { "storageid", "Номер склада" },
-            { "storageaddr", "Адрес склада" },
+            { "storageaddr", "Адрес пункта выдачи" },
     
             //посылки
             { "packageid", "Номер посылки" },
@@ -309,7 +309,7 @@ namespace StorageApp
             { "commandingstorageid", "Номер склада исполнителя" },
 
             //пользователи
-            { "STORAGEID", "Номер склада" },
+            { "STORAGEID", "Номер ПВЗ" },
             { "roleid", "Номер роли" },
             { "role", "Роль" },
             { "login", "Логин" },
@@ -345,8 +345,9 @@ namespace StorageApp
                 }
                 else
                 {
-                    Console.WriteLine($"Warning: arial.ttf not found at '{fontPath}' or '{localArialPath}'. " +
-                                      "Cyrillic text might not display correctly without a suitable font.");
+                    Console.WriteLine($"Предупреждение: файл arial.ttf не найден по пути '{fontPath}' или '{localArialPath}'. " +
+                  "Текст на кириллице может отображаться некорректно без подходящего шрифта.");
+
                     fontPath = null;
                 }
             }
@@ -363,13 +364,13 @@ namespace StorageApp
                 else
                 {
                     baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
-                    System.Diagnostics.Debug.WriteLine("Fallback to HELVETICA with CP1250 due to missing Arial. Cyrillic support might be limited.");
+                    System.Diagnostics.Debug.WriteLine("Переход на шрифт HELVETICA с кодировкой CP1250 из-за отсутствия Arial. Поддержка кириллицы может быть ограничена.");
                 }
                 russianFont = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error creating font: {ex.Message}. Falling back to default.");
+                System.Diagnostics.Debug.WriteLine($"Ошибка при создании шрифта: {ex.Message}. Возврат к шрифту по умолчанию.");
                 russianFont = FontFactory.GetFont(FontFactory.HELVETICA, BaseFont.CP1252, BaseFont.EMBEDDED);
             }
 

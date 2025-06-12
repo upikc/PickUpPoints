@@ -22,6 +22,9 @@ public partial class User
 
     public string PhoneNum { get; set; }
 
+
+    public string Fullname { get { return $"{FirstName} {LastName}"; } }
+
     //public int Enable { get; set; } // 1 активен
 
     public User(  string login, string password, string firstName, string lastName, string phoneNum, int roleId, int storageId)

@@ -20,76 +20,107 @@ namespace StorageApp.Pages
     public partial class ViewOperationControlPage : Page
     {
         private List<Model.Operation> _allOperations;
+        private List<Model.Operation> _filteredAndSortedOperations;
+
         public ViewOperationControlPage(List<Model.Operation> allOperations)
         {
             InitializeComponent();
 
             filterBox.SelectedIndex = 4;
+            sortBox.SelectedIndex = 1;
 
             if (allOperations is IEnumerable<Model.Operation> operations)
             {
                 filterBox.Visibility = Visibility.Visible;
                 _allOperations = operations.ToList();
-
-                foreach (Model.Operation Opp in _allOperations)
-                {
-                    MainListView.Items.Add(new OperationControl(Opp));
-                }
+                ApplyFiltersAndSorting();
             }
-
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ApplyFilters();
+            ApplyFiltersAndSorting();
         }
 
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ApplyFilters();
+            ApplyFiltersAndSorting();
         }
 
-        private void ApplyFilters()
+        private void SortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ApplyFiltersAndSorting();
+        }
+
+        private void ApplyFiltersAndSorting()
+        {
+            if (_allOperations == null)
+                return;
+
+
+            IEnumerable<Model.Operation> tempOperations = _allOperations;
+
             string searchText = SearchBox.Text.ToLower().Trim();
             string selectedStatus = (filterBox.SelectedItem as ComboBoxItem)?.Content.ToString().ToLower();
 
-            foreach (UserControls.OperationControl operationControl in MainListView.Items)
+
+            if (!string.IsNullOrEmpty(searchText))
             {
-                var operation = operationControl.GetOperation();
-
-                var currentStorage = Context.getStorages().FirstOrDefault(x => x.storageId == operation.ActionstorageId);
-
-                bool isTextMatch =
-                    string.IsNullOrEmpty(searchText) ||
-                    operationControl.GetAllName().ToString().Contains(searchText) ||
-                    (operationControl.GetDate().ToLower().Contains(searchText));
-
-
-                // фильтрация по статусу
-                bool isStatusMatch = false;
-                if (selectedStatus == "все статусы" || string.IsNullOrEmpty(selectedStatus))
+                tempOperations = tempOperations.Where(operation =>
                 {
-                    isStatusMatch = true;
-                }
-                else
+                    string operationType = operation.Type?.ToLower() ?? string.Empty;
+                    string operationDateStr = operation.OperationDate.ToString("dd.MM.yyyy").ToLower();
+                    string userStr = operation.UserFullname.ToLower() ?? string.Empty;
+                    string idString = operation.PackageId.ToString() ?? string.Empty;
+
+                    return operationType.Contains(searchText) ||
+                           operationDateStr.Contains(searchText) ||
+                           userStr.Contains(searchText) ||
+                           idString.Contains(searchText);
+                });
+            }
+
+            if (selectedStatus != "все статусы" && !string.IsNullOrEmpty(selectedStatus))
+            {
+                tempOperations = tempOperations.Where(operation =>
                 {
                     string status = operation.Type.ToLower();
                     string translatedStatus = Context.statusTranslate.ContainsKey(status) ? Context.statusTranslate[status] : status;
+                    return translatedStatus == selectedStatus;
+                });
+            }
 
-                    isStatusMatch = translatedStatus == selectedStatus;
-                }
-                operationControl.Visibility = (/*isTextMatch &&*/ isStatusMatch) ? Visibility.Visible : Visibility.Collapsed;
+            string selectedSort = (sortBox.SelectedItem as ComboBoxItem)?.Content.ToString();
 
+            if (_allOperations == null)
+                return;
 
-                ///скрыть элемент содержащий packageControl
-                ListViewItem container = (ListViewItem)MainListView.ItemContainerGenerator.ContainerFromItem(operationControl);
-                if (container != null)
-                    container.Visibility = (/*isTextMatch &&*/ isStatusMatch) ? Visibility.Visible : Visibility.Collapsed;
+            switch (selectedSort)
+            {
+                case "по дате ↑":
+                    tempOperations = tempOperations.OrderBy(op => op.OperationDate);
+                    break;
+                case "по дате ↓":
+                    tempOperations = tempOperations.OrderByDescending(op => op.OperationDate);
+                    break;
+                case "по фио ↑":
+                    tempOperations = tempOperations.OrderBy(op => op.UserId);
+                    break;
+                case "по фио ↓":
+                    tempOperations = tempOperations.OrderByDescending(op => op.UserId);
+                    break;
+                default:
+                    tempOperations = tempOperations.OrderByDescending(op => op.OperationDate);
+                    break;
+            }
 
+            _filteredAndSortedOperations = tempOperations.ToList();
 
+            MainListView.Items.Clear();
+            foreach (Model.Operation op in _filteredAndSortedOperations)
+            {
+                MainListView.Items.Add(new OperationControl(op));
             }
         }
-
     }
 }
