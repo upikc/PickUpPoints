@@ -132,7 +132,7 @@ namespace StorageApp.Pages
             try
             {
                 Package newPack = Context.getPackages().Last(x => x.ActionstorageId == (Context.getUsers().First(x => x.UserId == userId)).StorageId);
-                Context.GenerateAndSaveReceiptAsPdf(newPack, @$"C:\Квинтация_{newPack.PackageId}.pdf");
+                Context.GenerateAndSaveReceiptAsPdf(newPack, Context.MakeDockFilePath(@$"Квинтация_{newPack.PackageId}.pdf"));
             }
             catch { MessageBox.Show("Проблема с генерацией квитанции"); }
 

@@ -608,5 +608,15 @@ namespace StorageApp
             }
         }
 
+        public static string MakeDockFilePath(string fileName)
+        {
+            string dockPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+            string filePath = System.IO.Path.Combine(dockPath, fileName);
+
+            return filePath;
+        }
+
+
+
     }
 }

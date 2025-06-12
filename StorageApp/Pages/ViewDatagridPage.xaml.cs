@@ -259,7 +259,7 @@ namespace StorageApp.Windows
 
             qrButton.Click += (sender, e) =>
             {
-                Context.GenerateAndSaveBarcodeAsPdf(packId, @$"C:\Barcode_{packId}.pdf" , message);
+                Context.GenerateAndSaveBarcodeAsPdf(packId, Context.MakeDockFilePath(@$"Barcode_{packId}.pdf") , message);
                 MessageBox.Show("QR-код создан!");
             };
 

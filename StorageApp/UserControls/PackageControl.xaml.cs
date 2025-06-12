@@ -193,14 +193,16 @@ namespace StorageApp.UserControls
                 Email: {ThisPackage.RecipientMail}";
 
 
-            Context.GenerateAndSaveBarcodeAsPdf(ThisPackage.PackageId.ToString(), @$"C:\Barcode_{ThisPackage.PackageId}.pdf", message);
+            Context.GenerateAndSaveBarcodeAsPdf(ThisPackage.PackageId.ToString(), Context.MakeDockFilePath(@$"Barcode_{ThisPackage.PackageId}.pdf"), message);
             MessageBox.Show("Штрихкод создан!");
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Context.GenerateAndSaveReceiptAsPdf(ThisPackage, @$"C:\Квинтация_{ThisPackage.PackageId}.pdf");
+
+
+            Context.GenerateAndSaveReceiptAsPdf(ThisPackage, Context.MakeDockFilePath(@$"Квинтация_{ThisPackage.PackageId}.pdf"));
             MessageBox.Show("Квитанция создана!");
         }
     }
