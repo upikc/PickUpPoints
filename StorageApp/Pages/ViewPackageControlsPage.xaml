@@ -22,13 +22,22 @@
                      Margin="0,0,20,0" TextChanged="SearchBox_TextChanged" />
 
             <ComboBox x:Name="filterBox"
-                      Width="300"
-                      FontSize="38" SelectionChanged="FilterBox_SelectionChanged">
+                      Width="320"
+                      FontSize="38"
+                      Margin="0,0,20,0" SelectionChanged="FilterBox_SelectionChanged">
                 <ComboBoxItem>создана</ComboBoxItem>
                 <ComboBoxItem>в пути на пвз</ComboBoxItem>
                 <ComboBoxItem>получена на пвз</ComboBoxItem>
                 <ComboBoxItem>выдана</ComboBoxItem>
                 <ComboBoxItem>все статусы</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="sortBox"
+                Width="300"
+                FontSize="38" SelectionChanged="FilterBox_SelectionChanged">
+                <ComboBoxItem>по дате ↑</ComboBoxItem>
+                <ComboBoxItem>по дате ↓</ComboBoxItem>
+                <ComboBoxItem>по фио ↑</ComboBoxItem>
+                <ComboBoxItem>по фио ↓</ComboBoxItem>
             </ComboBox>
         </StackPanel>
 

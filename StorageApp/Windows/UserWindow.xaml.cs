@@ -65,7 +65,7 @@ namespace StorageApp.Windows
 
         public void PKGSHOW()
         {
-            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray() , User , this);
         }
         private void ShowViewDatagridPage_Operation(object sender, MouseButtonEventArgs e)
         {
@@ -123,16 +123,16 @@ namespace StorageApp.Windows
             mainFrame.Content = new ViewDatagridPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
         }
 
-        private void ShowViewPackageControlsPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
+        public void ShowViewPackageControlsPage_StoragesFromMyStorage(object sender, MouseButtonEventArgs e)
         {
 
-            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+            mainFrame.Content = new ViewPackageControlsPage(Context.getPackagesFromStorage(User.StorageId).Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray() , User , this);
             
         }
 
-        private void ShowViewPackageControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
+        public void ShowViewPackageControlsPage_Storages(object sender, MouseButtonEventArgs e)//админ
         {
-                mainFrame.Content = new ViewPackageControlsPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray());
+                mainFrame.Content = new ViewPackageControlsPage(Context.getPackages().Select(x => { x.Status = Context.statusTranslate[x.Status.ToLower()]; return x; }).ToArray() , User , this);
         }
 
 
@@ -146,13 +146,12 @@ namespace StorageApp.Windows
 
         private void ShowViewOperationControlPage_OperationFromMyStorage(object sender, MouseButtonEventArgs e)//по складу
         {
-            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Where(x => x.CommandingstorageId == User.StorageId).Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
+            mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Where(x => x.CommandingstorageId == User.StorageId || x.ActionstorageId == User.StorageId).Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
         }
 
         private void ShowViewOperationControlPage(object sender, MouseButtonEventArgs e)//админ
         {
             mainFrame.Content = new ViewOperationControlPage(Context.getOperations().Select(x => { x.Type = Context.statusTranslate[x.Type.ToLower()]; return x; }).ToList());
-
         }
 
         private void ShowСonfirmReceiptPage(object sender, MouseButtonEventArgs e)
@@ -162,6 +161,11 @@ namespace StorageApp.Windows
         private void ShowConfirmIssuePage(object sender, MouseButtonEventArgs e)
         {
             mainFrame.Content = new ConfirmIssuePage(User);
+        }
+
+        private void ShowConfirmPackTransferPage(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Content = new ConfirmPackTransferPage(User , this);
         }
     }
 }

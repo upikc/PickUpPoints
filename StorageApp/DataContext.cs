@@ -18,6 +18,7 @@ using System.Drawing.Imaging;
 using System;
 using BarcodeStandard;
 using SkiaSharp;
+using ControlzEx.Standard;
 
 namespace StorageApp
 {
@@ -213,6 +214,28 @@ namespace StorageApp
             return response;
         }
 
+        static public async Task<HttpResponseMessage> ChangeUserPasswordAsync(int userId, string newPassword)
+        {
+
+            using var httpClient = new HttpClient();
+            string requestUrl = $"{host}/User/UserPasswordChange?userId={userId}&newPass={newPassword}";
+
+            var response = await httpClient.PostAsync(requestUrl, null);
+            if (!response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("Error response: " + responseBody);
+            }
+            return response;
+        }
+
+
+
+
+
+
+
+
         static public bool ContainsNullOrWhiteSpace(string[] array)
         {
             if (array == null)
@@ -318,6 +341,8 @@ namespace StorageApp
             { "lastname", "Фамилия" },
             { "phonenum", "Номер Телефона" },
             { "StatusText", "Статус"},
+            { "storageaddress", "Адресс склада"},
+            { "fullname", "Имя Фамилия"}
 
         };
 
@@ -555,7 +580,6 @@ namespace StorageApp
 
                 document.Open();
 
-                // Generate barcode image
                 Bitmap barcodeImage = GenerateBarcode(pack.PackageId.ToString());
                 MemoryStream imageStream = new MemoryStream();
                 barcodeImage.Save(imageStream, System.Drawing.Imaging.ImageFormat.Png);
@@ -572,7 +596,6 @@ namespace StorageApp
 
                 document.Add(pdfImage);
 
-                // Add package details
                 document.Add(new Paragraph("\n"));
                 document.Add(new Paragraph($"Отправитель: {pack.senderFullName()}", russianFont) { Alignment = Element.ALIGN_LEFT });
                 document.Add(new Paragraph($"Получатель: {pack.recipientFullName()}", russianFont) { Alignment = Element.ALIGN_LEFT });
@@ -580,7 +603,6 @@ namespace StorageApp
                 document.Add(new Paragraph($"Размер: {pack.DimensionTitle}", russianFont) { Alignment = Element.ALIGN_LEFT });
                 document.Add(new Paragraph($"Дата обьявления: {Context.getOperations().First(x => x.PackageId == pack.PackageId).OperationDate}", russianFont) { Alignment = Element.ALIGN_LEFT });
 
-                // Calculate and add shipping cost
                 int shippingCost = CalculatePackPrise(pack.DimensionTitle, pack.WeightUnit , (int)pack.Weight);
                 document.Add(new Paragraph($"Shipping Cost: {shippingCost}", russianFont) { Alignment = Element.ALIGN_LEFT });
             }

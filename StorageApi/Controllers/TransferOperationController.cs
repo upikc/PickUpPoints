@@ -108,13 +108,10 @@ namespace StorageApi.Controllers
                     DbContext.SaveChanges();
                     return Ok("Сохранено успешно");
                 }
-
             catch (Exception ex)
             {
-                    if (ex.InnerException.Message != null)
-                return BadRequest(ex.InnerException.Message);
+                return BadRequest("Ошибка отправки письма на почту");
             }
-
             return BadRequest("Не верный порядок операций");
 
         }

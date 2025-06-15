@@ -21,15 +21,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Label and ComboBox for selecting an order -->
         <Label Content="Выберите посылку" FontSize="36" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
         <ComboBox x:Name="Pkg_id" FontSize="32" Grid.Row="0" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
 
-        <!-- Label and ComboBox for selecting a warehouse -->
         <Label Content="Выберите Склад" FontSize="36" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
         <ComboBox x:Name="Storage_id" FontSize="32" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
 
-        <!-- Confirmation Button -->
         <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="90,20,90,20" Content="Подтвердить" FontSize="32" Click="AddBtnClick" HorizontalAlignment="Center" VerticalAlignment="Bottom" Padding="20,5"/>
     </Grid>
 </Page>

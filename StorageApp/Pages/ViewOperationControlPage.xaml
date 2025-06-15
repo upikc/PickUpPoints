@@ -24,7 +24,7 @@
                      />
 
             <ComboBox x:Name="filterBox"
-                  Width="300"
+                  Width="320"
                   FontSize="38" SelectionChanged="FilterBox_SelectionChanged"
                   Margin="0,0,20,0">
                 <ComboBoxItem>создана</ComboBoxItem>

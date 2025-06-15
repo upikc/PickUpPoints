@@ -7,16 +7,25 @@ using StorageApp.Model;
 using ControlzEx.Standard;
 using System.Windows.Media;
 using Org.BouncyCastle.Bcpg;
+using System.Net.Http;
+using System.Drawing;
+using StorageApp.Windows;
 
 namespace StorageApp.UserControls
 {
     public partial class PackageControl : UserControl
     {
         public Model.Package ThisPackage { get; }
+        public Model.User thisUser { get; }
 
-        public PackageControl(Model.Package package)
+        public UserWindow thisWindow { get; }
+
+        public PackageControl(Model.Package package , User _user , UserWindow _thisWindow)
         {
             ThisPackage = package;
+            thisUser = _user;
+            thisWindow = _thisWindow;
+
             InitializeComponent();
             PopulatePackageData(package);
             PopulateOperationsHistory(package.PackageId);
@@ -46,6 +55,16 @@ namespace StorageApp.UserControls
 
             var destinationStorage = Context.getStorages().FirstOrDefault(x => x.storageId == package.DestinationStorageId);
             txtDestinationStorage.Text = destinationStorage != null ? destinationStorage.storageAddr : "Не указан";
+
+            //Кнопка действия с посылкой
+            if (translatedStatus == "выдана" || thisUser.RoleId == 1) // кнопка не нужна
+            {
+                ActionBtn.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            
+
         }
 
         private void PopulateOperationsHistory(int packageId)
@@ -132,6 +151,7 @@ namespace StorageApp.UserControls
                 : phone; 
         }
 
+        
         private void UpdateTextBlockColor(string status)
         {
             SolidColorBrush brush = null;
@@ -140,12 +160,15 @@ namespace StorageApp.UserControls
             {
                 case "создана":
                     brush = (SolidColorBrush)Application.Current.Resources["DeclareStatusColor"];
+                    ActionBtn.Content = "Отправить";
                     break;
                 case "в пути на пвз":
                     brush = (SolidColorBrush)Application.Current.Resources["TransferStatusColor"];
+                    ActionBtn.Content = "Получить";
                     break;
                 case "получена на пвз":
                     brush = (SolidColorBrush)Application.Current.Resources["ReceivedStatusColor"];
+                    ActionBtn.Content = "Выдать";
                     break;
                 case "выдана":
                     brush = (SolidColorBrush)Application.Current.Resources["IssueStatusColor"];
@@ -158,7 +181,7 @@ namespace StorageApp.UserControls
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void MakeBarcode(object sender, RoutedEventArgs e)
         {
             string message =
                 $@"=== ИНФОРМАЦИЯ О ПОСЫЛКЕ ===
@@ -182,12 +205,69 @@ namespace StorageApp.UserControls
 
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void MakeReceipt(object sender, RoutedEventArgs e)
         {
-
-
             Context.GenerateAndSaveReceiptAsPdf(ThisPackage, Context.MakeDockFilePath(@$"Квинтация_{ThisPackage.PackageId}.pdf"));
             MessageBox.Show("Квитанция создана!");
+        }
+
+        public async Task MakeOperation(int operationType , int actionStorageId , int userId , int packId)
+        {
+            if (operationType == 1)
+            {
+                MessageBoxResult result = MessageBox.Show($"Посылка будет отправлена на {ThisPackage.DestinationStorageAddres}", "Внимание", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                    return;
+            }
+            if (operationType == 3)
+            {
+                MessageBoxResult result = MessageBox.Show($"Убедитесь что сверили данные получателя", "Внимание", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.No)
+                    return;
+            }
+
+            try
+            {
+                HttpResponseMessage responseContent = default;
+                responseContent = await Context.postNewPkgOperationAsync(
+                packId,
+                userId,
+                operationType, // 1 подтвердить отправление в доставку . 2 подтвердить получение . 3 подтвердить выдачу
+                actionStorageId); 
+                
+                if ((int)responseContent.StatusCode == 200)
+                {
+                    MessageBox.Show("Операция совершена успешно");
+                    thisWindow.ShowViewPackageControlsPage_Storages(default, default);
+
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка");
+            }
+        }
+
+        private async void ActionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            switch (ThisPackage.Status)
+            {
+                case "создана":
+                    await MakeOperation(1 , ThisPackage.DestinationStorageId , thisUser.UserId , ThisPackage.PackageId); //отправить
+                    break;
+                case "в пути на пвз":
+                    await MakeOperation(2 , thisUser.StorageId , thisUser.UserId , ThisPackage.PackageId); //получить
+                    break;
+                case "получена на пвз":
+                    await MakeOperation(3 , thisUser.StorageId , thisUser.UserId , ThisPackage.PackageId); //выдать
+                    break;
+                case "выдана":
+                    break;
+            }
         }
     }
 }

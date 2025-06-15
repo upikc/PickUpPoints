@@ -49,8 +49,9 @@
             <TextBlock FontSize="24" x:Name="txtDestinationStorage" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"/>
 
 
-            <Button FontSize="20" Grid.Row="4" Grid.Column="2" Content="Создать квитанцию" Margin="70,5,70,5" Grid.ColumnSpan="2" Click="Button_Click_1"  />
-            <Button FontSize="20" Grid.Row="5" Grid.Column="2" Content="Создать штрихкод" Margin="70,5,70,5" Grid.ColumnSpan="2" Click="Button_Click" />
+            <Button x:Name="ActionBtn" FontSize="20" Grid.Row="3" Grid.Column="2" Content="ВЫполнить" Margin="70,5,70,5" Grid.ColumnSpan="2" Click="ActionBtn_Click"   />
+            <Button FontSize="20" Grid.Row="4" Grid.Column="2" Content="Создать квитанцию" Margin="70,5,70,5" Grid.ColumnSpan="2" Click="MakeReceipt"  />
+            <Button FontSize="20" Grid.Row="5" Grid.Column="2" Content="Создать штрихкод" Margin="70,5,70,5" Grid.ColumnSpan="2" Click="MakeBarcode" />
 
             <Expander Grid.Row="6" Grid.ColumnSpan="4" Margin="0,10,0,0">
                 <Expander.Header>

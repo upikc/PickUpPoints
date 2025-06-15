@@ -38,6 +38,7 @@ public class Package
     public int ActionstorageId { get; set; }
 
     public int DestinationStorageId { get; set; } //пункт пазначения
+    public string DestinationStorageAddres { get { return Context.getStorages().First(x => x.storageId == DestinationStorageId).storageAddr  ; }} //пункт пазначения
 
 
 

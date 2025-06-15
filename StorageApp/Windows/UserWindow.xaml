@@ -14,8 +14,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -79,7 +78,7 @@
                 </Label.Foreground>
             </Label>
             <Label FontSize="20" Content="Просмотр посылок ПВЗ" ToolTip="Отобразить посылки, ожидающие в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewPackageControlsPage_StoragesFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage" />
-            <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewOperationControlPage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage"/>
+            <Label FontSize="20" Content="Просмотр операций ПВЗ" ToolTip="Отобразить операции, проведеных в пункте выдачи" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowViewOperationControlPage_OperationFromMyStorage" MouseRightButtonDown="ShowViewDatagridPage_StoragesFromMyStorage"/>
             
             
             <Label Content="Изменение статуса ▶" FontSize="17" FontWeight="Bold">
@@ -94,6 +93,8 @@
             <!--отправить посылку-->                <Label FontSize="20" Content="Отправить посылку" ToolTip="Отправить посылку на пункт выдачи" Margin="5" Background="#FFFFDE00"  MouseLeftButtonDown="ShowCreateNewPkgOperatioPage" />
             <!--подтвердить получение на склад-->   <Label FontSize="20" Content="Подтвердить получение" ToolTip="Подтвердить получение посылки в ПВЗ" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowСonfirmReceiptPage" />
             <!--выдать посылку клиенту-->           <Label FontSize="20" Content="Выдача посылок" ToolTip="Выдать посылку получателю" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmIssuePage" />
+            <!--Операция по штрих коду-->
+            <Label FontSize="20" Content="Операции по трек-номеру" ToolTip="Перемещение посылки по коду" Margin="5" Background="#FFFFDE00" MouseLeftButtonDown="ShowConfirmPackTransferPage" />
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StorageApi.Model;
 using System.Text.RegularExpressions;
 namespace StorageApi.Controllers
@@ -47,6 +48,24 @@ namespace StorageApi.Controllers
                 var newUser = new User(login , password , fName , Lname , phoneNumber , roleID , storageId);
                 newUser.UserId = DbContext.Users.Max(x => x.UserId) + 1;
                 DbContext.Users.Add(newUser);
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.InnerException.Message);
+            }
+            return Ok();
+        }
+
+        /// <summary>
+        /// Изменение пароля пользователя.
+        /// </summary>
+        [HttpPost("UserPasswordChange")]
+        public IActionResult UserPasswordChange(int userId , string newPass)
+        {
+            try
+            { 
+                DbContext.Users.First(x => x.UserId == userId).Password = newPass;
                 DbContext.SaveChanges();
             }
             catch (Exception ex)

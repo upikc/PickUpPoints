@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using System.Windows;
 using BarcodeLib;
 using System.Windows.Controls;
+using System.Net.Http;
 
 
 namespace StorageApp.Windows
@@ -50,7 +51,7 @@ namespace StorageApp.Windows
             _collectionView.Filter = FilterData;
         }
 
-        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             if (dataGrid.ItemsSource.GetType() == typeof(StorageApp.Model.Package[]))
@@ -135,9 +136,66 @@ namespace StorageApp.Windows
 
             }// ДАТАГРИД нажали на посылку
 
-            else // тут нажмем на другое
+            else if (dataGrid.ItemsSource is IEnumerable<User> users) // Админ нажал на пользователя
             {
+                Model.User user = dataGrid.SelectedItem as Model.User;
 
+                var passwordDialog = new PasswordInputDialog();
+                if (passwordDialog.ShowDialog() == true)
+                {
+                    string newPassword = passwordDialog.Password;
+
+                    HttpResponseMessage responseContent = await Context.ChangeUserPasswordAsync(user.UserId, newPassword);
+                    if ((int)responseContent.StatusCode == 200)
+                    {
+                        MessageBox.Show("Новый пароль сохранен");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка");
+                    }
+                }
+            }
+
+        }
+
+        public class PasswordInputDialog : Window
+        {
+            public PasswordInputDialog()
+            {
+                InitializeComponent();
+            }
+
+            private void InitializeComponent()
+            {
+                this.Title = "Изминение пароля";
+                this.Width = 300;
+                this.Height = 150;
+                this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                var stackPanel = new StackPanel();
+                var label = new Label { Content = "Введите пароль:" };
+                var passwordBox = new PasswordBox { Margin = new Thickness(0, 10, 0, 10) };
+                var button = new Button { Content = "OK", Width = 100, Margin = new Thickness(0, 10, 0, 0) };
+
+                button.Click += (sender, e) =>
+                {
+                    this.DialogResult = true;
+                    this.Close();
+                };
+
+                stackPanel.Children.Add(label);
+                stackPanel.Children.Add(passwordBox);
+                stackPanel.Children.Add(button);
+
+                this.Content = stackPanel;
+
+                passwordBox.Focus();
+            }
+
+            public string Password
+            {
+                get { return ((StackPanel)this.Content).Children.OfType<PasswordBox>().First().Password; }
             }
         }
 
@@ -154,7 +212,10 @@ namespace StorageApp.Windows
                     "actionstorageId",
                     "commandingstorageId",
                     "typeid",
-                    "enable"
+                    "enable",
+                    "firstname",
+                    "lastname",
+                    "password"
                 };
 
             if (columnsToHide.Contains(e.PropertyName.ToLower()))
